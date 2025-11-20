@@ -1,0 +1,373 @@
+# ALGORITHM- a step-by-step procedure for solving a Problem is known as algorithms.
+
+# # For Overall optimization of Application, we can check the Time and Space(Memory) Complexity in code. check if the 
+  outcome can be acheived in less steps(Algorithm) i.e increasing the efficiency of the Algorithm.
+
+# Optimize the code for better speed and less memory.
+
+# Context Switching -- the process are executed in equal way i.e one process is not completely finished.
+                       when computer runs a single process untill it complete the other waits so in context switching
+                       some part of multiple processes are executed.
+
+# A Computer can Execute 10 raise to the power 8-9 instructions in 1 second.
+
+# Experimental Analysis: taking the code(functions etc..) start Time and end Time, calculate the delta between them.
+                         but due to changes in delta almost every time because computer follow CONTEXT SWITCHING, 
+                         Experimental Analysis is not a Standard practice for optimization  
+
+# Example of how to check the time a function or piece of code is taking 
+
+%%time
+
+print("hello world")
+
+hello world
+CPU times: total: 0 ns
+Wall time: 600 μs
+
+###Question
+Problem statement
+How is multi-tasking typically achieved in a CPU?
+
+Answer:
+By time-sharing the CPU among multiple tasks
+
+
+# IMP: Rate of Growth:: The rate of growth for code is the change in time with respect to change in Input Size.
+                        when the input size (user size/data) increases the time changes. 
+
+                        when we optimize code we check the rate of growth for a code or between different options
+                        available to solve/perform the task. the rate of growth should be low for better performance
+                        and high scalability.
+
+                        if the the rate of growth is higher for code it is considered a bad code/algorithm. the code
+                        will not perform better when application scales large.
+
+# VERY IMP: Asymptotic Notation: It uses the Rate of Growth to check the efiiciency of code/algo. here we increase 
+                                 the input size and check the change in time taken for execcution. 
+
+                                 Asymtotic Notaion is independent of Machine Configuration.
+
+# Asymptotic Notation: How to Check the Code/algo/func?
+                        
+                       # it checks three Cases i.e
+                       # here n represents Instructions  
+                            1. BEST SPEED CASE(Big Omega):: it takes Omega(1) or omega(constant), Time taken is 
+                                                            independent to change in input size.
+   
+                            2. AVERAGE SPEED CASE(Big Theta):: it takes Theta(n), Time taken is 
+                                                         proportional linearly to change in input size.
+
+                            3. WORST SPEED CASE(Big O):: it takes O(n) time for Exexution, Time taken is 
+                                                         proportional linearly to change in input size.
+
+
+
+----------------------------------
+----------------------------------
+Calculate Best, Average and Worst Cases
+----------------------------------
+----------------------------------
+###Question
+If the number of primary operations of an algorithm that takes an array of size n as input are 3n^2 + 5n. 
+The worst case time complexity of the algorithm will be ?
+
+Answer:
+O(n^2), because the dominant term in the number of operations . 3n^2 grows faster than the other term 5n, as 
+        the input size n increases.
+
+
+###Question
+Check the Best, average and worst case for sum of n natural nnumbers
+
+Answer:
+def sum_of_natural_num(n):
+    result = 0
+    for i in range(1, n + 1):
+        result += i
+    return result
+
+print(sum_of_natural_num(4))
+
+Calculate Innstructions::
+            * 1 Instruction for result = 0 i.e 1
+            * 1 instruction for return result i.e 1 + ...... + 1
+            * 1 instruction to assign the i value i.e 1 + 1 + ..... + 1
+            * in loop 1 inst. for checking i in range and 1 instruction to update result and 
+              n(number of times loop runs) is for the loop i.e 1 + 1 + 2n + 1 = 2n + 3
+
+            * 2n + 3 is equal to O(n) because 3 and 2 does not make much difference. so O(n) is the worst case.
+            * here the best case is also omega(n) and the average is also Theta(n).
+
+Optimized Solution::
+
+def sum_of_natural_num_optimized(n):
+    return ((n)*(n+1) // 2)
+
+print(sum_of_natural_num_optimized(4))
+
+Calculate Innstructions::
+            * 1 Instruction to assign n i.e 1
+            * 1 instruction to assign n+1 i.e 1 + 1
+            * 1 instruction for floor division i.e 1 + 1 + 1
+            * here total instructions/complexity is 3.
+            * Here all the cases are Constant i.e O(1), Omega(1), Theta(1) 
+
+
+
+###Question
+Calculate the Complexity for the given functions/codes/algo
+
+Answer:
+
+__Example One:: 
+ def f1(n):
+    for i in range(0, n):
+        print(i)
+        # more constant instructions may be
+
+Calculate Innstructions::
+            * 1 Instruction to assign i i.e 1
+            * 1 instruction for checking i in range and to print i i.e 1 + 2n = remove lower degree terms i.e n
+            * Here all the cases are Same i.e O(n), Omega(n), Theta(n)
+
+
+__Example Two::
+def f2(n, m):
+    ans = 0
+    for i in range(0, n):
+        ans += i
+    for i in range(0, m):
+        ans += i*i
+    return ans
+
+Calculate Innstructions::
+            * 1 Instruction to assign ans i.e 1
+            * 1 Instruction to return ans i.e 1 + .... + 1
+            * 1 Ins. to assign the value of i for First loop i.e 1 + 1 + .... + 1
+            * 1 instruction for checking i in range and 1 to update ans and n for First looping i.e 1 + 1 + 2n + .... + 1
+            * 1 Ins. to assign the value of i for Second loop i.e 1 + 1 + 2n + 1 + ... + 1
+            * 1 instruction for checking i in range and 1 to update ans and n for Second looping i.e 1 + 1 + 2n + 1 + 2m + 1
+            * so now 2n + 2m + 4, remove lower degree terms n + m 
+            * Here all the cases are Same i.e O(n + m), Omega(n + m), Theta(n + m)
+
+
+__Example Three::
+def f3(n, m):
+    for i in range(0, n):
+        for j in range(0, m):
+            print(i, j)
+
+Calculate Innstructions::
+            * 1 Instruction to assign i i.e 1
+            * 1 Instruction to assign  j i.e 1 + 1
+            * 1 instruction for checking i in range and second loop runs m times so 1 + 1 + n*m. remove LDT
+            * Here all the cases are Same i.e O(n * m), Omega(n * m), Theta(n * m)
+
+
+__Example Four::
+def f4(n):
+    ans = 0
+    for i in range(0, n):
+        for j in range(0, n):
+            ans += i * j
+    return ans
+
+
+Calculate Innstructions::
+            * 1 Instruction to assign ans i.e 1
+            * 1 Instruction to assign  i i.e 1 + 1
+            * 1 Instruction to assign  j i.e 1 + 1 + 1
+            * 1 instruction for checking i in range and second loop runs n times so 1 + 1 + 1 + n*n. remove LDT
+            * Here all the cases are Same i.e O(n*n), Omega(n*n), Theta(n*n)
+
+
+
+###Question
+What will be the Time Complexity of the following code in terms of ‘n’ ?
+
+Note: Assume k to be a constant value.
+
+for i in range(n):
+    for j in range(k):
+        print(i+j)
+
+Answer:
+O(n), because the outer loop runs n times and the inner loop runs k-1 times for every i. since k is a 
+      constant value. the inner loop time complexity is O(1). Therefore the overall complexity is O(n*1) = O(n)
+
+
+###Question
+Calculate the Complexity for the given functions/codes/algo
+
+Answer:
+
+__Example One:: 
+def f5(n):
+    i = 1
+    ans = 0
+    while i <= n:
+        ans += i
+        i = i * 2
+    return ans
+
+Calculate Innstructions::
+            * 1 Instruction to assign ans i.e 1
+            * 1 Instruction to assign  i i.e 1 + 1
+            * 1 instruction for checking i in range, loop will not run n times becasue i is incremented 
+              to the power of 2 and the relation between k and n is that 2 raise to the power k <= n as 
+              per the while loop last iteration.
+              2k <= n
+              -take log both sides
+              log2 2k <= log2 n
+              k log2 2 <= log2 n
+              -log2 2 is 1 So,
+              k <= log2 n 
+            * Here all the cases are Same i.e O(logn), Omega(logn), Theta(logn)
+
+
+__Example Two::
+def f6(n):
+    ans = 0
+    for i in range(0, n):
+        for j in range(i, n):
+            ans += i*j
+    return ans
+
+Calculate Innstructions::
+            * 1 Instruction to assign ans i.e 1
+            * 1 Instruction to assign  i i.e 1 + 1
+            * 1 Instruction to assign  j i.e 1 + 1 + 1
+            * 1 instruction for checking i in range, first loop will run n times and second loop will run,
+                if i = 0, (0, n)
+                if i = 1, (1, n - 1)
+                if i = 2, (2, n - 2)
+            * So n + (n - 1) + (n - 2) + ....... + 3 + 2 +1
+            * The above expression is n(n + 1) // 2 i.e sum of natural numbers.
+            * n2/2 + n/2, n/2 is small as compare to n2/2 so we remove it and n2/2 is almost same 
+              as n raise to the power 2 (n2) so we remove 2.    
+            * Here all the cases are Same i.e O(n2), Omega(n2), Theta(n2)
+
+
+__Example Three::
+def f7(n):
+    for i in range(0, n):
+        print(i)
+    for i in range(0, n):
+        for j in range(i, n):
+            print(i*j)
+
+Calculate Innstructions::
+            * 1 instruction for checking i in range, first loop will run n times i. n.
+            * 1 instruction for checking i in range, second loop will run n times and third loop will run same as above,
+                if i = 0, (0, n)
+                if i = 1, (1, n - 1)
+                if i = 2, (2, n - 2)
+            * So n + (n - 1) + (n - 2) + ....... + 3 + 2 +1
+            * The above expression is n(n + 1) // 2 i.e sum of natural numbers.
+            * n2/2 + n/2, n/2 is small as compare to n2/2 so we remove it and n2/2 is almost same 
+              as n raise to the power 2 (n2) so we remove 2.
+            * now we have n from first loop and n raise to the power 2 from second and third loop i.e n + n2
+            * n is small i.e if our code executes n2, n is no problem. so now we left with n raise to the power 2.   
+            * Here all the cases are Same i.e O(n2), Omega(n2), Theta(n2)
+
+
+
+###Question
+What will be the Time Complexity of the following code in terms of ‘n’ ’?
+
+for i in range(n):
+        k=n
+        while k>0:
+            k //= 2
+
+Answer:
+O(nlogn), the outer loop runs n times, for each iteration of outer loop inner loop runs until k becomes 0  
+          or less than 0. for each iteration of the while loop k is half(k //= 2). so the number of iterations
+          for the while loop is proportional to the logarithm (base 2) of n. So the total time complexity 
+          is Proportional to n times the log of n, which is O(nlogn).
+
+
+
+###Question
+What will be the Time Complexity of the following code in terms of ‘n’?
+
+while n>0:
+    n = n//4
+
+Answer:
+O(logn to the base 4), the loop divides n by 4 until it becomes 0. this operation is performed log4n times.
+                       therefore the time complexity of the code is O(log4n).
+
+
+========================================================================================================================
+==========================================BEST TO WORST COMPLEXITY CHART================================================
+#######################################################################################################################
+S. No.|| Complexity || Input Size1, Complexity value || Input Size2, Complexity value || Input Size3, Complexity value
+-----------------------------------------------------------------------------------------------------------------------
+ 1.   ||    O(1)    ||    10**3          Constant    ||     10**6         Constant    ||    10**9         Constant     
+-----------------------------------------------------------------------------------------------------------------------
+ 2.   ||    O(logn) ||    10**3           10 Ops     ||     10**6          20 Ops     ||    10**9          30 Ops    
+-----------------------------------------------------------------------------------------------------------------------
+ 3.   ||    O(√n)   ||    10**3           30 Ops     ||     10**6          10**3 Ops  ||    10**9          3 * 10**5 Ops       
+-----------------------------------------------------------------------------------------------------------------------
+ BASE ||   O(n)     ||    10**3          10**3 Ops   ||     10**6          10**6 Ops  ||     10**9          10**9 Ops
+-----------------------------------------------------------------------------------------------------------------------
+ 5.   ||   O(nlogn) ||    10**3          10**4 Ops   ||     10**6       2 * 10**7 Ops ||     10**9        3 * 10**8 Ops 
+-----------------------------------------------------------------------------------------------------------------------
+ 6.   ||   O(n**2)  ||    10**3          10**6 Ops   ||     10**6      2 * 10**12 Ops ||     10**9        3 * 10**18 Ops 
+-----------------------------------------------------------------------------------------------------------------------
+ 7.   ||   O(n**3)  ||    10**3          10**9 Ops   ||     10**6      2 * 10**18 Ops ||     10**9        3 * 10**27 Ops 
+-----------------------------------------------------------------------------------------------------------------------
+ 8.   ||   O(2**n)  ||    10**3          Very High   ||     10**6         Very High   ||     10**9           Very High 
+-----------------------------------------------------------------------------------------------------------------------
+ 9.   ||   O(n!)    ||    10**3          Very High   ||     10**6         Very High   ||     10**9           Very High 
+#######################################################################################################################
+
+
+
+###Question 
+Optimize the check prime number func
+
+Answer:
+Complexity:: O(√n)
+def check_prime(n):
+    if n < 2:
+        return False
+
+    # only check from 2 to sqrt(n)
+    i = 2
+    while i * i <= n:   # equivalent to i <= sqrt(n)
+        if n % i == 0:
+            return False
+        i += 1
+
+    return True
+
+print(check_prime(19))
+
+True
+
+
+###Question
+Optimize the find unique element func
+
+You have been given an integer array/list(ARR) of size N. Where N is equal to [2M + 1].
+
+Now, in the given array/list, 'M' numbers are present twice and one number is present only once.
+
+You need to find and return that number which is unique in the array/list.
+
+ Note:
+Unique element is always present in the array/list according to the given condition.
+
+Answer:
+def check_unique(arr):
+    ans = 0
+    for ele in arr:
+        ans ^= ele
+    return ans
+
+print(check_unique([1, 4, 7, 1, 3, 7, 4, 3, 9]))
+
+9

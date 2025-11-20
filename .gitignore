@@ -1,0 +1,3 @@
+# Ignore all Notes folders anywhere in the repo
+**/Notes/
+# Ignore all .log files
