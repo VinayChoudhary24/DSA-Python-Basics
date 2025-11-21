@@ -1,0 +1,490 @@
+# In Binary Search we divide the search space in 2 parts. we discard one and accept other on the basis of some condition.
+  we keep doing this until we exhaust the search space or find the result.
+
+# Most of the time search space data is Sorted in binary but sometimes binary is applicable on un-sorted data also.
+
+###Question
+You are given an integer array 'A' of size 'N', sorted in non-decreasing order. You are also given an integer 
+'target'. Your task is to write a function to search for 'target' in the array 'A'. If it exists, return 
+its index in 0-based indexing. If 'target' is not present in the array 'A', return -1.
+
+Note:
+You must write an algorithm whose time complexity is O(LogN)
+
+Answer:
+def search(nums: [int], target: int):
+    # write your code logic !!
+    start = 0
+    end = len(nums) - 1
+
+    while start <= end:
+        mid = (start + end) // 2
+
+        if nums[mid] == target:
+            return mid
+        elif nums[mid] < target:
+            start = mid + 1
+        else:
+            end = mid - 1
+    return -1
+
+print(search([1, 3, 5, 6, 8, 9, 11, 13, 15], 5))
+
+2
+
+## Lower Bound:: First Value Greater than or equal to target value. 
+## Upper Bound:: First Value Greater than Target Value.
+
+###Question
+Implement lower Bound
+
+You are given an array 'arr' sorted in non-decreasing order and a number 'x'. You must return the index of 
+the lower bound of 'x'.
+
+Answer:
+def lowerBound(arr, n, x):
+    left, right = 0, n - 1
+    ans = n                 # default → if x is greater than all elements
+
+    while left <= right:
+        mid = (left + right) // 2
+
+        if arr[mid] >= x:
+            ans = mid       # possible answer
+            right = mid - 1 # try to find an even smaller index
+        else:
+            left = mid + 1
+
+    return ans
+
+print(lowerBound([1, 2, 4, 4, 5, 8], 6, 4))
+
+2
+
+## IMP:: This is the Optimized Formula for Calculating mid
+         mid = start + (end - start) // 2
+
+
+###Question
+Find Square root
+You are given a positive integer ‘N’. Your task is to find and return its square root. If ‘N’ is not a 
+perfect square, then return the floor value of sqrt(N).
+
+Note:
+In case, if you are facing the test case failure, take the variables inside the function in 'unsigned int' data type.
+
+Answer:
+def squareroot(n):
+    # Write your code logic here !!
+    if n < 2:
+        return n
+
+    start = 1
+    end = n
+    ans = 1
+
+    while start <= end:
+        mid = start + (end - start) // 2
+
+        if mid * mid == n:
+            return mid
+        elif mid * mid < n:
+            ans = mid
+            start = mid + 1
+        else:
+            end = mid - 1
+    return ans
+
+print(squareroot(10))
+
+3
+
+## IMP:: 2D matrix-- each row is sorted in Increasing order and last element of every row is less than or equal
+                     to the first element of the next row.
+
+               * Here, m --> number of rows
+                       n --> number of columns
+                       i --> index   
+                       # i // n  OR mid // n=>> Gives row
+                       # i % n OR mid % n =>> Gives column
+
+
+###Question
+Search a 2D Matrix List
+
+You are given a 2-D matrix of dimensions 'N' x 'M', each row of the matrix is sorted in non-decreasing order, 
+and each column is sorted in non-decreasing order.
+
+You are also given an integer ‘X’. You are supposed to find whether 'X' is present in the given matrix.
+
+Answer:
+Time Complexity:: O(log(mn))
+def findInMatrixOptimized(target, grid):
+    # write your code logic here !!!
+    m = len(grid)
+    n = len(grid[0])
+
+    start = 0
+    end = n*m - 1
+
+    while start <= end:
+        mid = start + (end - start) // 2
+
+        row = mid // n
+        col = mid % n
+        
+        element = grid[row][col]
+        if element == target:
+            return True
+        elif element < target:
+            # if current element < target => move down i.e next row
+            start = mid + 1
+        else:
+            # If current element > target => move left i.e discard right side
+            end = mid - 1
+    return False
+
+grid_li = [
+    [1, 3, 7],
+    [11, 13, 15],
+    [21, 33, 67],
+]
+print(findInMatrixOptimized(33, grid_li))
+
+True
+
+
+## IMP:: Rotated array => when we move the last value to the start of the array it is sorted. 
+
+## VERY IMP: When Implmented Binary Search on not sorted array
+        #KEY OBSERVATIONS, verify/Check if the value on Upper Curve or Lower Curve 
+        ** Upper Curve:: If the left side of array is Sorted we use a[start] <= target <= a[mid]
+        ** Lower Curve:: If the right side of array is sorted we use a[mid] <= target <= a[end]
+
+                   
+###Question
+Search in Rotated Sorted Array
+
+Aahad and Harshit always have fun by solving problems. Harshit took a sorted array consisting of distinct integers 
+and rotated it clockwise by an unknown amount. For example, he took a sorted array = [1, 2, 3, 4, 5] and 
+if he rotates it by 2, then the array becomes: [4, 5, 1, 2, 3].
+
+After rotating a sorted array, Aahad needs to answer Q queries asked by Harshit, each of them is described 
+by one integer Q[i]. which Harshit wanted him to search in the array. For each query, if he found it, 
+he had to shout the index of the number, otherwise, he had to shout -1.
+
+For each query, you have to complete the given method where 'key' denotes Q[i]. If the key exists in the array, 
+return the index of the 'key', otherwise, return -1.
+
+Answer:
+Time Complexity:: O(logn)
+
+def rotatedSearchOptimized(arr, target) :
+    # Write your code here.
+    n = len(arr)
+    start = 0
+    end = n - 1
+    while start <= end:
+        mid = start + (end - start) // 2
+
+        if arr[mid] == target:
+            return mid
+        
+        # Check if mid is on Upper Curve or Lower Curve
+        if arr[start] > arr[mid]:
+            # we are on Lower Curve
+            if arr[mid] <= target <= arr[end]:
+            # the target is on the right side of lower curve i.e discard left part
+                start = mid + 1
+            else:
+            #discard right part
+                end = mid - 1
+        else:
+            # we are on the Upper Curve
+            if arr[start] <= target <= arr[mid]:
+            # the target is on the left side of upper curve i.e discard right part
+                end = mid - 1
+            else:
+            #discard left part
+                start = mid + 1
+    return -1    
+            
+        
+print(rotatedSearch([15, 17, 20, 3, 5, 9, 11, 13], 17))
+
+1
+
+
+###Question
+Implement Upper Bound
+
+You are given a sorted array ‘arr’ containing ‘n’ integers and an integer ‘x’.Implement the ‘upper bound’ 
+function to find the index of the upper bound of 'x' in the array.
+
+Note:
+1. The upper bound in a sorted array is the index of the first value that is greater than a given value. 
+2. If the greater value does not exist then the answer is 'n', Where 'n' is the size of the array.
+3. Try to write a solution that runs in log(n) time complexity.
+
+Answer:
+Time Complexity:: O(logn)
+
+def upperBound(arr, x, n) -> int:
+    # Write your code here.
+    start = 0
+    end = n - 1
+    ans = n
+
+    while start <= end:
+        mid = start + (end - start) // 2
+
+        # If mid element > x, it is a possible answer
+        if arr[mid] > x:
+            ans = mid
+            end = mid - 1
+        else:
+            start = mid + 1
+    return ans
+
+ub_arr = [2, 3, 5, 7, 11]
+n = len(ub_arr)
+print(upperBound(ub_arr, 7, n))
+
+4
+
+
+###Question
+Seach insert position
+
+You are given a sorted array 'arr' of distinct values and a target value 'm'. You need to search for the 
+index of the target value in the array.
+
+Note:
+1. If the value is present in the array, return its index.
+2. If the value is absent, determine the index where it would be inserted in the array while 
+maintaining the sorted order. 
+3. The given array has distinct integers.
+4. The given array may be empty.
+
+Answer:
+Time Complexity:: O(logn)
+
+def searchInsert(arr: [int], m: int) -> int:
+    if len(arr) == 0:
+        return
+    start = 0
+    end = len(arr) - 1
+
+    while start <= end:
+        mid = start + (end - start) // 2
+
+        if arr[mid] == m:
+            return mid
+        
+        if arr[mid] >= m:
+            end = mid - 1
+        else:
+            start = mid + 1
+    return start
+
+print(searchInsert([1, 2, 4, 7], 7))
+
+3
+
+
+###Question
+Find First and Last position of element in sorted array
+
+You are given a non-decreasing array 'arr' consisting of 'n' integers and an integer 'x'. You need to find 
+the first and last position of 'x' in the array.
+
+Note:
+1. The array follows 0-based indexing, so you need to return 0-based indices.
+2. If 'x' is not present in the array, return {-1 -1}.
+3. If 'x' is only present once in the array, the first and last position of its occurrence will be the same.
+
+Answer:
+Time Complexity:: O(logn)
+
+def searchRange(arr: [int], x: int) -> [int]:
+
+    def firstOccurence():
+        start = 0
+        end = len(arr) - 1
+        ans = -1
+
+        while start <= end:
+            mid = start + (end - start) // 2
+
+            if arr[mid] == x:
+                ans = mid
+                end = mid - 1 # discard right
+            elif arr[mid] < x:
+                start = mid + 1
+            else:
+                end = mid - 1
+        return ans
+
+    def secondOccurence():
+        start = 0
+        end = len(arr) - 1
+        ans = -1
+
+        while start <= end:
+            mid = start + (end - start) // 2
+
+            if arr[mid] == x:
+                ans = mid
+                start = mid + 1 # discard left
+            elif arr[mid] < x:
+                start = mid + 1
+            else:
+                end = mid - 1
+        return ans
+
+    first = firstOccurence()
+    last = secondOccurence()
+
+    return [first, last]
+
+print(searchRange([1, 2, 4, 4, 5], 4))
+
+[2, 3]
+
+
+
+###Question
+Find Magic Index with Duplicates i.e On Duplicates we cannot use Binary for finding Magix Index
+
+You are given a sorted array A consisting of N integers. Your task is to find the magic index in the given array.
+
+Note :
+1. A magic index in an array A[0 ... N - 1] is defined to be an index i such that A[i] = i.
+2. The elements in the array can be negative.
+3. The elements in the array can be repeated multiple times.
+4. There can be more than one magic index in an array.
+
+Answer:
+Time Complexity:: O(n)
+
+def magicIndex(a, n):
+    """
+    Linear search to find the first magic index.
+    Time Complexity: O(N)
+    Space Complexity: O(1)
+    """
+    for i in range(n):
+        # Checks if: The value at index i equals the index itself
+        if a[i] == i:
+            return i
+    return -1  # No magic index found
+
+print(magicIndex([-1, 0, 1, 2, 4, 10], 6))
+
+4
+
+
+###Question
+Find Magic Index without Duplicates i.e we can use Binary for finding Magix Index
+
+You are given a sorted array A consisting of N integers. Your task is to find the magic index in the given array.
+
+Answer:
+Time Complexity:: O(logn)
+
+def magicIndexBinary(a, n):
+    """
+    Binary search approach for finding magic index.
+    Works efficiently when array doesn't have many duplicates.
+    Time Complexity: O(log N) best case, O(N) worst case with duplicates
+    Space Complexity: O(1)
+    """
+    start = 0
+    end = n - 1
+    
+    while start <= end:
+        mid = start + (end - start) // 2
+        
+        if a[mid] == mid:
+            return mid
+        elif a[mid] < mid:
+            # Magic index must be on the right side
+            # Because array is sorted, if a[mid] < mid,
+            # all elements to the left will also be < their indices
+            start = mid + 1
+        else:
+            # a[mid] > mid
+            # Magic index must be on the left side
+            end = mid - 1
+    
+    return -1  # No magic index found
+
+print(magicIndexBinary([0, 2, 3, 4, 5], 5))
+
+0
+
+
+###Question
+Find Matrix Media
+
+You have been given a matrix of ‘N’ rows and ‘M’ columns filled up with integers where every row is sorted 
+in non-decreasing order. Your task is to find the overall median of the matrix i.e if all elements of the 
+matrix are written in a single line, then you need to return the median of that linear array.
+
+The median of a finite list of numbers is the "middle" number when those numbers are listed in order from 
+smallest to greatest. If there is an odd number of observations, the middle one is picked. For example, 
+consider the list of numbers [1, 3, 3, 6, 7, 8, 9]. This list contains seven numbers. The median is the 
+fourth of them, which is 6.
+
+Answer:
+Time Complexity:: O(n * log(range))
+
+def getMedian(matrix):
+    m = len(matrix)
+    n = len(matrix[0])
+    
+    # Value range : min element, max element
+    start = min(row[0] for row in matrix)
+    end = max(row[-1] for row in matrix)
+    
+    # Position of the median in sorted order
+    desired = (m * n + 1) // 2
+    
+    while start < end:
+        mid = (start + end) // 2
+        
+        # Count how many numbers <= mid
+        count = 0
+        for row in matrix:
+            # Since every row is sorted:
+            # Use binary search to count <= mid in each row
+            left, right = 0, n
+            while left < right:
+                mid_idx = (left + right) // 2
+                if row[mid_idx] <= mid:
+                    # discard left part
+                    left = mid_idx + 1
+                else:
+                    right = mid_idx
+            count += left
+        
+        # Binary search narrowing
+        if count < desired:
+            start = mid + 1
+        else:
+            end = mid
+    
+    return start
+
+md_arr = [
+    [1, 3, 4],
+    [5, 7, 11],
+    [2, 6, 13],
+]
+print(getMedian(md_arr))
+
+5
+
+
+
+

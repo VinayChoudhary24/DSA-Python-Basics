@@ -1,0 +1,387 @@
+## Sorting:: A mechanism to re-arrange the element in an desired order.
+
+## IMP: What is the worst possible sorting algorithm?
+        >The re-arrangement i.e permutation. finding all the possible permutaion is worst sorting algo
+         because it n! time to calculate all permutations i.e O(n!).
+
+
+####### 1:: Selection sort => Extend the left part of array and eliminate the right part. so taht thearray is sorted.
+                        Insertion is expensive operation so we perform swapping of elements i.e find the minimum 
+                        element on right part and swap it with first element in the right part until the array is sorted.
+                      
+
+                     * Conditions Required:
+                         1. the left part of array is already sorted in increasing order and the right part is unsorted.
+                         2. max element from the left part is less than or equal to minimum element of the right part.  
+
+                     ** Process:
+                         1. we assume the whole array as right part. 
+                                      
+
+
+###Question
+Selection sorting
+
+Sort the given unsorted array 'arr' of size 'N' in non-decreasing order using the selection sort algorithm.
+
+Answer one:
+Time Complexity:: O(n^2)
+
+def selectionSort(arr):
+    n = len(arr)
+    
+    for i in range(n):
+        # Assume the current index i has the minimum value
+        min_index = i
+        
+        # Find the index of the smallest element in the remaining unsorted part
+        for j in range(i + 1, n):
+            if arr[j] < arr[min_index]:
+                min_index = j
+        
+        # Swap the smallest element found with the element at index i
+        arr[i], arr[min_index] = arr[min_index], arr[i]
+    return arr
+
+print(selectionSort([64, 25, 12, 22, 11]))
+
+[11, 12, 22, 25, 64]
+
+
+Answer Two:
+
+def find_min_ind(li, i):
+    # retruns the min value
+    n = len(li)
+    result = i
+    for idx in range(i, n):
+        if li[idx] < li[result]:
+            result = idx
+    return result
+
+def sorting_algo(li):
+    n = len(li)
+    for i in range(0, n):
+        min_idx = find_min_ind(li, i)
+        if min_idx != i:
+            li[i], li[min_idx] = li[min_idx], li[i]
+
+li = [64, 25, 12, 22, 11]
+sorting_algo(li)
+print(li)
+
+[11, 12, 22, 25, 64]
+
+
+####### 2:: Bubble Sort = > it swaps adjacent Comparison to place the bigglest element at it's correct index i.e last.
+
+                           * if a[j] > a[j + 1]
+                           * n - 1 passes are done
+                           *** i loop runs till (0, n)/(1, n) and j Loop runs till (0, n - i - 1)/(0, n-i	)
+                           * i = 1 --> j[0, n - 2]
+                           * i = 2 --> j[0, n - 3]
+                           * i = 3 --> j[0, n - 4]...
+
+
+###Question
+Bubble Sort
+
+You are given an integer array 'arr' of size 'N'.
+
+You must sort this array using 'Bubble Sort'.
+
+Answer:
+
+def bubbleSort(arr: List[int], n: int):
+    
+    for i in range(0, n):
+        is_swapped = False
+        for j in range(0, n - i - 1):
+            if arr[j] > arr[j + 1]:
+                arr[j], arr[j + 1] = arr[j + 1], arr[j]
+                is_swapped = True
+         # check for swapping occured or not
+        if is_swapped == False:
+            # No swapping occured i.e arr is already sorted
+            return
+bb_arr = [5, 4, 3, 2, 1]
+bubbleSort(bb_arr, 5)
+print(bb_arr)
+
+[1, 2, 3, 4, 5]
+
+
+
+####### 3:: Insertion Sort = > Picks element one-by-one and insert them on the correct position.
+
+                                                        
+                        * The left part of the array is arranged in increasing order and right part is un-sorted.
+                        * Insertion/Removing element is costly operation. so we mimic insertion.
+
+
+###Question
+Insertion Sort
+
+You are given an integer array 'arr' of size 'N'.
+
+Answer:
+def insertionSort(arr):
+    n = len(arr) 
+    for i in range(1, n):
+        key = arr[i]
+        j = i - 1
+        
+        while j >= 0 and arr[j] > key:
+            arr[j + 1] = arr[j]
+            j -= 1
+        arr[j + 1] = key
+
+
+in_li = [12, 17, 1, 2, 7, 0, 3, 8, 20]
+insertionSort(in_li)
+print(in_li)
+
+[0, 1, 2, 3, 7, 8, 12, 17, 20]
+
+
+
+## IMP:: STABILITY OF SORTING ALGO => when there are 2 or more equal elements. which one will appear first.
+                                      If the sorting algo is stable the elements will appear as they were  before i.e 
+                                      the one which appeared first will remain and so on. but if the sorting algo is not
+                                      stable the positions will be changed.
+
+## IMP:: In-Place Sorting Algo => when the changes/transformation is done on another arr/list and we 
+                                  update original arr/list through another arr/list, the sorting algo
+                                  is NOT I PLACE. 
+                                  when we make the Changes in the arr/List itself, than the sorting algo is 
+                                  IN PLACE.
+
+
+
+===================================================================================================================
+============================================SORTING ALGO ANALYSIS==================================================
+#######################################################################################################################
+    Sorting Algo. || Complexity || In Place ||      Stability       ||         Use Case          || Advantage/Disadvantage
+-----------------------------------------------------------------------------------------------------------------------
+1. Selection Sort ||    O(n^2)  ||    YES   || NO, Shuffles Values  ||  Where we have heavy/more ||  Even if arr/list 
+                                              +                           Swap Ops                    is sorted the 
+                                                                                                     complexity will 
+                                                                                                     be O(n^2)  
+-----------------------------------------------------------------------------------------------------------------------
+2.  Bubble Sort   ||    O(n^2)  ||    YES   || Yes, Retains Values  || Where we want to find the ||  if arr/list 
+                                                                        Largest element              is sorted the
+                                                                                                     it only scans 
+                                                                                                     arr/list once and 
+                                                                                                     complexity will 
+                                                                                                     be O(n).   
+-----------------------------------------------------------------------------------------------------------------------
+3. Insertion Sort ||    O(n^2)  ||    YES   || Yes, Retains Values  || When the arr/List is almost || if arr/list 
+                                                                       Sorted and not many elemnts    is sorted little bit than
+                                                                       are mis-placed. it performs    insertion algo only 
+                                                                       the best in this case          picks the mis-placed
+                                                                                                      elements and complexity 
+                                                                                                      will be O(n) 
+-----------------------------------------------------------------------------------------------------------------------
+
+
+
+###Question
+Merge Two Sorted Arrays
+
+You have been given two sorted arrays/lists(ARR1 and ARR2) of size N and M respectively, merge them into a 
+third array/list such that the third array is also sorted.
+
+Answer:
+def merge(arr1, n, arr2, m):
+    i = 0   # pointer for arr1
+    j = 0   # pointer for arr2
+    result = []
+
+    # Merge until one array finishes
+    while i < n and j < m:
+        if arr1[i] <= arr2[j]:
+            result.append(arr1[i])
+            i += 1
+        else:
+            result.append(arr2[j])
+            j += 1
+
+    # Add remaining elements from arr1
+    while i < n:
+        result.append(arr1[i])
+        i += 1
+
+    # Add remaining elements from arr2
+    while j < m:
+        result.append(arr2[j])
+        j += 1
+
+    return result
+
+
+arr1 = [1, 3, 5]
+arr2 = [2, 4, 6]
+print(merge(arr1, 3, arr2, 3))
+
+[1, 2, 3, 4, 5, 6]
+
+
+###Question
+Find Kth Smallest element
+
+You have been given an array/list and a number k. You have to find the kth smallest number.
+
+Answer:
+Time Complexity:: O(n*k)
+def kth_smallest(arr, n, k):
+    # We only run selection sort for k passes
+    for i in range(k):
+        min_index = i
+
+        # Find the smallest element in the unsorted part
+        for j in range(i + 1, n):
+            if arr[j] < arr[min_index]:
+                min_index = j
+        
+        # Place it at correct position
+        arr[i], arr[min_index] = arr[min_index], arr[i]
+
+    return arr[k - 1]
+
+arr = [7, 10, 4, 3, 20, 15]
+print(kth_smallest(arr, len(arr), 2))
+
+4
+
+
+###Question
+Find Inversions Using Selection Sort
+
+You have a list of numbers that are not in order. You want to find the sum of the differences between the 
+indices of pairs of numbers that are in the wrong order. A pair of numbers is considered to be in the wrong 
+order if the smaller number comes after the larger number in the list.
+
+Answer:
+def get_inversions(arr, n):
+    inversion_sum = 0
+
+    for i in range(n - 1):
+        min_idx = i
+        
+        # Find the minimum element in the unsorted part
+        for j in range(i + 1, n):
+            if arr[j] < arr[min_idx]:
+                min_idx = j
+
+        # Swap only if needed (selection sort rule)
+        if min_idx != i:
+            inversion_sum += (min_idx - i)
+            arr[i], arr[min_idx] = arr[min_idx], arr[i]
+
+    return inversion_sum
+
+arr = [3, 1, 2]
+print(get_inversions(arr, len(arr)))
+
+2
+
+
+
+###Question
+Second Largest Number
+
+You have been given a random integer array/list(ARR) of size N. You are required to find and return the 
+second-largest element present in the array/list.
+
+Note:
+All elements present in the array are unique.
+
+Answer:
+def second_largest(arr, n):
+    if n < 2:
+        return -1    # or any error handling
+    
+    # First pass: largest element goes to end
+    for j in range(n - 1):
+        if arr[j] > arr[j + 1]:
+            arr[j], arr[j + 1] = arr[j + 1], arr[j]
+
+    # Second pass: second largest goes to second last position
+    for j in range(n - 2):
+        if arr[j] > arr[j + 1]:
+            arr[j], arr[j + 1] = arr[j + 1], arr[j]
+
+    # Second largest is now at index n-2
+    return arr[n - 2]
+
+arr = [5, 2, 9, 1, 6]
+print(second_largest(arr, len(arr)))
+
+6
+
+
+###Question
+Pair Sum in Sorted Array
+
+You have been given a sorted integer array/list(ARR) and a number 'num'. Find and return the total number of pairs 
+in the array/list which sum to 'num'.
+
+Note:
+Given array/list can not contain duplicate elements. 
+
+Answer:
+
+def pair_sum(arr, n, K):
+    # Step: Count pairs using brute force
+    count = 0
+    for i in range(n):
+        for j in range(i + 1, n):
+            if arr[i] + arr[j] == K:
+                count += 1
+
+    return count
+
+print(pair_sum([1, 2, 3, 4, 5], 5, 7))
+
+2
+
+
+###Question
+Pair Sum in Un-Sorted Array
+
+You have been given a un-sorted integer array/list(ARR) and a number 'num'. sort, Find and return the total 
+number of pairs in the array/list which sum to 'num'.
+
+Note:
+Given array/list can not contain duplicate elements.
+
+Answer:
+def insertion_sort(arr, n):
+    for i in range(1, n):
+        key = arr[i]
+        j = i - 1
+
+        # Shift elements to the right
+        while j >= 0 and arr[j] > key:
+            arr[j + 1] = arr[j]
+            j -= 1
+
+        arr[j + 1] = key
+
+
+def pair_sum(arr, n, K):
+    # Step 1: Sort using ONLY insertion sort
+    insertion_sort(arr, n)
+
+    # Step 2: Count pairs using brute force
+    count = 0
+    for i in range(n):
+        for j in range(i + 1, n):
+            if arr[i] + arr[j] == K:
+                count += 1
+
+    return count
+
+print(pair_sum([2, 4, 1, 5, 3], 5, 7))
+
+2
