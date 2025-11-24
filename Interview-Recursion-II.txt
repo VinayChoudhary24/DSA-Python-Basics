@@ -1,0 +1,696 @@
+############## Recursion with Strings ##############################
+
+###Question
+Replace all the occurences of 'a' with 'b'
+
+Answer:
+def replace_char(string, a, b):
+    # Base Case
+    if len(string) == 0:
+        return string
+
+    # Induction Assumption
+    smaller_string = replace_char(string[1:], a, b)
+
+    # Task
+    if string[0] == a:
+        return b + smaller_string
+    else:
+        return string[0] + smaller_string
+
+print(replace_char("dfsaadfadfa", "a", "b"))
+
+dfsbbdfbdfb
+
+
+###Question
+Given a string, compute recursively a new string where all 'x' chars have been removed.
+
+Answer:
+# Problem: Remove x from string
+def removeX(string): 
+    # Base Case
+    if len(string) == 0:
+        return string
+
+    # Induction Assumption
+    smaller_str = removeX(string[1:])
+
+    # Task
+    if string[0] == "x":
+        return smaller_str
+    else:
+        return string[0] + smaller_str
+
+# Main
+string = input()
+print(removeX(string))
+
+  hgxghxhffjxxfhfjx
+hgghhffjfhfj
+
+
+###Question
+Replace "pi" with 3.14
+
+Answer:
+def replace_pi(string):
+    # Base Case
+    if len(string) == 0 or len(string) == 1:
+        return string
+
+    # Induction Assumption
+    if string[0] == "p" and string[1] == "i":
+        smaller_rep = replace_pi(string[2:])
+        return "3.14" + smaller_rep
+    else:
+        smaller_rep = replace_pi(string[1:])
+        return string[0] + smaller_rep
+
+print(replace_pi("adbpidbddpidbdnsdpi"))
+
+adb3.14dbdd3.14dbdnsd3.14
+
+
+###Question
+Remove duplicates
+Given a string S, remove consecutive duplicates from it recursively.
+
+Answer:
+def removeConsecutiveDuplicates(s):
+    # Base Case: if string is empty OR has single character
+    if len(s) <= 1:
+        return s
+
+    # Recursive output for the remaining string
+    small_output = removeConsecutiveDuplicates(s[1:])
+
+    # If first char equals first char of processed string → skip it
+    if s[0] == small_output[0]:
+        return small_output
+    
+    # Otherwise include the first char
+    return s[0] + small_output
+
+print(removeConsecutiveDuplicates("aabbbbccommm"))
+
+abcom
+############## Recursion with Strings ##############################
+
+
+#######################Binary Search Using Recursion########################
+###Question 
+Find the index of the element 'x' in sorted list
+
+Answer:
+def rec_binary_search(li, x, si, ei):
+    # Base Case
+    if si > ei:
+        return -1
+
+    mid = si + (ei - si) // 2
+
+    # Task
+    if li[mid] == x:
+        return mid
+    elif li[mid] > x:
+        return rec_binary_search(li, x, si, mid - 1)
+    else:
+        return rec_binary_search(li, x, mid + 1, ei)
+
+arr = [1, 3, 5, 7, 9, 11, 14, 20]
+x = 20
+print(rec_binary_search(arr, x, 0, len(arr) - 1))
+
+7
+
+#######################Binary Search Using Recursion########################
+
+
+####################### Merge Sort ########################
+
+# Merge Sort is Recursive in nature.
+
+
+###Question
+Sort the given array of integers using merge sort
+
+Answer:
+def merge(li_1, li_2, li):
+    i = 0
+    j = 0
+    k = 0
+
+    # compare only if we have values for both list
+    while i < len(li_1) and j < len(li_2):
+        if li_1[i] < li_2[j]:
+            li[k] = li_1[i]
+            k += 1
+            i += 1
+        else:
+            li[k] = li_2[j]
+            k += 1
+            j += 1
+
+    # Check if any one list is exhausted and add the remaining elements from other list
+    
+    while i < len(li_1):
+        li[k] = li_1[i]
+        k += 1
+        i += 1
+
+    while j < len(li_2):
+        li[k] = li_2[j]
+        k += 1
+        j += 1
+    
+def merge_sort(li):
+    # Base Case
+    if len(li) == 0 or len(li) == 1:
+        return
+    
+    mid = len(li) // 2
+
+    # First half
+    li_1 = li[0:mid]
+    li_2 = li[mid:]
+
+    # Induction Assumption
+    merge_sort(li_1)
+    merge_sort(li_2)
+
+    # Task
+    merge(li_1, li_2, li)
+
+ms_arr = [10, 8, 1, 9 , 71, 11, 99, 55, 3, 2]
+merge_sort(ms_arr)
+print(ms_arr)
+
+[1, 2, 3, 8, 9, 10, 11, 55, 71, 99]
+
+
+
+###Question
+You are given the starting 'l' and the ending 'r' positions of the array 'ARR'.
+
+You must sort the elements between 'l' and 'r'.
+
+Answer:
+def mergeNew(arr, l, m, r):
+    # Create two temp lists using slicing (same pattern as earlier merge sort)
+    left = arr[l:m+1]
+    right = arr[m+1:r+1]
+
+    i = j = 0
+    k = l
+
+    # Merge until one is exhausted
+    while i < len(left) and j < len(right):
+        if left[i] < right[j]:
+            arr[k] = left[i]
+            i += 1
+        else:
+            arr[k] = right[j]
+            j += 1
+        k += 1
+
+    # Copy remaining elements from left
+    while i < len(left):
+        arr[k] = left[i]
+        i += 1
+        k += 1
+
+    # Copy remaining elements from right
+    while j < len(right):
+        arr[k] = right[j]
+        j += 1
+        k += 1
+
+
+def mergeSortNew(arr, l, r):
+    # Base case
+    if l >= r:
+        return
+
+    m = (l + r) // 2
+
+    # Recursive calls
+    mergeSortNew(arr, l, m)
+    mergeSortNew(arr, m + 1, r)
+
+    # Merge sorted halves
+    mergeNew(arr, l, m, r)
+
+ms_new_arr = [3, 1, 4, 2, 6, 5]
+mergeSortNew(ms_new_arr, 1, len(ms_new_arr)-1)
+print(ms_new_arr)
+
+[3, 1, 2, 4, 5, 6]
+####################### Merge Sort ########################
+
+
+####################### Quick Sort ########################
+## Qiuck Sort:: it makes a Partition and the middle point is called PIVOT Point/Element. the partition is done 
+                in such a way that the everything on the left side is smaller and everything on the right side
+                bigger than pivot point/element.
+
+                * In Quick Sort we dont have to make copies of list/array like we don in merge Sort.
+                * FASTER:: Quick sort does a lot of work before making the Two partition and calling Two recursion
+                  call on both the partitons whereas in merge sort it make partition without much work
+                  and calls two recursive ops on partitions. thus Quick sort is more efficient and faster.   
+
+
+###Question
+Quick Sort
+
+Given the 'start' and the 'end'' positions of the array 'input'. Your task is to sort the elements between 'start' and 'end' using quick sort.
+
+Note :
+Make changes in the input array itself.
+
+Answer Using Classic Lomuto / Hoare Partition (BETTER):
+def partition(arr, start, end):
+    pivot = arr[end]     # choose last element as pivot
+    i = start - 1        # pointer for smaller elements
+
+    for j in range(start, end):
+        if arr[j] <= pivot:
+            i += 1
+            arr[i], arr[j] = arr[j], arr[i]
+
+    # place pivot at correct sorted position
+    arr[i+1], arr[end] = arr[end], arr[i+1]
+    return i + 1
+
+
+def quickSort(arr, startIndex, endIndex):
+    # Base Case
+    if startIndex >= endIndex:
+        return
+
+    # Partition the array
+    p = partition(arr, startIndex, endIndex)
+
+    # Recursively sort left and right subarrays
+    quickSort(arr, startIndex, p - 1)
+    quickSort(arr, p + 1, endIndex)
+
+arr = [10, 7, 8, 9, 1, 5]
+quickSort(arr, 1, 4)
+print(arr)
+
+[10, 1, 7, 8, 9, 5]
+
+Answer Using Loops:
+def partition_2(arr, start, end):
+    pivot = arr[start]     # choose start element as pivot
+    
+    # Find number of elements smaller than pivot
+    count = 0
+    for i in range(start, end + 1):
+        if arr[i] < pivot:
+            count += 1
+    # swap the pivot element to it's correct place
+    arr[start + count], arr[start] = arr[start], arr[start + count]
+    pivot_idx = start + count
+
+    i = start
+    j = end
+    while i < j:
+        if arr[i] < pivot:
+            i += 1
+        elif arr[j] >= pivot:
+            j -= 1
+        else:
+            # we swap the elements from both the partitions
+            arr[i], arr[j] = arr[j], arr[i]
+            i += 1
+            j -= 1
+    return pivot_idx
+    
+
+def quickSort_2(arr, startIndex, endIndex):
+    # Base Case
+    if startIndex >= endIndex:
+        return
+
+    # Partition the array
+    pivot_index = partition_2(arr, startIndex, endIndex)
+
+    # Recursively sort left and right subarrays
+    quickSort_2(arr, startIndex, pivot_index - 1)
+    quickSort_2(arr, pivot_index + 1, endIndex)
+
+qs_arr2 = [6, 10, 7, 3, 8, 9, 1, 5]
+quickSort_2(qs_arr2, 0, len(qs_arr2) - 1)
+print(qs_arr2)
+
+[1, 3, 5, 6, 7, 8, 9, 10]
+####################### Quick Sort ########################
+
+####################### Tower of Hanoi ########################
+:: we need to move the disc from Tower A to Tower C using the helper Tower B.
+:: At any point of time a bigger disc cannot be on top of the smaller disc.
+
+       ::PROCESS::
+                 1. Base Case:: n == 1
+                 2. move n - 1 Disc from A to B:: A (helper C) B
+                 3. move nth disc from A to C:: A --> C
+                 4. move n - 1 disc from B to C:: B (helper A) C
+
+
+###Question
+Tower of Hanoi
+
+Tower of Hanoi is a mathematical puzzle where we have three rods and n disks. The objective of the puzzle 
+is to move all disks from source rod to destination rod using third rod (say auxiliary). The rules are :
+
+1) Only one disk can be moved at a time.
+2) A disk can be moved only if it is on the top of a rod.
+3) No disk can be placed on the top of a smaller disk.
+Print the steps required to move n disks from source rod to destination rod.
+
+Source Rod is named as 'a', auxiliary rod as 'b' and destination rod as 'c'.
+
+Answer:
+def towerofhanoi(n, a, b, c):
+    # Base Case
+    if n == 1:
+        print("move 1st disk from ", a, "to ", c)
+        return
+
+    # move n - 1 disks from source to auxiliary (using destination as helper)
+    towerofhanoi(n - 1, a, c, b)
+
+    # move the nth disc from source to destination
+    print("move ", n, "th disk from ", a, "to ", c)
+
+    # move n - 1 disks from auxiliary to destination (using source as helper)
+    towerofhanoi(n - 1, b, a, c)
+
+n=int(input())
+towerofhanoi(n, 'a', 'b', 'c')
+
+ 4
+move 1st disk from  a to  b
+move  2 th disk from  a to  c
+move 1st disk from  b to  c
+move  3 th disk from  a to  b
+move 1st disk from  c to  a
+move  2 th disk from  c to  b
+move 1st disk from  a to  b
+move  4 th disk from  a to  c
+move 1st disk from  b to  c
+move  2 th disk from  b to  a
+move 1st disk from  c to  a
+move  3 th disk from  b to  c
+move 1st disk from  a to  b
+move  2 th disk from  a to  c
+move 1st disk from  b to  c 
+####################### Tower of Hanoi ########################
+
+###Question
+Geometric Sum
+
+Given k, find the geometric sum i.e.
+
+1 + 1/2 + 1/4 + 1/8 + ... + 1/(2^k) 
+Note :
+using recursion.
+
+Answer:
+def geometricSum(k):
+    # Base case
+    if k == 0:
+        return 1
+
+    # Induction Assumption
+    smaller_geo_sum = geometricSum(k - 1)
+
+    # Task:: Add the current term 1/(2^k)
+    return smaller_geo_sum + 1 / (2 ** k)
+
+n = int(input())
+geo_sum_result = geometricSum(n)
+print("{:.5f}".format(geo_sum_result))
+
+ 10
+1.99902
+
+
+
+###Question
+Check Palindrome (recursive)
+
+Determine if a given string ‘S’ is a palindrome using recursion. Return a Boolean value of true if it 
+is a palindrome and false if it is not.
+
+Note: You are not required to print anything, just implement the function. Example:
+Input: s = "racecar"
+Output: true
+Explanation: "racecar" is a palindrome.
+
+Answer using si and ei (Pointers) (better):
+def isPalindromeOP(string, si, ei):
+    # Base Case:: crossed or same index → palindrome
+    if si >= ei:
+        return True
+    
+    # Check First and last Char
+    if string[si] != string[ei]:
+        return False
+
+    # Move Inwards
+    return isPalindromeOP(string, si + 1, ei - 1)
+
+palin_str = "racecar"
+print(isPalindromeOP(palin_str, 0, len(palin_str) - 1))
+
+True
+
+Answer using Slice (less Efficient):
+def isPalindrome(string: str) -> bool:
+    # Base Case
+    if len(string) <= 1:
+        return True
+    
+    # Check First and last Char
+    if string[0] != string[-1]:
+        return False
+    
+    return isPalindrome(string[1:-1])
+
+print(isPalindrome("racecar"))
+
+True
+
+
+
+###Question
+Sum of Digits (Recursive)
+
+Write a recursive function that returns the sum of the digits of a given integer.
+
+Answer:
+def sum_of_dig_rec(n):
+    # Base Case:: when the value of n gets less than 10 
+    if n < 10:
+        return n
+    
+    last_digit = n % 10
+
+    # Induction Assumption
+    small_output = sum_of_dig_rec(n // 10)
+
+    # Task
+    return last_digit + small_output
+
+n = int(input())
+print(sum_of_dig_rec(n))
+
+ 12345
+15
+
+
+
+###Question
+Multiplication (Recursive)
+
+Given two integers M & N, calculate and return their multiplication using recursion. You can only use 
+subtraction and addition for your calculation. No other operators are allowed.
+
+Answer:
+import sys
+sys.setrecursionlimit(11000)
+
+def multiply(m, n):
+    # Base Case
+    if n == 0:
+        return 0
+
+    if n < 0:
+        return multiply(-m, -n)
+
+    return m + multiply(m, n - 1)
+
+m = int(input())
+n = int(input())
+print(multiply(m, n))
+
+ 4
+ 4
+16
+
+
+
+###Question
+Count Zeros
+
+Given an integer N, count and return the number of zeros that are present in the given integer using recursion.
+
+Answer:
+def count_zero(n):
+    # Base Case
+    if n < 10:
+        if n == 0:
+            return 1
+        else:
+            return 0
+    
+    # Induction Assumption
+    small_ans = count_zero(n // 10)
+
+    # Task
+    if n % 10 == 0:
+        return 1 + small_ans
+    else:
+        return small_ans
+
+print(count_zero(10299029202920200))
+
+6
+
+
+
+###Question
+Convert String to Integer
+
+Write a recursive function to convert a given string into the number it represents. That is input will be a 
+numeric string that contains only numbers, you need to convert the string into corresponding integer and 
+return the answer.
+
+Answer:
+def convert_string_to_integer(string, si):
+    # Base Case::  when index reaches last digit
+    if si == len(string) - 1:
+        return ord(string[si]) - ord('0')
+
+    # Induction Hypothesis: convert rest of string
+    small_ans = convert_string_to_integer(string, si + 1)
+
+    current_digit = ord(string[si]) - ord('0')
+    
+    # Number of digits after current position
+    power = len(string) - si - 1
+
+    return current_digit * (10 ** power) + small_ans
+
+s = input()
+num = convert_string_to_integer(s, 0)
+print(num)
+
+ 019019111100
+19019111100
+
+
+
+###Question
+Pair Star
+
+Given a string S, compute recursively a new string where identical chars that are adjacent in the 
+original string are separated from each other by a "*".
+
+Answer:
+def addStars(s, si):
+    # Base Case: last character ? nothing to compare
+    if si == len(s) - 1:
+        return s[si]
+
+    # Induction Hypothesis: processed rest of string
+    small_stars =  addStars(s, si + 1)
+
+    # Task
+    if s[si] == s[si + 1]:
+        return s[si] + "*" + small_stars
+    else:
+        return s[si] + small_stars
+    
+s = input().strip()
+print(addStars(s, 0))
+
+ aabvvnccmmnff
+a*abv*vnc*cm*mnf*f
+
+
+
+###Question
+Check AB
+
+Suppose you have a string, S, made up of only 'a's and 'b's. Write a recursive function that checks if the 
+string was generated using the following rules:
+
+a. The string begins with an 'a'
+b. Each 'a' is followed by nothing or an 'a' or "bb"
+c. Each "bb" is followed by nothing or an 'a'
+If all the rules are followed by the given string, return true otherwise return false.
+
+Answer:
+def checkAB_helper(s, si):
+    # If we reached end ? valid
+    if si == len(s):
+        return True
+    
+    # Must start with 'a'
+    if s[si] != 'a':
+        return False
+
+    # Case 1: "a" followed by "bb"
+    if si + 2 < len(s) and s[si + 1] == 'b' and s[si + 2] == 'b':
+        return checkAB_helper(s, si + 3)
+    
+    # Case 2: "a" followed by 'a' or end
+    return checkAB_helper(s, si + 1)
+
+
+def checkAB(s):
+    if len(s) == 0 or s[0] != 'a':
+        return False
+    return checkAB_helper(s, 0)
+
+print(checkAB("abbabbabba"))
+
+True
+
+
+###Question
+Staircase
+
+A child is running up a staircase with N steps, and can hop either 1 step, 2 steps or 3 steps at a time. 
+Implement a method to count how many possible ways the child can run up to the stairs. You need to return 
+number of possible ways W.
+
+Answer:
+def staircase(n):
+    # Base Case
+    if n == 0:
+        return 1
+    if n < 0:
+        return 0
+    
+    return staircase(n - 1) + staircase(n - 2) + staircase(n - 3)
+
+n = int(input())
+print(staircase(n))
+
+ 3
+4

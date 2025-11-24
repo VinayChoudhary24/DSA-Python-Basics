@@ -1,0 +1,411 @@
+## Recursion:: A Fuction Calling itself with a small input which is easy to calculate.
+
+               * It is easier for function to calculate anything if we give the base case to function.
+               * By Default python has 1000 Recursion limit. this can be changed. You can safely go up to 2000–3000,
+                 Beyond 5000–10000 crashes become likely on most machines
+
+
+# How to update recursion limit in Python
+   # Import the sys library
+   import sys
+   sys.setrecursionlimit(3000) 
+               
+
+## Example to understand recursion need and issue without BASE CASE
+def facto_rec(n):
+    return n * facto_rec(n - 1)
+
+n = int(input())
+facto_rec(n)
+
+Here, when we give input 2, the factorial function calls for smaller input i.e 1.
+      again it calls for 0 then -1 and so on... until RecursionError: maximum recursion depth exceeded.
+
+
+## Example with BASE CASE 
+def facto_rec(n):
+    if n == 0:
+        return 1
+    return n * facto_rec(n - 1)
+
+n = int(input())
+facto_rec(n)
+
+2
+Here, we add the BASE CASE which tells function to stop going deeper if n == 0 and return.
+
+
+## IMP:: Recursion and PMI(Principle of Mathematical Induction). 
+                             ## Approach to Recursion Problem
+                                1. we need a BASE CASE.
+                                2. what is the Induction Assumption.
+                                3. What we need to proof.
+
+
+# Example with sum of natural numbers
+
+def sum_of_natural_num(n):
+    # BASE CASSE
+    if n == 0:
+        return 0
+
+    # Induction Assumption
+    small_output = sum_of_natural_num(n - 1)
+
+    # Task to proof
+    nat_sum_output = n + small_output
+    return nat_sum_output
+
+n = int(input())
+print(sum_of_natural_num(n))
+
+15
+
+
+###Qsuestion
+Find power of a number
+
+Write a program to find x to the power n (i.e. x^n). Take x and n from the user. You need to print the answer.
+
+Note : For this question, you can assume that 0 raised to the power of 0 is 1
+
+Answer:
+def power(x, n):
+    # BASE CASE
+    if n == 0:
+        return 1   # by definition: x^0 = 1
+    
+    # INDUCTION ASSUMPTION
+    small_ans = power(x, n - 1)
+    
+    # INDUCTION STEP (TASK TO PROVE)
+    final_ans = x * small_ans
+    return final_ans
+
+
+# Taking input
+a, b = input().split()
+a = int(a)
+b = int(b)
+print(power(a, b))
+
+ 2 0
+1
+
+
+###Question
+What will be the output of following code?
+
+def func(num):
+    return func(num-1)
+num = 5
+ans = func(num-1)
+print(ans)
+
+Answer:
+Recursion depth error because the function has no BASE CASE.
+
+
+
+###Question
+Print first N Natural Numbers i.e 1 ... N
+
+Answer:
+def print_nums(n):
+    # BASE CASE
+    if n == 0:
+        return
+
+    # INDUCTION ASSUMPTION
+    print_nums(n - 1)
+
+    # TASK
+    print(n)
+
+n = int(input())
+print_nums(n)
+
+ 10
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+
+Here, First n is 10 and function call itself with small input 9 and so on until base condition returns.
+      all the previous function dont return anything and waits for the BASE CASE to return and than returns in
+      Reverse Order i.e n == 0 returs First, than n == 1, n == 2 ..... n == 10. 
+
+
+###Question
+Print first N Natural Numbers in Reverse i.e N ... 1
+
+Answer:
+def print_nums_rev(n):
+    # BASE CASE
+    if n == 0:
+        return
+        
+    # TASK
+    print(n)
+
+    # INDUCTION ASSUMPTION
+    print_nums_rev(n - 1)
+
+n = int(input())
+print_nums_rev(n)
+
+ 10
+10
+9
+8
+7
+6
+5
+4
+3
+2
+1
+
+
+###Question
+What will be the output of this recursive function code?
+
+def printNumbers(n):
+    if(n<0):
+        return
+    print(n,end=" ")
+    printNumbers(n-2)
+num = 5
+printNumbers(num)
+
+Answer:
+5 3 1
+
+
+###Question
+Find the Nth Fibonacci Number
+
+Answer:
+def fib(n):
+    # Base Case
+    if n == 1 or n == 2:
+        return 1
+
+    # Induction Assumption
+    fib_n_1 = fib(n - 1) # Last Term
+    fib_n_2 = fib(n - 2) # Second Last term
+
+    # Task
+    fib_output = fib_n_1 + fib_n_2
+
+    return fib_output
+
+n = int(input())
+fib(n)
+ 
+ 4
+3
+
+
+
+###Question
+What will be the output of following code?
+
+def fun(n):
+    if(n == 4):
+        return n
+    else:
+        return 2*fun(n+1)
+
+
+print(fun(2))
+
+Answer:
+16
+
+STEP 1
+fun(2)
+n is not 4 → go to else
+return 2 * fun(3)
+
+STEP 2
+fun(3)
+n is not 4 → go to else
+return 2 * fun(4)
+
+STEP 3
+fun(4)
+n == 4 → return 4
+
+Now we need to execute in reverse for functions waiting for base condition to return
+## UNWINDING BACK to Steps before base case 
+
+STEP 2
+fun(3) = 2 * fun(4)
+       = 2 * 4
+       = 8
+
+
+STEP 1
+fun(2) = 2 * fun(3)
+       = 2 * 8
+       = 16
+
+
+
+###Question 
+Check if List is Sorted or Not
+
+Answer:
+def isSortedOptimized(a, si):
+    length = len(a)
+    if si == length - 1 or si == length:
+        return True
+    if a[si] > a[si + 1]:
+        return False
+
+    isSmallerSorted = isSortedOptimized(a, si + 1)
+    return isSmallerSorted
+
+print(isSortedOptimized([1, 2, 3, 4, 5, 6], 0))
+
+True
+
+
+###Question
+Sum of array (Recursive)
+
+Given an array of length N, you need to find and return the sum of all elements of the array.
+
+Do this recursively.
+
+Answer:
+def sumArrayOptimized(arr, si):
+    length = len(arr)
+
+    # Base case
+    if si == length:
+        return 0
+
+    # Recursive call
+    small_sum = sumArrayOptimized(arr, si + 1)
+
+    # Task
+    return arr[si] + small_sum
+
+
+print(sumArrayOptimized([1, 2, 3, 4, 5], 0))
+
+15
+
+
+###Question
+Check Number Recursively
+
+Given an array of length N and an integer x, you need to find if x is present in the array or not. 
+Return true or false.
+
+Do this recursively.
+
+Answer:
+def checkNumber(arr, x, si):
+    # Base Case → reached end of list
+    if si == len(arr):
+        return False
+    
+    # If current element matches
+    if arr[si] == x:
+        return True
+
+    # Recursive call for next index
+    return checkNumber(arr, x, si + 1)
+
+
+arr = list(map(int, input().split()))
+x = int(input())
+
+if checkNumber(arr, x, 0):
+    print("true")
+else:
+    print("false")
+
+ 1 2 3 4 5
+ 3
+true
+
+
+###Question
+Find First Index
+
+Given an array of length N and an integer x, you need to find and return the first index of integer x present 
+in the array. Return -1 if it is not present in the array.
+
+First index means, the index of first occurrence of x in the input array.
+
+Do this recursively. Indexing in the array starts from 0.
+
+Answer:
+def firstIndex(arr, x, si):
+    # Base Case: if we reach end of array
+    if si == len(arr):
+        return -1
+
+    # If the element is found at current index, return it
+    if arr[si] == x:
+        return si
+
+    # Recursive Call
+    return firstIndex(arr, x, si + 1)
+
+fi_arr = list(map(int, input().split()))
+fi_x = int(input())
+print(firstIndex(fi_arr, fi_x, 0))
+
+ 1 2 3 4 5
+ 5
+4
+
+
+
+###Question
+Find the Last Index
+
+Given an array of length N and an integer x, you need to find and return the last index of integer x present 
+in the array. Return -1 if it is not present in the array.
+
+Last index means - if x is present multiple times in the array, return the index at which x comes last in the array.
+
+You should start traversing your array from 0, not from (N - 1).
+
+Do this recursively. Indexing in the array starts from 0.
+
+Answer:
+def lastIndex(arr, x, si):
+    # Base Case: if we reach end of array
+    if si == len(arr):
+        return -1
+
+    # Recursive Call
+    smaller_list_output = lastIndex(arr, x, si + 1)
+
+    if smaller_list_output != -1:
+        return smaller_list_output
+    else:
+        if arr[si] == x:
+            return si
+        else:
+            return -1
+
+la_arr = list(map(int, input().split()))
+la_x = int(input())
+print(lastIndex(la_arr, la_x, 0))
+
+ 1 2 3 4 8 9 1 8 8 9 1 6 51 1
+ 1
+13
