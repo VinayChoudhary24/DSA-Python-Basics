@@ -1,0 +1,343 @@
+## SPACE COMPLEXITY:: When the code takes extra space/memory than required.
+
+# Example
+         ==>When a function is executed we create some variables(independent of input) and Even if the input size 
+         increases the number of variables creation remains the same i.e best space complexity O(1).
+         
+         ==>when the created variables are dependent on the input size i.e the more the input size even the variable
+         will take same size with respect to input i.e average space complexity O(n). if input size is 10**5 the 
+         created variable size is also the same 10**5.
+         
+         ==>the more the variables the bad the space complexity of code.
+
+## IMP:: TIME-SPACE TRADE OFF
+                           ==> sometimes in order to save time we might have to take extra space and 
+                               in order to save space we might take some extra time. 
+
+
+###Question
+What is the space complexity of this function?
+def sum_of_elements(arr):
+    total = 0
+    for num in arr:
+        total += num
+    return total
+
+Answer:
+O(1), the code uses a single variable independent of Input Size.
+
+
+###Question
+What is the space complexity of this function?
+def generate_pairs(n):
+    pairs = []
+    for i in range(n):
+        for j in range(n):
+            pairs.append((i, j))
+    return pairs
+
+Answer:
+O(n^^2), the pairs list stores n*n=n^2 elements in the worst case. leading to O(n^^2) space complexity.
+
+
+
+## IMP: Space Complexity for Recursive Algorithm
+                       1. In recursive algo there are two aspects one is VARIABLES SPACE and other is CALL-STACK SPACE.
+                       2. 
+
+
+# Example to understand the Recursive Space Complexity
+
+def facto_rec(n):
+    if n == 0:
+        return 1
+    return n * facto_rec(n - 1)
+
+                             Here, there are no Variables Space and In callStack we will call f5, f4, f3, f2, f1, f0. 
+                             there will be n + 1 stacks. so the space complexity after removinf LDT is n i.e O(n). 
+
+
+
+###Question
+What is the space complexity of following recursive code ?
+
+def multiplyRec(m, n):
+    if n==1:
+        return m
+    return m + multiplyRec(m,  n - 1)
+
+Answer:
+O(n), space complexity is determined by the maximum depth of the recursive call stack. the recursive depth is n, 
+      as the function is called recursively n times.
+
+
+
+###Question
+The space complexity for finding nth fibonacci number using recursion is :
+
+Answer:
+O(n)
+
+
+###Question
+Merge Sort
+
+You have been given two sorted arrays/lists(ARR1 and ARR2) of size N and M respectively, merge them into a 
+third array/list such that the third array is also sorted.
+
+Answer:
+Time Complexity:: O(m + n) &&& Space Complexity:: O(m + n)
+
+def merge(arr1, n, arr2, m):
+    arr3 = []
+    i = 0
+    j = 0
+    while i < n and j < m:
+        if arr1[i] <= arr2[j]:
+            arr3.append(arr1[i])
+            i += 1
+        else:
+            arr3.append(arr2[j])
+            j += 1
+    
+    while i < n:
+        arr3.append(arr1[i])
+        i += 1
+
+    while j < m:
+        arr3.append(arr2[j])
+        j += 1
+    
+    return arr3
+tc_arr1 = [2, 4, 6, 7, 8]
+tc_arr2 = [1, 3, 5, 9]
+print(merge(tc_arr1, len(tc_arr1), tc_arr2, len(tc_arr2)))
+
+[1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+
+
+## IMP:: INVERSION PAIR
+                 Here, i is index of a and j is index of b
+                ==> In a array pairs which satisfy these 2 conditions are called Inversion Pairs
+                     1. a[i] > b[j], the element at i index should be greater than j index.
+                     2. i < j, the i index should be less than j index.
+
+# Example to understand INversion Pairs
+  arr = [2, 6, 9, 3, 1, 8, 4, 0]
+                                 here, 9 and 3 are inversoin pairs because the value of is greater than 3 and 
+                                       the index of 9 i.e 2 is less than index of 3 i.e 3.
+
+
+###Question::IMP
+For a given integer array/list 'ARR' of size 'N' containing all distinct values, find the total number of 
+'Inversions' that may exist.
+
+An inversion is defined for a pair of integers in the array/list when the following two conditions are met.
+
+A pair ('ARR[i]', 'ARR[j]') is said to be an inversion when:
+
+1. 'ARR[i] > 'ARR[j]' 
+2. 'i' < 'j'
+
+Where 'i' and 'j' denote the indices ranging from [0, 'N').
+
+Answer(Best Solution):
+def merge(arr, left, mid, right, temp):
+    """
+    Merges two sorted subarrays and counts inversions during the merge process.
+    An inversion occurs when arr[i] > arr[j] where i < j.
+    """
+    # Initialize pointers for left subarray, right subarray, and temp array
+    i = left        # Pointer for left subarray (left to mid)
+    j = mid + 1     # Pointer for right subarray (mid+1 to right)
+    k = left        # Pointer for position in temp array
+    count = 0       # Counter for inversions found during merge
+    
+    # Merge elements from both subarrays in sorted order
+    while i <= mid and j <= right:
+        if arr[i] <= arr[j]:
+            # No inversion: left element is smaller, just copy it
+            temp[k] = arr[i]
+            i += 1
+            k += 1
+        else:
+            # Inversion found: right element is smaller than left element
+            # All remaining elements in left subarray (from i to mid) are greater than arr[j]
+            # So count all of them as inversions
+            count += (mid - i + 1)
+            temp[k] = arr[j]
+            j += 1
+            k += 1
+    
+    # Copy any remaining elements from left subarray
+    while i <= mid:
+        temp[k] = arr[i]
+        i += 1
+        k += 1
+    
+    # Copy any remaining elements from right subarray
+    while j <= right:
+        temp[k] = arr[j]
+        j += 1  # Fixed: should be j += 1, not i += 1
+        k += 1
+    
+    # Copy the sorted elements from temp array back to original array
+    for v in range(left, right + 1):
+        arr[v] = temp[v]
+    
+    return count
+
+def helper(arr, temp, left, right):
+    """
+    Recursive helper function that divides array and counts inversions.
+    Uses divide-and-conquer approach (merge sort).
+    """
+    count = 0
+    
+    # Base case: if subarray has more than one element
+    if left < right:
+        # Find middle point to divide array into two halves
+        mid = (left + right) // 2
+        
+        # Recursively count inversions in left half
+        count += helper(arr, temp, left, mid)
+        
+        # Recursively count inversions in right half
+        count += helper(arr, temp, mid + 1, right)
+        
+        # Count inversions during merge of two halves
+        count += merge(arr, left, mid, right, temp)
+    
+    return count  # Missing return statement added
+
+def mergesort(arr):
+    """
+    Initializes the merge sort process and returns inversion count.
+    """
+    # Create temporary array for merging
+    temp = [0] * len(arr)
+    
+    # Call helper function to perform merge sort and count inversions
+    return helper(arr, temp, 0, len(arr) - 1)
+
+def inversion_count(arr):
+    """
+    Main function to count inversions in an array.
+    An inversion is a pair of indices (i, j) where i < j but arr[i] > arr[j].
+    
+    Time Complexity: O(n log n)
+    Space Complexity: O(n)
+    """
+    return mergesort(arr)
+
+in_arr = [5, 1, 2, 8, 0, 9, 3, 7, 6]
+print(inversion_count(in_arr))
+
+14
+
+Answer using Brute-Force:
+def check_inversion_pairs(li):
+    ip_dict = {}
+    k = 0
+    for i in range(0, len(li)):
+        for j in range(i + 1, len(li)):
+            if li[i] > li[j]:
+                ip_dict[k] = (li[i], li[j])
+                k += 1
+    return k
+
+ip_arr = [5, 1, 2, 8, 0, 9, 3, 7, 6]
+print(check_inversion_pairs(ip_arr))
+
+14
+
+
+###Question
+Given a string s, find the first character that repeats in the string. Return the character if found; 
+otherwise, return None if there are no repeating characters.
+
+Answer:
+def first_repeating(s):
+    freq_dict = {}    
+    for i in range(len(s)):
+        if s[i] not in freq_dict:
+            freq_dict[s[i]] = 1     # add first occurrence
+        else:
+            return s[i]        # Found Repeating
+
+print(first_repeating("abcebca"))
+
+b
+
+
+## IMP:: GRID UNIQUE PATHS [RECURSIVE]
+                         ==> the total number of ways in which from (i, j)th cell we can reach
+                             (m - 1, n - 1)th cell.
+
+                         ==> we can also calculate the UNIQUE ARRANGEMENTS Using the Permutaions.
+                                         here, 1. n! is the total.
+                                               2. if there are some elements which are repeating we can use
+                                                         n! / a! * b! * c! ...
+                                               3. n os the total elements and a, b, c is specific element count.
+                                               For Example:: aabbbcdd, 8! / 2! * 3! * 1 * 2!
+
+
+
+###Question
+You are present at point ‘A’ which is the top-left cell of an M X N matrix, your destination is point ‘B’, 
+which is the bottom-right cell of the same matrix. Your task is to find the total number of unique paths from 
+point ‘A’ to point ‘B’.In other words, you will be given the dimensions of the matrix as integers ‘M’ and ‘N’, 
+your task is to find the total number of unique paths from the cell MATRIX[0][0] to MATRIX['M' - 1]['N' - 1].
+
+To traverse in the matrix, you can either move Right or Down at each step. For example in a given point 
+MATRIX[i] [j], you can move to either MATRIX[i + 1][j] or MATRIX[i][j + 1].
+
+Answer using formula[OPTIMIZED]:
+Time Complexity:: In python the function math.factorial has O(n) complexity. so here it is O(m + n)
+Space Complexity:: In python the function math.factorial has O(1) complexity. so here it is O(1)
+
+import math
+
+def cal_waysOP(m, n):
+    num = math.factorial(m + n - 2)
+    den1 = math.factorial(m - 1)
+    den2 = math.factorial(n - 1)
+
+    return int(num / (den1 * den2))
+
+print(cal_waysOP(3, 3))
+
+6
+
+
+Answer using Recursion:
+Time Complexity:: O(2^mn)
+Space Complexity:: O(max(m,n))
+
+def cal_ways(i, j, m, n):
+    # Base Case
+    if i == m - 1 and j == n - 1:
+        # First reached
+        return 1
+    if i >= m or j >= n:
+        # Person out of Grid
+        return 0
+
+    return cal_ways(i, j + 1, m, n) + cal_ways(i + 1, j, m, n)
+
+print(cal_ways(0, 0, 3, 3))
+
+6
+
+
+## IMP:: AMORTIZED ANALYSIS
+             For Example:: Implement your own append function for list. for this type of code we might require
+                           Amortized analysis.
+
+             Amortized analysis on Append Function under the hood process::
+                                       1. when we create a list, it is of fixed size. 
+                                       2. when we want to add more elements to it, it creates a brand new list of 
+                                          double the size of previous list. it copies the previous elements and add new ele.
+
+

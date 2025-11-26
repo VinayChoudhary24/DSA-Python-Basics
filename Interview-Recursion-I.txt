@@ -14,7 +14,7 @@
 ## Example to understand recursion need and issue without BASE CASE
 def facto_rec(n):
     return n * facto_rec(n - 1)
-
+d
 n = int(input())
 facto_rec(n)
 
