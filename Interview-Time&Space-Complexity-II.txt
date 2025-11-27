@@ -341,3 +341,723 @@ print(cal_ways(0, 0, 3, 3))
                                           double the size of previous list. it copies the previous elements and add new ele.
 
 
+
+
+
+###Question
+You have been given a random integer array/list(ARR) and a number X. Find and return the triplet(s) in the 
+array/list which sum to X.
+
+Answer:
+def tripletSum(arr, n, num):
+    """
+    Time Complexity: O(n^2) - NOT O(n log n)
+    Space Complexity: O(1) excluding sorting space
+    """
+    
+    # Step 1: Sort the array - O(n log n)
+    # Sorting is necessary for the two-pointer technique to work
+    arr.sort()
+    
+    # Counter to store total number of triplets found
+    numTriplets = 0
+
+    # Step 2: Fix each element as the first element of triplet - O(n)
+    for i in range(n):
+        # Calculate the required sum for remaining two elements
+        # If arr[i] + arr[j] + arr[k] = num, then arr[j] + arr[k] = num - arr[i]
+        pairSumFor = num - arr[i]
+        
+        # Find all pairs in the remaining array (from i+1 to n-1) that sum to pairSumFor
+        # This avoids counting duplicate triplets and ensures i < j < k
+        numPairs = pairSum(arr, (i + 1), (n - 1), pairSumFor)
+
+        # Add the count of pairs to total triplet count
+        numTriplets += numPairs
+        
+    return numTriplets
+
+
+def pairSum(arr, startIndex, endIndex, num):
+    """
+    Find count of all pairs in sorted array[startIndex...endIndex] that sum to num.
+    Uses two-pointer technique and handles duplicate elements efficiently.
+    
+    Args:
+        arr: Sorted array
+        startIndex: Starting index of subarray
+        endIndex: Ending index of subarray
+        num: Target sum for pairs
+
+    Returns:
+        Count of pairs that sum to num
+    
+    Time Complexity: O(n) where n = endIndex - startIndex + 1
+    """
+    
+    numPair = 0  # Counter for pairs found
+
+    # Two-pointer approach: one from start, one from end
+    while startIndex < endIndex:
+        
+        # Case 1: Sum is less than target
+        # Move left pointer right to increase the sum (array is sorted)
+        if arr[startIndex] + arr[endIndex] < num:
+            startIndex += 1
+            
+        # Case 2: Sum is greater than target
+        # Move right pointer left to decrease the sum
+        elif arr[startIndex] + arr[endIndex] > num:
+            endIndex -= 1
+            
+        # Case 3: Found a pair that sums to target
+        else:
+            elementAtStart = arr[startIndex]
+            elementAtEnd = arr[endIndex]
+
+            # Special Case: All elements between start and end are the same
+            # Example: [2, 2, 2, 2] and we need sum = 4
+            # We need to count combinations: C(n, 2) = n * (n-1) / 2
+            if elementAtStart == elementAtEnd:
+                # Total elements in the range (including both ends)
+                totalelementsFromStartToEnd = (endIndex - startIndex) + 1
+                
+                # Calculate combinations: nC2 = n * (n-1) / 2
+                # This counts all possible pairs from these identical elements
+                numPair += (totalelementsFromStartToEnd * (totalelementsFromStartToEnd - 1) // 2)
+
+                # Return immediately as we've counted all pairs in this range
+                return numPair
+
+            # General Case: Elements at start and end are different
+            # But there might be duplicates of each
+            
+            # Find count of duplicate elements equal to elementAtStart
+            tempStartIndex = startIndex + 1
+            tempEndIndex = endIndex - 1
+
+            # Count duplicates from left side
+            # Move tempStartIndex until we find a different element
+            while (tempStartIndex <= tempEndIndex) and (arr[tempStartIndex] == elementAtStart):
+                tempStartIndex += 1
+                
+            # Count duplicates from right side
+            # Move tempEndIndex until we find a different element
+            while (tempEndIndex >= tempStartIndex) and (arr[tempEndIndex] == elementAtEnd):
+                tempEndIndex -= 1
+
+            # Calculate frequency of elementAtStart
+            # Example: [1, 1, 1, 5, 5] -> if startIndex=0, tempStartIndex=3, then count=3
+            totalElementsFromStart = (tempStartIndex - startIndex)
+            
+            # Calculate frequency of elementAtEnd
+            # Example: [1, 1, 1, 5, 5] -> if endIndex=4, tempEndIndex=2, then count=2
+            totalElementsFromend = (endIndex - tempEndIndex)
+
+            # Total pairs = (count of left element) × (count of right element)
+            # Example: 3 ones and 2 fives can form 3×2 = 6 pairs
+            # Pairs: (1,5), (1,5), (1,5), (1,5), (1,5), (1,5)
+            numPair += (totalElementsFromStart * totalElementsFromend)
+
+            # Move pointers past all duplicates to continue searching
+            startIndex = tempStartIndex
+            endIndex = tempEndIndex
+
+    return numPair
+
+
+# Test the solution
+trp_arr = [1, 2, -1, 0, -2, 3]
+n = len(trp_arr)
+num = 2
+
+print(tripletSum(trp_arr, n, num))
+
+3
+
+## **Time Complexity Analysis:**
+
+### **Your solution is O(n²), NOT O(n log n). Here's why:**
+# ```
+# 1. Sorting: O(n log n)
+
+# 2. Outer loop (tripletSum): O(n)
+   # - Runs n times
+
+# 3. Inner function (pairSum): O(n) for EACH iteration
+   # - Two-pointer traversal of remaining array
+   # - In worst case, traverses entire remaining array
+ # """  
+# Total: O(n log n) + O(n) × O(n) = O(n log n) + O(n²) = O(n²)
+
+
+
+###Question
+Array Intersection
+
+You have been given two integer arrays/list(ARR1 and ARR2) of size N and M, respectively. You need to print 
+their intersection; An intersection for this problem can be defined when both the arrays/lists contain a 
+particular value or to put it in other words, when there is a common value that exists in both the arrays/lists.
+
+Note :
+Input arrays/lists can contain duplicate elements.
+
+The intersection elements printed would be in ascending order.
+
+Answer:
+def intersection(arr1, arr2, n, m) :
+    arr1.sort()
+    arr2.sort()
+
+    i = 0
+    j = 0
+    result = []
+
+    while i < n and j < m:
+        if arr1[i] == arr2[j]:
+            result.append(arr1[i])
+            i += 1
+            j += 1
+        elif arr1[i] < arr2[j]:
+            i += 1
+        else:
+            j += 1
+
+    return result
+
+arr1_inter = [2, 6, 1, 2]
+arr2_inter = [1, 2, 3, 2]
+
+n = len(arr1_inter)
+m = len(arr2_inter)
+
+print(intersection(arr1_inter, arr2_inter, n, m))
+
+[1, 2, 2]
+
+
+
+###Question
+For a given array/list(ARR) of size 'N,' find and return the 'Equilibrium Index' of the array/list.
+
+Equilibrium Index of an array/list is an index 'i' such that the sum of elements at indices [0 to (i - 1)] is 
+equal to the sum of elements at indices [(i + 1) to (N-1)]. One thing to note here is, the item at the index 
+'i' is not included in either part.
+
+If more than one equilibrium indices are present, then the index appearing first in left to right fashion 
+should be returned. Negative one(-1) if no such index is present.
+
+Answer:
+def arrayEquilibriumIndex(arr, n):
+    """
+    Find the equilibrium index of an array.
+    
+    Equilibrium Index: An index where the sum of elements on the left
+    equals the sum of elements on the right.
+    
+    Example: arr = [1, 4, 6, 3, 0, 2]
+             At index 3: left sum = 1+4+6 = 11, right sum = 0+2 = 2 (not equilibrium)
+             At index 2: left sum = 1+4 = 5, right sum = 3+0+2 = 5 (equilibrium!)
+
+    Returns:
+        Index of equilibrium point, or -1 if no equilibrium exists
+    
+    Time Complexity: O(n) - single pass through array
+    Space Complexity: O(1) - only using constant extra space
+    """
+    
+    # Step 1: Calculate the total sum of all elements in the array
+    # This will be used to calculate right_sum efficiently
+    # Example: arr = [1, 4, 6, 3, 0, 2] → total_sum = 16
+    total_sum = sum(arr)  # O(n) operation
+    
+    # Step 2: Initialize left_sum to 0
+    # As we iterate, left_sum will accumulate the sum of elements to the left
+    # of the current index
+    left_sum = 0
+
+    # Step 3: Iterate through each index of the array
+    for i in range(n):
+        # Step 4: Calculate right_sum for current index
+        # Formula: right_sum = total_sum - left_sum - arr[i]
+        # 
+        # Logic breakdown:
+        # - total_sum = left_sum + arr[i] + right_sum
+        # - Therefore: right_sum = total_sum - left_sum - arr[i]
+        # 
+        # Example walkthrough with arr = [1, 4, 6, 3, 0, 2]:
+        # i=0: left_sum=0, arr[0]=1, right_sum=16-0-1=15
+        # i=1: left_sum=1, arr[1]=4, right_sum=16-1-4=11
+        # i=2: left_sum=5, arr[2]=6, right_sum=16-5-6=5  ← Equal!
+        right_sum = total_sum - left_sum - arr[i]
+
+        # Step 5: Check if current index is equilibrium point
+        # Equilibrium condition: sum of left elements == sum of right elements
+        if right_sum == left_sum:
+            # Found equilibrium index, return it immediately
+            return i
+        
+        # Step 6: Update left_sum for next iteration
+        # Add current element to left_sum as we move to the next index
+        # After this step, left_sum contains sum of all elements from 0 to i
+        left_sum += arr[i]
+    
+    # Step 7: If no equilibrium index found, return -1
+    # This happens when we've checked all indices and none satisfied the condition
+    return -1
+
+intr_arr = [1, 4, 6, 3, 0, 2]
+n = len(intr_arr)
+
+print(arrayEquilibriumIndex(arr, n))
+
+2
+
+
+
+###Question
+You are given an array/list say ‘ARR’ of size ‘N’. We call pair (i, j) a Reverse Pair when i < j 
+and 'ARR[i]' > 2 * 'ARR[j]'.
+
+Your task is to find the number of Reverse Pairs present in given 'ARR'.
+
+For example :
+
+For the array [50, 21, 9], if we follow 1-based indexing, the Reverse Pairs are (1, 2), (1, 3) and (2, 3). Thus, the total count i.e. the answer becomes 3.
+Note :
+
+A single index of the pair (i, j) can be used multiple times.
+
+Answer:
+def count_pairs(arr, left, mid, right):
+    """
+    Count reverse pairs across two sorted halves of the array.
+    
+    A reverse pair is defined as: i < j and arr[i] > 2 * arr[j]
+    
+    This function counts pairs where:
+    - One element is from left half [left...mid]
+    - Other element is from right half [mid+1...right]
+    - The condition arr[i] > 2 * arr[j] is satisfied
+    
+    Args:
+        arr: The array being processed
+        left: Starting index of left half
+        mid: Ending index of left half
+        right: Ending index of right half
+    
+    Returns:
+        Count of reverse pairs across the two halves
+    
+    Time Complexity: O(n) - where n is the total elements in both halves
+    """
+    count = 0
+    
+    # Initialize pointer j to start of right half
+    # This pointer will track how many elements in right half
+    # satisfy the condition arr[i] > 2 * arr[j]
+    j = mid + 1
+    
+    # Iterate through each element in the left half
+    for i in range(left, mid + 1):
+        
+        # For current arr[i], find all elements in right half where arr[i] > 2 * arr[j]
+        # Since both halves are sorted, once arr[i] <= 2 * arr[j], 
+        # all subsequent elements will also not satisfy the condition
+        # 
+        # Key insight: We don't reset j to mid+1 for each i because:
+        # - Both halves are sorted
+        # - If arr[i] > 2 * arr[j], then arr[i+1] > 2 * arr[j] too
+        # - So j only moves forward, never backward
+        while j <= right and arr[i] > 2 * arr[j]:
+            j += 1
+        
+        # Count pairs: All elements from (mid+1) to (j-1) form valid pairs with arr[i]
+        # Example: If j moved from mid+1 to mid+4, that means 3 elements satisfy condition
+        # Formula: j - (mid + 1) gives count of valid elements
+        count += (j - (mid + 1))
+    
+    return count
+
+
+def mergeRev(arr, left, mid, right):
+    """
+    Merge two sorted halves of the array into a single sorted array.
+    
+    This is the standard merge operation from merge sort.
+    It takes two sorted subarrays and combines them in sorted order.
+    
+    Args:
+        arr: The array to be merged
+        left: Starting index of left half
+        mid: Ending index of left half
+        right: Ending index of right half
+    
+    Time Complexity: O(n) - where n = right - left + 1
+    Space Complexity: O(n) - temporary array to store merged result
+    """
+    
+    # Temporary array to store merged result
+    temp = []
+    
+    # Initialize pointers for left and right halves
+    i = left      # Pointer for left half [left...mid]
+    j = mid + 1   # Pointer for right half [mid+1...right]
+    
+    # Step 1: Merge elements from both halves in sorted order
+    while i <= mid and j <= right:
+        if arr[i] <= arr[j]:
+            # Element from left half is smaller or equal
+            temp.append(arr[i])
+            i += 1
+        else:
+            # Element from right half is smaller
+            temp.append(arr[j])
+            j += 1
+    
+    # Step 2: Copy remaining elements from left half (if any)
+    # This happens when right half is exhausted but left half has elements
+    while i <= mid:
+        temp.append(arr[i])
+        i += 1
+    
+    # Step 3: Copy remaining elements from right half (if any)
+    # This happens when left half is exhausted but right half has elements
+    while j <= right:
+        temp.append(arr[j])
+        j += 1
+    
+    # Step 4: Copy merged elements back to original array
+    # temp[0] corresponds to arr[left]
+    # temp[1] corresponds to arr[left+1], and so on
+    for k in range(left, right + 1):
+        arr[k] = temp[k - left]
+
+
+def mergeSortRev(arr, left, right):
+    """
+    Modified merge sort that counts reverse pairs while sorting.
+    
+    Uses divide-and-conquer approach:
+    1. Divide array into two halves
+    2. Recursively count pairs in left half
+    3. Recursively count pairs in right half
+    4. Count pairs across both halves (this is the key step!)
+    5. Merge both halves to keep array sorted
+    
+    Args:
+        arr: Array to process
+        left: Starting index of current segment
+        right: Ending index of current segment
+    
+    Returns:
+        Total count of reverse pairs in the segment [left...right]
+    
+    Time Complexity: O(n log n)
+    - Dividing: O(log n) levels
+    - Counting and merging at each level: O(n)
+    - Total: O(n log n)
+    """
+    
+    # Base Case: Single element or invalid range
+    # A single element cannot form a pair with itself
+    if left >= right:
+        return 0
+    
+    # Step 1: Find middle point to divide array into two halves
+    mid = (left + right) // 2
+    
+    # Step 2: Recursively count reverse pairs in LEFT half
+    # This handles all pairs where both elements are in left half
+    count = mergeSortRev(arr, left, mid)
+    
+    # Step 3: Recursively count reverse pairs in RIGHT half
+    # This handles all pairs where both elements are in right half
+    count += mergeSortRev(arr, mid + 1, right)
+    
+    # Step 4: Count reverse pairs ACROSS both halves
+    # This is the crucial step that counts pairs where:
+    # - One element is from left half
+    # - One element is from right half
+    # - arr[i] > 2 * arr[j] where i is in left half, j is in right half
+    #
+    # IMPORTANT: We count BEFORE merging because both halves are sorted
+    # at this point (from recursive calls), making counting efficient
+    count += count_pairs(arr, left, mid, right)
+    
+    # Step 5: Merge both halves to keep array sorted
+    # This is necessary for:
+    # - Future count_pairs operations to work correctly (requires sorted halves)
+    # - Final sorted array as output
+    mergeRev(arr, left, mid, right)
+    
+    return count
+
+
+def reversePairs(arr, n):
+    """
+    Main function to count reverse pairs in an array.
+    
+    A reverse pair is defined as a pair (i, j) where:
+    - i < j (i comes before j in array)
+    - arr[i] > 2 * arr[j]
+    
+    Example: arr = [50, 21, 9]
+    Pairs to check:
+    - (0,1): 50 > 2*21 = 42? YES ✓ (50 > 42)
+    - (0,2): 50 > 2*9 = 18? YES ✓ (50 > 18)
+    - (1,2): 21 > 2*9 = 18? YES ✓ (21 > 18)
+    Total: 3 reverse pairs
+    
+    Args:
+        arr: Input array
+        n: Length of array
+    
+    Returns:
+        Total count of reverse pairs
+    
+    Time Complexity: O(n log n)
+    Space Complexity: O(n) - for temporary arrays during merge
+    """
+    return mergeSortRev(arr, 0, n - 1)
+
+rev_arr1 = [50, 21, 9]
+print(reversePairs(rev_arr1, len(rev_arr1)))
+print(rev_arr1)
+
+3
+[9, 21, 50]
+
+
+###Question
+The recurrence relation capturing the optimal execution time of the Towers of Hanoi problem with n discs is :
+
+Answer:
+Every call makes two recursive calls with a problem size of n - 1 and each call correspons to one constant operation.
+so it is T(n) = 2T(n - 1) + 1
+
+
+###Question
+Which of the following operations is not O(1) for an array of sorted data. You may assume that array elements are distinct.
+
+Answer:
+Delete an element:: the worst-case time complexity for deleting an element from an array can be O(n) 
+
+
+
+###Question
+Which one of the following correctly determines the solution of the recurrence relation with T(1) = 1?
+T(n) = 2T(n/2) + Logn
+
+Answer:
+O(n)
+
+
+###Question
+Given two string s and t, write a function to check if s contains all characters of t (in the same order as 
+they are in string t).
+
+Return true or false.
+
+Do it recursively.
+
+E.g. : 
+s = “abchjsgsuohhdhyrikkknddg” contains all characters of t=”coding” in the same order. 
+So function will return true.
+
+Answer:
+def helper(s, t, si, ei):
+    if ei == len(t):
+        return True
+    
+    if si == len(s):
+        return False
+    
+    if s[si] == t[ei]:
+        return helper(s, t, si + 1, ei + 1)
+    else:
+        return helper(s, t, si + 1, ei)
+
+def contains(s,t):
+    return helper(s, t, 0, 0)
+
+s = "abchjsgsuohhdhyrikkknddg"
+t = "coding"
+
+print(contains(s, t))
+
+True
+
+
+###Question
+Maximum Profit
+
+You have made a smartphone app and want to set its subscription price such that the profit earned is maximised. 
+There are certain users who will subscribe to your app only if their budget is greater than or equal to your price.
+
+You will be provided with a list of size N having budgets of subscribers and you need to return the maximum 
+profit that you can earn.
+
+Lets say you decide that price of your app is Rs. x and there are N number of subscribers. So maximum profit 
+you can earn is :
+
+ m * x
+where m is total number of subscribers whose budget is greater than or equal to x.
+
+Answer:
+def maximumProfit(arr):
+    """
+    Find the maximum profit by choosing an optimal price point.
+    
+    Problem: You have potential buyers with different maximum prices they're willing to pay.
+    You need to set ONE price, and all buyers willing to pay that price or more will buy.
+    Goal: Maximize total profit (price × number of buyers).
+    
+    Strategy:
+    - If you set a LOW price: more buyers, but less profit per item
+    - If you set a HIGH price: fewer buyers, but more profit per item
+    - Need to find the optimal balance
+    
+    Args:
+        arr: Array of maximum prices each buyer is willing to pay
+    
+    Returns:
+        Maximum profit achievable
+    
+    Example:
+        arr = [30, 20, 53, 14]
+        After sorting: [14, 20, 30, 53]
+        
+        Price = 14: 4 buyers × 14 = 56
+        Price = 20: 3 buyers × 20 = 60
+        Price = 30: 2 buyers × 30 = 60
+        Price = 53: 1 buyer  × 53 = 53
+        
+        Maximum profit = 60
+    
+    Time Complexity: O(n log n) - dominated by sorting
+    Space Complexity: O(1) - only using constant extra space
+    """
+    
+    # Step 1: Sort the array in ascending order
+    # Why sort?
+    # - After sorting, we know exactly how many buyers will buy at each price point
+    # - If we set price = arr[i], all buyers from index i to n-1 will buy
+    #   (because their maximum prices are >= arr[i])
+    # 
+    # Example: [30, 20, 53, 14] → [14, 20, 30, 53]
+    # If price = 20, buyers at indices 1, 2, 3 will buy (values 20, 30, 53 all >= 20)
+    arr.sort()  # O(n log n)
+    
+    # Step 2: Get the number of buyers
+    n = len(arr)
+    
+    # Step 3: Initialize maximum profit tracker
+    max_profit = 0
+    
+    # Step 4: Try each possible price point
+    # Key insight: The optimal price MUST be one of the buyer's maximum prices
+    # Why? Because increasing price beyond a buyer's max doesn't gain more buyers,
+    # and decreasing it doesn't increase profit per item optimally
+    for i in range(n):
+        # Current price point to test
+        # We're setting the selling price equal to this buyer's maximum price
+        price = arr[i]
+        
+        # Step 5: Calculate number of buyers at this price
+        # After sorting, all buyers from index i to n-1 have max price >= arr[i]
+        # So they will all buy if we set price = arr[i]
+        # 
+        # Formula: buyers = n - i
+        # Example with [14, 20, 30, 53]:
+        # - At i=0 (price=14): buyers = 4-0 = 4 (all buy)
+        # - At i=1 (price=20): buyers = 4-1 = 3 (indices 1,2,3 buy)
+        # - At i=2 (price=30): buyers = 4-2 = 2 (indices 2,3 buy)
+        # - At i=3 (price=53): buyers = 4-3 = 1 (only index 3 buys)
+        buyers = n - i
+        
+        # Step 6: Calculate profit at this price point
+        # Profit = price per item × number of items sold
+        profit = price * buyers
+        
+        # Step 7: Update maximum profit if current profit is higher
+        # Keep track of the best profit seen so far
+        if profit > max_profit:
+            max_profit = profit
+    
+    # Step 8: Return the maximum profit found
+    return max_profit
+
+# n = int(input())
+# arr = [int(ele) for ele in input().split()]
+# ans = maximumProfit(arr)
+# print(ans)
+
+arr_pro = [30, 20, 53, 14]
+print(maximumProfit(arr_pro))
+print(arr_pro)
+
+60
+[14, 20, 30, 53]
+
+
+
+###Question
+Given an integer array A of size N, check if the input array can be divided in two groups G1 and G2 with following 
+properties-
+
+- Sum of both group elements are equal
+- Group 1: All elements in the input, which are divisible by 5 
+- Group 2: All elements in the input, which are divisible by 3 (but not divisible by 5). 
+- Elements which are neither divisible by 5 nor by 3, can be put in either group G1 or G2 to satisfy 
+the equal sum property. 
+Group 1 and Group 2 are allowed to be unordered and all the elements in the Array A must belong to only one of the groups.
+
+Return true, if array can be split according to the above rules, else return false.
+
+Answer:
+def split(arr, i, diff):
+    """
+    Recursive function to check if array can be split into two equal sum groups.
+    arr: The input list of numbers
+    i: Current index we are processing
+    diff: The current difference between Sum(Group1) and Sum(Group2)
+    """
+    
+    # --- BASE CASE ---
+    # If 'i' equals the length of the array, we have processed all elements.
+    if i == len(arr):
+        # If diff is 0, it means Sum(Group1) - Sum(Group2) = 0
+        # Therefore, Sum(Group1) == Sum(Group2). We found a solution!
+        return diff == 0
+    
+    # --- CONSTRAINT 1: Multiples of 5 ---
+    # If the number is divisible by 5, it MUST go into Group 1.
+    # We add it to 'diff'.
+    if arr[i] % 5 == 0:
+        return split(arr, i + 1, diff + arr[i])
+    
+    # --- CONSTRAINT 2: Multiples of 3 ---
+    # If the number is divisible by 3 (and not 5), it MUST go into Group 2.
+    # We subtract it from 'diff'.
+    if arr[i] % 3 == 0:
+        return split(arr, i + 1, diff - arr[i])
+    
+    # --- GENERAL CASE: Other numbers ---
+    # If the number is not divisible by 5 or 3, we have a choice.
+    # We try adding it to Group 1 (add to diff) OR Group 2 (subtract from diff).
+    # If either choice eventually leads to True, return True.
+    return(split(arr, i + 1, diff + arr[i]) or split(arr, i + 1, diff - arr[i]))
+
+# --- MAIN EXECUTION ---
+dplit_arr = [5, 10, 3, 6, 2, 4]
+
+# Start recursion at index 0 with a difference of 0
+ans = split(dplit_arr, 0, 0)
+
+if ans is True:
+    print('true')
+else:
+    print('false')
+
+true
