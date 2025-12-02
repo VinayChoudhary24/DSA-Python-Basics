@@ -1,0 +1,2229 @@
+## NEED:: 1. there is a  limit on the maximum size of the array that we can create, that depends on the how much 
+             continuous space available in memory blocks.
+          2. An array stores data in continous way in memory blocks and when a new data array does not get required 
+             memory blocks in continuous way, it creates problem and we cannot use the DISTRIBUTED memory blocks available.
+ 
+## Linked List:: are space optimized alternative to arrays. 
+                 - the Distributed memory blocks is used in a CHAINED WAY i.e non-continuous way.
+                 - Nodes i.e memory blocks are connected to each other in chained way.
+                 - every Node(Memory Block) has it's Unique Mmory Address.
+
+ ## USE CASES:: 
+               -- Going Back and Forward in Applications. [Music Player, Browser].
+               -- Operating System Algorithms.
+               -- Caching mechanism [Redis Internally uses Linked Lists]
+
+## Advantages and Disadvantages::
+                              1. The Major advantage of LL over array is the Better Space Complexity. LL Provides a 
+                                 Optimized Space Complexity.
+                              2. Adding the node at the Tail of LL is having O(n) time complexity while in array adding
+                                 element at the last of array is O(1).
+                              3. when adding a node at the Head of the LL is having O(1) Time Complexity while in array
+                                 adding a element at the start is having O(n).                             
+
+
+
+###Question
+What is the key disadvantage of a linked list over an array?
+
+Answer:
+Random access is not possible, In arrays elements can be accessed directly using an index[O(1)]. while in linked list
+                               we must Traverse the nodes sequentially from the head to find an element[O(n)].
+
+
+# Example on how to create a SINGLY Linked List
+
+class Node:
+    def __init__(self, value):
+        self.data = value
+        self.next = None
+
+n1 = Node(10)
+print(n1.data)
+print(n1.next)
+print(n1) # Memory Reference	
+
+10
+None
+<__main__.Node object at 0x00000215818E3CB0>
+
+
+# Example on how to connect SINGLY Linked List i.e Chaining multiple Nodes
+
+class Node:
+    def __init__(self, value):
+        self.data = value
+        self.next = None
+
+n1 = Node(10)
+print(n1.data)
+print(n1.next)
+print(n1) # Memory Reference
+
+n2 = Node(20)
+print(n2.data)
+print(n2.next)
+print(n2) # Memory Reference
+
+# Add the memory reference of next Node
+n1.next = n2
+print(n1.next)
+
+n3 = Node(30)
+print(n3.data)
+print(n3.next)
+print(n3) # Memory Reference
+
+# Add the memory reference of next Node
+n2.next = n3
+print(n2.next)
+
+
+10
+None
+<__main__.Node object at 0x00000215818E3E00>
+20
+None
+<__main__.Node object at 0x0000021582ECA210>
+<__main__.Node object at 0x0000021582ECA210>
+30
+None
+<__main__.Node object at 0x0000021580539F90>
+<__main__.Node object at 0x0000021580539F90>
+
+
+
+###Question
+What will be the output?
+
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+def printLL(head):
+    while head is not None:
+        print(head.data,end=" ")
+        head = head.next
+node1 = Node(10)
+node2 = Node(20)
+node2.next = node1
+printLL(node2)
+
+Answer:
+20 10, we create two nodes n1 with data 10 and n2 with data 20. then, it sets the next pointer of node2 to node1. when
+       the printLL function is called with node2 as the head, it traverses the Linked List and prints the data of 
+       each node, resulting in "20 10".
+
+
+
+### Insert Node at the HEAD of the Linked List
+                                   1. Create a Node(Calling Constructor)   
+                                   2. Connect the new node with linked List i.e new node NEXT Points to the List Head
+                                      memory address and now the new node becomes the HEAD.
+                                   3. Update the head to the new NODE.
+
+# Example:: ### Insert Node at the HEAD of the Linked List
+
+# Insert Node at the Head
+class ll_Node:
+    def __init__(self, value):
+        self.data = value
+        self.next = None
+
+::Time and Space Complexity = O(1)
+# Create Empty Linked List
+class LinkedList:
+    def __init__(self):
+        self.head = None
+
+    # Create and Insert First Node
+    def insert_at_head(self, data):
+        # create node
+        new_node = ll_Node(data)
+
+        # connect the node with existing list
+        new_node.next = self.head
+
+        # update the head 
+        self.head = new_node
+
+ll = LinkedList()
+
+ll.insert_at_head(35)
+ll.insert_at_head(10)
+
+print(ll.head.data)
+print(ll.head.next.data)
+
+10
+35
+
+Here, we have created a empty linked list with head None and inserted the first node. so the edge case where a
+      linked list is empty and there is no head is handled above.
+
+
+
+### Insert Node at the TAIL of the Linked List
+                                          1. we create a Temp LL to Traverse the nodes. we dont make chanegs directly on
+                                             the original LL.
+                                          2. we loop over the temp list and check if temp.next is not equal to None
+
+
+# Example Insert Node at the TAIL of the Linked List
+
+# Insert Node at the Head
+class ll_Node:
+    def __init__(self, value):
+        self.data = value
+        self.next = None
+
+# Create Empty Linked List
+class LinkedList:
+    def __init__(self):
+        self.head = None
+
+    # Create and Insert First Node
+    def insert_at_head(self, data):
+        # create node
+        new_node = ll_Node(data)
+
+        # connect the node with existing list
+        new_node.next = self.head
+
+        # update the head 
+        self.head = new_node
+
+    # insert at tail
+::Time Complexity = O(n) and Space = O(1)
+    def insert_at_tail(self, value):
+        # check if LL in Empty
+        if self.head == None:
+            self.insert_at_head(value)
+            return
+
+        # if LL is not empty
+        temp = self.head
+        while temp.next != None:
+            temp = temp.next
+
+        # when the loop ends temp points towards Tail
+
+        # Create a New Node
+        new_tail_node = ll_Node(value)
+
+        # add the new node memory Address to th current Tail
+        temp.next = new_tail_node
+
+        # 
+        
+
+ll = LinkedList()
+
+ll.insert_at_tail(55)
+ll.insert_at_tail(20)
+
+print(ll.head.data)
+print(ll.head.next.data)
+
+55
+20
+ 
+
+# Insert Node at the MIDDLE of the Linked List
+                                           1. store the the where we need to add new node.
+                                           2. the previousNode.next value now should be assigned to newNode.next so
+                                              we dont lose the remaining nodes in the chain.
+                                           3. than the previousNode.next should get the value of newNode.	
+
+# Example Insert Node at the MIDDLE of the Linked List
+
+# Insert Node at the Head
+class ll_Node:
+    def __init__(self, value):
+        self.data = value
+        self.next = None
+
+# Create Empty Linked List
+class LinkedList:
+    def __init__(self):
+        self.head = None
+
+    # Create and Insert First Node
+    def insert_at_head(self, data):
+        # create node
+        new_node = ll_Node(data)
+
+        # connect the node with existing list
+        new_node.next = self.head
+
+        # update the head 
+        self.head = new_node
+
+    # insert at tail
+    def insert_at_tail(self, value):
+        # check if LL in Empty
+        if self.head == None:
+            self.insert_at_head(value)
+            return
+
+        # if LL is not empty
+        temp = self.head
+        while temp.next != None:
+            temp = temp.next
+
+        # when the loop ends temp points towards Tail
+
+        # Create a New Node
+        new_tail_node = ll_Node(value)
+
+        # add the new node memory Address to th current Tail
+        temp.next = new_tail_node
+
+    # Insert in the Middle
+    def insert_in_between(self, value, pos):
+        if self.head == None:
+            self.insert_at_head(value)
+            return
+
+        # if LL is not Empty
+        temp = self.head
+        i = 0
+        while temp.next != None and i < pos:
+            temp = temp.next
+            i += 1
+        # once loop is over 
+        # Create new node
+        new_midle_node = ll_Node(value)
+
+        # store the remaing LL memory address i.e previousNode.next
+        remaining = temp.next
+
+        # add the new node memory address in prev node
+        temp.next = new_midle_node
+
+        # add the the remining LL node value to the new node.next
+        new_midle_node.next = remaining
+        
+
+ll = LinkedList()
+
+ll.insert_at_tail(55)
+ll.insert_at_tail(20)
+
+ll.insert_in_between(65, 1)
+ll.insert_in_between(30, 1)
+
+print(ll.head.data)
+print(ll.head.next.data)
+print(ll.head.next.next.data)
+print(ll.head.next.next.next.data)
+
+55
+20
+30
+65
+
+
+
+###Question
+There is reference (or pointer) to first Node of the Linked List, then time required to insert element to second 
+position is __________.
+
+Indexing starts from 0.
+
+Answer:
+O(1), here we only need to update few pointers to insert the node at second position
+
+
+
+#Example to Delete at Head
+
+# Insert Node at the Head
+class ll_Node:
+    def __init__(self, value):
+        self.data = value
+        self.next = None
+
+# Create Empty Linked List
+class LinkedList:
+    def __init__(self):
+        self.head = None
+
+    # Create and Insert First Node
+    def insert_at_head(self, data):
+        # create node
+        new_node = ll_Node(data)
+
+        # connect the node with existing list
+        new_node.next = self.head
+
+        # update the head 
+        self.head = new_node
+
+    # insert at tail
+    def insert_at_tail(self, value):
+        # check if LL in Empty
+        if self.head == None:
+            self.insert_at_head(value)
+            return
+
+        # if LL is not empty
+        temp = self.head
+        while temp.next != None:
+            temp = temp.next
+
+        # when the loop ends temp points towards Tail
+
+        # Create a New Node
+        new_tail_node = ll_Node(value)
+
+        # add the new node memory Address to th current Tail
+        temp.next = new_tail_node
+
+    # Insert in the Middle
+    def insert_in_between(self, value, pos):
+        if self.head == None:
+            self.insert_at_head(value)
+            return
+
+        # if LL is not Empty
+        temp = self.head
+        i = 0
+        while temp.next != None and i < pos:
+            temp = temp.next
+            i += 1
+        # once loop is over 
+        # Create new node
+        new_midle_node = ll_Node(value)
+
+        # store the remaing LL memory address i.e previousNode.next
+        remaining = temp.next
+
+        # add the new node memory address in prev node
+        temp.next = new_midle_node
+
+        # add the the remining LL node value to the new node.next
+        new_midle_node.next = remaining
+
+    # delete the head node
+      Time Com:: O(1)
+    def delete_at_head(self):
+        if self.head == None:
+            return
+
+        newHead = self.head.next
+        # break the connection for current head
+        self.head.next = None
+        self.head = newHead
+
+    # func to display LL
+Time Com:: O(n)
+    def display_ll(self):
+        temp = self.head
+        while temp != None:
+            print(temp.data, end="-->")
+            temp = temp.next
+        print("X")
+
+ll = LinkedList()
+
+ll.insert_at_tail(55)
+ll.insert_at_tail(20)
+
+ll.insert_in_between(65, 1)
+ll.insert_in_between(30, 1)
+
+ll.delete_at_head()
+ll.display_ll()
+
+20-->30-->65-->X
+
+
+
+# Example to delete at the Tail
+
+# Insert Node at the Head
+class ll_Node:
+    def __init__(self, value):
+        self.data = value
+        self.next = None
+
+# Create Empty Linked List
+class LinkedList:
+    def __init__(self):
+        self.head = None
+
+    # Create and Insert First Node
+    def insert_at_head(self, data):
+        # create node
+        new_node = ll_Node(data)
+
+        # connect the node with existing list
+        new_node.next = self.head
+
+        # update the head 
+        self.head = new_node
+
+    # insert at tail
+    def insert_at_tail(self, value):
+        # check if LL in Empty
+        if self.head == None:
+            self.insert_at_head(value)
+            return
+
+        # if LL is not empty
+        temp = self.head
+        while temp.next != None:
+            temp = temp.next
+
+        # when the loop ends temp points towards Tail
+
+        # Create a New Node
+        new_tail_node = ll_Node(value)
+
+        # add the new node memory Address to th current Tail
+        temp.next = new_tail_node
+
+    # Insert in the Middle
+    def insert_in_between(self, value, pos):
+        if self.head == None:
+            self.insert_at_head(value)
+            return
+
+        # if LL is not Empty
+        temp = self.head
+        i = 0
+        while temp.next != None and i < pos:
+            temp = temp.next
+            i += 1
+        # once loop is over 
+        # Create new node
+        new_midle_node = ll_Node(value)
+
+        # store the remaing LL memory address i.e previousNode.next
+        remaining = temp.next
+
+        # add the new node memory address in prev node
+        temp.next = new_midle_node
+
+        # add the the remining LL node value to the new node.next
+        new_midle_node.next = remaining
+
+    # delete the head node
+    def delete_at_head(self):
+        if self.head == None:
+            return
+
+        newHead = self.head.next
+        # break the connection for current head
+        self.head.next = None
+        self.head = newHead
+
+    # Delete at TAIL
+Time Com: Best case O(1) and Worst Case O(n)
+    def delete_at_tail(self):
+        if self.head == None:
+            return
+        # if there is only one node in LL
+        if self.head.next == None:
+            self.head = None
+            return
+
+        prev = self.head
+        while prev.next.next != None:
+            prev = prev.next
+
+        # break the connection from the previous node to tail node i.e second last node
+        prev.next = None
+
+    # func to display LL
+    def display_ll(self):
+        temp = self.head
+        while temp != None:
+            print(temp.data, end="-->")
+            temp = temp.next
+        print("X")
+
+ll = LinkedList()
+
+ll.insert_at_tail(55)
+ll.insert_at_tail(20)
+
+ll.insert_in_between(65, 1)
+ll.insert_in_between(30, 1)
+
+ll.delete_at_tail()
+ll.display_ll()
+
+55-->20-->30-->X
+
+
+
+
+###Question
+You have been given a linked list of integers. Your task is to write a function that deletes a node 
+from a given position, 'POS'.
+
+Note :
+Assume that the Indexing for the linked list always starts from 0.
+
+If the position is greater than or equal to the length of the linked list, you should return the same linked 
+list without any change.
+
+Answer Using head[Only Delete middle]:
+from sys import stdin
+
+class Node :
+    def __init__(self, data) :
+        self.data = data
+        self.next = None
+
+
+def deleteNode(head, pos) :
+    if head == None:
+            return head
+
+    # If deleting the head node
+    if pos == 0:
+        return head.next
+        
+    
+    temp = head
+    i = 0
+
+    # Move to the node just before the one to delete
+    while temp is not None and i < pos - 1:
+        temp = temp.next
+        i += 1
+
+    # If pos is out of bounds / no node to delete
+    if temp is None or temp.next is None:
+        return head
+
+    # Node to be deleted
+    node_to_delete = temp.next
+
+    # Skip it
+    temp.next = node_to_delete.next
+
+    # Break its link
+    node_to_delete.next = None
+    return head
+   
+
+def takeInput() :
+    head = None
+    tail = None
+
+    datas = list(map(int, stdin.readline().rstrip().split(" ")))
+
+    i = 0
+    while (i < len(datas)) and (datas[i] != -1) :
+        data = datas[i]
+        newNode = Node(data)
+
+        if head is None :
+            head = newNode
+            tail = newNode
+
+        else :
+            tail.next = newNode
+            tail = newNode
+
+        i += 1
+    return head
+def printLinkedList(head) :
+    while head is not None :
+        print(head.data, end = " ")
+        head = head.next
+head = takeInput()
+pos = int(stdin.readline().rstrip())
+head = deleteNode(head, pos)
+printLinkedList(head)
+
+Answer Using All:
+# Insert Node at the Head
+class ll_Node:
+    def __init__(self, value):
+        self.data = value
+        self.next = None
+
+# Create Empty Linked List
+class LinkedList:
+    def __init__(self):
+        self.head = None
+
+    # Create and Insert First Node
+    def insert_at_head(self, data):
+        # create node
+        new_node = ll_Node(data)
+
+        # connect the node with existing list
+        new_node.next = self.head
+
+        # update the head 
+        self.head = new_node
+
+    # insert at tail
+    def insert_at_tail(self, value):
+        # check if LL in Empty
+        if self.head == None:
+            self.insert_at_head(value)
+            return
+
+        # if LL is not empty
+        temp = self.head
+        while temp.next != None:
+            temp = temp.next
+
+        # when the loop ends temp points towards Tail
+
+        # Create a New Node
+        new_tail_node = ll_Node(value)
+
+        # add the new node memory Address to th current Tail
+        temp.next = new_tail_node
+
+    # Insert in the Middle
+    def insert_in_between(self, value, pos):
+        if self.head == None:
+            self.insert_at_head(value)
+            return
+
+        # if LL is not Empty
+        temp = self.head
+        i = 0
+        while temp.next != None and i < pos:
+            temp = temp.next
+            i += 1
+        # once loop is over 
+        # Create new node
+        new_midle_node = ll_Node(value)
+
+        # store the remaing LL memory address i.e previousNode.next
+        remaining = temp.next
+
+        # add the new node memory address in prev node
+        temp.next = new_midle_node
+
+        # add the the remining LL node value to the new node.next
+        new_midle_node.next = remaining
+
+    # delete the head node
+    def delete_at_head(self):
+        if self.head == None:
+            return
+
+        newHead = self.head.next
+        # break the connection for current head
+        self.head.next = None
+        self.head = newHead
+
+    # Delete at TAIL
+    def delete_at_tail(self):
+        if self.head == None:
+            return
+        # if there is only one node in LL
+        if self.head.next == None:
+            self.head = None
+            return
+
+        prev = self.head
+        while prev.next.next != None:
+            prev = prev.next
+
+        # break the connection from the previous node to tail node i.e second last node
+        prev.next = None
+
+    # Insert in the Middle
+    def delete_in_between(self, pos):
+        # If list is empty
+        if self.head is None:
+            return
+
+    # If deleting the head node
+        if pos == 0:
+            self.delete_at_head()
+            return
+
+        temp = self.head
+        i = 0
+
+    # Move to the node just before the one to delete
+        while temp is not None and i < pos - 1:
+            temp = temp.next
+            i += 1
+
+    # If pos is out of bounds / no node to delete
+        if temp is None or temp.next is None:
+            return
+
+    # Node to be deleted
+        node_to_delete = temp.next
+
+    # Skip it
+        temp.next = node_to_delete.next
+
+    # Break its link
+        node_to_delete.next = None
+
+    # count the nodes for getting the middle node 
+    def count_nodes(self):
+        count = 0
+        temp = self.head
+        while temp != None:
+            count += 1
+            temp = temp.next
+        return count
+        
+    
+    # func to display LL
+    def display_ll(self):
+        temp = self.head
+        while temp != None:
+            print(temp.data, end="-->")
+            temp = temp.next
+        print("X")
+
+ll = LinkedList()
+
+ll.insert_at_tail(55)
+ll.insert_at_tail(20)
+
+ll.insert_in_between(65, 1)
+ll.insert_in_between(30, 1)
+
+ll.delete_in_between(1)
+
+ll.display_ll()
+ll.count_nodes()
+
+55-->30-->65-->X
+3
+
+
+
+# Find the Middle Node
+
+# Insert Node at the Head
+class ll_Node:
+    def __init__(self, value):
+        self.data = value
+        self.next = None
+
+# Create Empty Linked List
+class LinkedList:
+    def __init__(self):
+        self.head = None
+
+    # Create and Insert First Node
+    def insert_at_head(self, data):
+        # create node
+        new_node = ll_Node(data)
+
+        # connect the node with existing list
+        new_node.next = self.head
+
+        # update the head 
+        self.head = new_node
+
+    # insert at tail
+    def insert_at_tail(self, value):
+        # check if LL in Empty
+        if self.head == None:
+            self.insert_at_head(value)
+            return
+
+        # if LL is not empty
+        temp = self.head
+        while temp.next != None:
+            temp = temp.next
+
+        # when the loop ends temp points towards Tail
+
+        # Create a New Node
+        new_tail_node = ll_Node(value)
+
+        # add the new node memory Address to th current Tail
+        temp.next = new_tail_node
+
+    # Delete in the Middle
+    def insert_in_between(self, value, pos):
+        if self.head == None:
+            self.insert_at_head(value)
+            return
+
+        # if LL is not Empty
+        temp = self.head
+        i = 0
+        while temp.next != None and i < pos:
+            temp = temp.next
+            i += 1
+        # once loop is over 
+        # Create new node
+        new_midle_node = ll_Node(value)
+
+        # store the remaing LL memory address i.e previousNode.next
+        remaining = temp.next
+
+        # add the new node memory address in prev node
+        temp.next = new_midle_node
+
+        # add the the remining LL node value to the new node.next
+        new_midle_node.next = remaining
+
+
+    # count the nodes for getting the middle node 
+    def count_nodes(self):
+        count = 0
+        temp = self.head
+        while temp != None:
+            count += 1
+            temp = temp.next
+        return count
+
+    # get the middle Node using Tortoise and Rabbit method
+    def mid_node(self):
+        slow = self.head
+        fast = self.head
+        while fast.next != None and fast.next.next != None:
+            slow = slow.next
+            fast = fast.next.next
+        # once loop is over, we get the middle node where the slow points
+        return slow
+    
+    # func to display LL
+    def display_ll(self):
+        temp = self.head
+        while temp != None:
+            print(temp.data, end="-->")
+            temp = temp.next
+        print("X")
+
+ll = LinkedList()
+
+ll.insert_at_tail(55)
+ll.insert_at_tail(20)
+
+ll.insert_in_between(65, 1)
+ll.insert_in_between(30, 1)
+
+ll.display_ll()
+ll.mid_node()
+print(ll.mid_node().data)
+
+55-->20-->30-->65-->X
+20
+
+
+###Question
+Given a singly linked list of 'N' nodes. The objective is to determine the middle node of a singly 
+linked list. However, if the list has an even number of nodes, we return the second middle node.
+
+Note:
+1. If the list is empty, the function immediately returns None because there is no middle node to find.
+2. If the list has only one node, then the only node in the list is trivially the middle node, and the function 
+returns that node.
+
+Answer:
+def findMiddle(head):
+    if head is None:
+        return None
+
+    slow = head
+    fast = head
+
+    # Move fast by 2 and slow by 1
+    while fast is not None and fast.next is not None:
+        fast = fast.next.next
+        slow = slow.next
+
+    return slow
+
+
+# Reverse a Linked List Using Loop i.e iteration
+
+# Insert Node at the Head
+class ll_rev_Node:
+    def __init__(self, value):
+        self.data = value
+        self.next = None
+
+# Create Empty Linked List
+class LinkedList_rev:
+    def __init__(self):
+        self.head = None
+
+    # Create and Insert First Node
+    def insert_at_head(self, data):
+        # create node
+        new_node = ll_Node(data)
+
+        # connect the node with existing list
+        new_node.next = self.head
+
+        # update the head 
+        self.head = new_node
+
+    # reverse the LL
+    def reverse(self):
+        prev = None
+        curr = self.head
+
+        while curr != None:
+            remaining = curr.next # access to remaining list
+            curr.next = prev # reverse the next ref
+            prev = curr # prepare prev for next iteration
+            curr = remaining # prepare curr for next iteration
+
+        self.head = prev # Update the new head
+
+     # func to display LL
+    def display_ll(self):
+        temp = self.head
+        while temp != None:
+            print(temp.data, end="-->")
+            temp = temp.next
+        print("X")
+
+ll1 = LinkedList_rev()
+
+ll1.insert_at_head(55)
+ll1.insert_at_head(20)
+
+ll1.insert_at_head(65)
+ll1.insert_at_head(30)
+
+ll1.reverse()
+ll1.display_ll()
+
+55-->20-->65-->30-->X
+
+
+# Reverse a Linked List Using Recursion i.e Recursively
+                                            1. when the LL is Empty or there is only one node in LL.
+                                            2. Indection Assumption:: the function works for head.next
+                                            3. Task:: 
+                                                     -- head.next.next = head, In recursion we go till last node and 
+                                                                               the last node is itself reversed. so now
+                                                                               we say the second last node will do the 
+                                                                               head.next.next to head i.e now the last node
+                                                                               will point to second last & so on till head.
+
+                                                     -- head.next = None, this will break the connection between second 
+                                                                          last node and last node and so on i.e before the 
+                                                                          connection was from second last node.next to
+                                                                         last node and with the above step we have reversed
+                                                                          the LL and now the connection is reversed from
+                                                                          last node.next to second last node.
+
+# Example 
+
+# Insert Node at the Head
+class ll_rev_rec_Node:
+    def __init__(self, value):
+        self.data = value
+        self.next = None
+
+# Create Empty Linked List
+class LinkedList_rev_rec:
+    def __init__(self):
+        self.head = None
+
+    # Create and Insert First Node
+    def insert_at_head(self, data):
+        # create node
+        new_node = ll_rev_rec_Node(data)
+
+        # connect the node with existing list
+        new_node.next = self.head
+
+        # update the head 
+        self.head = new_node
+
+    # this will do recursion
+Time and Space Com:: O(n)
+    def recursive_reverse_helper(self, head):
+        # base case
+        if head == None or head.next == None:
+            return head
+
+        # Assumption
+        tailNode = self.recursive_reverse_helper(head.next)
+
+        # Task
+        head.next.next = head
+        head.next = None
+
+        # return the Tail i.e newhead
+        return tailNode
+
+    # reverse the LL
+    def rec_reverse(self):
+        # call the helper to get new head
+        newHead = self.recursive_reverse_helper(self.head)
+        # update the new head
+        self.head = newHead
+
+     # func to display LL
+    def display_ll(self):
+        temp = self.head
+        while temp != None:
+            print(temp.data, end="-->")
+            temp = temp.next
+        print("X")
+
+ll2 = LinkedList_rev_rec()
+
+ll2.insert_at_head(55)
+ll2.insert_at_head(20)
+
+ll2.insert_at_head(65)
+ll2.insert_at_head(30)
+
+ll2.rec_reverse()
+ll2.display_ll()
+
+55-->20-->65-->30-->X      
+
+
+
+###Question
+You are given a Singly Linked List of integers. You need to reverse the Linked List by changing the links between nodes.
+
+Note :
+You do not need to print anything, just return the head of the reversed linked list.              
+
+Answer:
+def rec_reverse(head):
+    # base case 
+    if head == None or head.next == None:
+        return head
+    
+    # assumption
+    tailNode = reverseLinkedList(head.next)
+
+    # Task
+    head.next.next = head
+    head.next = None
+
+    return tailNode
+
+
+def reverseLinkedList(head):
+    newhead = rec_reverse(head)
+    return newhead
+
+
+###Question
+Reverse a Singly List list using insert_at_head
+
+Answer:
+# Insert Node at the Head
+class ll_rev_rec_Node:
+    def __init__(self, value):
+        self.data = value
+        self.next = None
+
+# Create Empty Linked List
+class LinkedList_rev_rec:
+    def __init__(self):
+        self.head = None
+
+    # Create and Insert First Node
+    def insert_at_head(self, data):
+        # create node
+        new_node = ll_rev_rec_Node(data)
+
+        # connect the node with existing list
+        new_node.next = self.head
+
+        # update the head 
+        self.head = new_node
+
+    # Palindrome
+    def reverse_LL(self):
+        # create a new LL
+        new_LL = LinkedList_rev_rec()
+        temp = self.head
+        while temp != None:
+            # insert node in new list i.e reverse the LL
+            new_LL.insert_at_head(temp.data)
+            temp = temp.next
+        temp_new = new_LL.head
+        while temp_new != None:
+            print(temp_new.data, end="-->")
+            temp_new = temp_new.next
+        print("X")
+
+     # func to display LL
+    def display_ll(self):
+        temp = self.head
+        while temp != None:
+            print(temp.data, end="-->")
+            temp = temp.next
+        print("X")
+
+ll2 = LinkedList_rev_rec()
+
+ll2.insert_at_head(10)
+ll2.insert_at_head(20)
+ll2.insert_at_head(30)
+ll2.insert_at_head(40)
+ll2.insert_at_head(50)
+
+ll2.display_ll()
+
+ll2.reverse_LL()
+
+50-->40-->30-->20-->10-->X
+10-->20-->30-->40-->50-->X
+
+
+
+# Check if Linked List is Palindrome
+                                 1. we make a copy of original list and reverse it.
+                                 2. now we have Original list and Reversed List on which we can check if it is 
+                                    Palindrome or not.
+                                                         
+# Example 
+
+# Insert Node at the Head
+class ll_rev_rec_Node:
+    def __init__(self, value):
+        self.data = value
+        self.next = None
+
+# Create Empty Linked List
+class LinkedList_rev_rec:
+    def __init__(self):
+        self.head = None
+
+    # Create and Insert First Node
+    def insert_at_head(self, data):
+        # create node
+        new_node = ll_rev_rec_Node(data)
+
+        # connect the node with existing list
+        new_node.next = self.head
+
+        # update the head 
+        self.head = new_node
+    
+    # insert at tail
+    def insert_at_tail(self, value):
+        # check if LL in Empty
+        if self.head == None:
+            self.insert_at_head(value)
+            return
+
+        # if LL is not empty
+        temp = self.head
+        while temp.next != None:
+            temp = temp.next
+
+        # when the loop ends temp points towards Tail
+
+        # Create a New Node
+        new_tail_node = ll_rev_rec_Node(value)
+
+        # add the new node memory Address to th current Tail
+        temp.next = new_tail_node
+        
+    # reverse the LL
+    def reverse(self):
+        prev = None
+        curr = self.head
+
+        while curr != None:
+            remaining = curr.next # access to remaining list
+            curr.next = prev # reverse the next ref
+            prev = curr # prepare prev for next iteration
+            curr = remaining # prepare curr for next iteration
+
+        self.head = prev # Update the new head
+
+    # Palindrome
+Time and Space Com:: O(n)
+    def check_palindrome(self):
+        # create a new LL
+        new_LL = LinkedList_rev_rec()
+        temp = self.head
+        while temp != None:
+            # insert node in new list
+            new_LL.insert_at_tail(temp.data)
+            temp = temp.next
+
+        # reverse the new List
+        new_LL.reverse()
+        
+
+        t1 = self.head
+        t2 = new_LL.head
+        # check LL until both have nodes
+        while t1 != None and t2 != None:
+            # check if nodes data is same
+            if t1.data != t2.data:
+                return False
+            t1 = t1.next
+            t2 = t2.next
+        return True
+
+     # func to display LL
+    def display_ll(self):
+        temp = self.head
+        while temp != None:
+            print(temp.data, end="-->")
+            temp = temp.next
+        print("X")
+
+ll2 = LinkedList_rev_rec()
+
+ll2.insert_at_head(10)
+ll2.insert_at_head(20)
+ll2.insert_at_head(30)
+ll2.insert_at_head(20)
+ll2.insert_at_head(10)
+
+ll2.display_ll()
+
+ll2.check_palindrome()
+
+10-->20-->30-->20-->10-->X
+True
+
+
+
+###Question
+You have been given a head to a singly linked list of integers. Write a function check to whether the list 
+given is a 'Palindrome' or not.
+
+Answer:
+class Node :
+    def __init__(self, data) :
+        self.data = data
+        self.next = None
+
+class LinkedList_rev_rec:
+    def __init__(self):
+        self.head = None
+
+    def insert_at_head(self, data):
+        # create node
+        new_node = Node(data)
+
+        # connect the node with existing list
+        new_node.next = self.head
+
+        # update the head 
+        self.head = new_node
+
+
+def isPalindrome(head) :
+    new_list = LinkedList_rev_rec()
+    temp = head
+
+    while temp != None:
+        new_list.insert_at_head(temp.data)
+        temp = temp.next
+
+    t1 = head
+    t2 = new_list.head
+
+    while t1 != None and t2 != None:
+        if t1.data != t2.data:
+            return False
+
+        t1 = t1.next
+        t2 = t2.next
+    return True
+
+
+
+###Question 
+check Palindrome Using insert_at_head
+
+Answer:
+# Insert Node at the Head
+class ll_rev_rec_Node:
+    def __init__(self, value):
+        self.data = value
+        self.next = None
+
+# Create Empty Linked List
+class LinkedList_rev_rec:
+    def __init__(self):
+        self.head = None
+
+    # Create and Insert First Node
+    def insert_at_head(self, data):
+        # create node
+        new_node = ll_rev_rec_Node(data)
+
+        # connect the node with existing list
+        new_node.next = self.head
+
+        # update the head 
+        self.head = new_node
+
+    # Palindrome
+    def check_palindrome(self):
+        # create a new LL
+        new_LL = LinkedList_rev_rec()
+        temp = self.head
+        while temp != None:
+            # insert node in new list i.e reverse the LL
+            new_LL.insert_at_head(temp.data)
+            temp = temp.next
+
+
+        t1 = self.head
+        t2 = new_LL.head
+        # check LL until both have nodes
+        while t1 != None and t2 != None:
+            # check if nodes data is same
+            if t1.data != t2.data:
+                return False
+            t1 = t1.next
+            t2 = t2.next
+        return True
+
+     # func to display LL
+    def display_ll(self):
+        temp = self.head
+        while temp != None:
+            print(temp.data, end="-->")
+            temp = temp.next
+        print("X")
+
+ll2 = LinkedList_rev_rec()
+
+ll2.insert_at_head(10)
+ll2.insert_at_head(20)
+ll2.insert_at_head(30)
+ll2.insert_at_head(20)
+ll2.insert_at_head(10)
+
+ll2.display_ll()
+
+ll2.check_palindrome()
+
+10-->20-->30-->20-->10-->X
+True
+
+
+
+###Question
+Find the Kth Node from Last
+
+Asnwer:
+# Insert Node at the Head
+class ll_rev_rec_Node:
+    def __init__(self, value):
+        self.data = value
+        self.next = None
+
+# Create Empty Linked List
+class LinkedList_rev_rec:
+    def __init__(self):
+        self.head = None
+
+    # Create and Insert First Node
+    def insert_at_head(self, data):
+        # create node
+        new_node = ll_rev_rec_Node(data)
+
+        # connect the node with existing list
+        new_node.next = self.head
+
+        # update the head 
+        self.head = new_node
+
+    # get the kth Node from Last
+    def kth_node(self, k):
+        s = self.head
+        f = self.head
+        i = 1
+        while i < k:
+            f = f.next
+            i += 1
+        while f.next != None: # while f is behind the tail
+            f = f.next
+            s = s.next
+        # once loop ends s is the kth Node
+        return s
+
+     # func to display LL
+    def display_ll(self):
+        temp = self.head
+        while temp != None:
+            print(temp.data, end="-->")
+            temp = temp.next
+        print("X")
+
+ll2 = LinkedList_rev_rec()
+
+ll2.insert_at_head(10)
+ll2.insert_at_head(20)
+ll2.insert_at_head(30)
+ll2.insert_at_head(40)
+ll2.insert_at_head(50)
+
+ll2.display_ll()
+
+ll2.kth_node(4).data
+
+50-->40-->30-->20-->10-->X
+40
+
+
+###Qusetion
+Delete a Node at kth position from end
+
+Asnwer:
+# Insert Node at the Head
+class ll_rev_rec_Node:
+    def __init__(self, value):
+        self.data = value
+        self.next = None
+
+# Create Empty Linked List
+class LinkedList_rev_rec:
+    def __init__(self):
+        self.head = None
+
+    # Create and Insert First Node
+    def insert_at_head(self, data):
+        # create node
+        new_node = ll_rev_rec_Node(data)
+
+        # connect the node with existing list
+        new_node.next = self.head
+
+        # update the head 
+        self.head = new_node
+
+    # get the kth Node from Last
+    def delete_kth_from_end(self, k):
+        if k <= 0 or self.head is None:
+            return
+
+        dummy = ll_rev_rec_Node(0)
+        dummy.next = self.head
+
+        slow = dummy
+        fast = dummy
+
+    # Move fast pointer k+1 steps ahead
+        for _ in range(k + 1):
+            if fast is None:
+                return  # k > length of list
+            fast = fast.next
+
+    # move both pointers
+        while fast is not None:
+            fast = fast.next
+            slow = slow.next
+
+        # Now slow.next is the node to delete
+        delete_node = slow.next
+        slow.next = slow.next.next
+
+        # update head if needed
+        self.head = dummy.next
+
+
+     # func to display LL
+    def display_ll(self):
+        temp = self.head
+        while temp != None:
+            print(temp.data, end="-->")
+            temp = temp.next
+        print("X")
+
+ll2 = LinkedList_rev_rec()
+
+ll2.insert_at_head(10)
+ll2.insert_at_head(20)
+ll2.insert_at_head(30)
+ll2.insert_at_head(40)
+ll2.insert_at_head(50)
+
+ll2.display_ll()
+
+50-->40-->30-->20-->10-->X
+
+ll2.delete_kth_from_end(4)
+ll2.display_ll()
+
+50-->30-->20-->10-->X
+
+
+
+
+###
+Kth Node from the end of the LL
+
+Given the head node of the singly linked list and an integer ‘k’, , find the value at the kth node from the 
+end of the linked list.
+
+Answer:
+
+def findKthFromLast(head,k):
+   s = head
+   f = head
+   i = 1
+
+# Move the fast pointer 'f' forward by (k-1) positions
+    # This creates a gap of k nodes between the fast and slow pointers
+   while i < k:
+       f = f.next
+       i += 1
+
+# Move both pointers forward together until the fast pointer reaches the last node
+    # When f.next is None, 'f' is at the last node
+    # At this point, 's' will be at the kth node from the end
+   while f.next != None:
+       f = f.next
+       s = s.next
+    
+  # Return the kth node from the end
+   return s
+
+
+
+###Question
+Add one (1) to the Linked List
+
+Answer:
+# Insert Node at the Head
+class ll_rev_rec_Node:
+    def __init__(self, value):
+        self.data = value
+        self.next = None
+
+# Create Empty Linked List
+class LinkedList_rev_rec:
+    def __init__(self):
+        self.head = None
+
+    # Create and Insert First Node
+    def insert_at_head(self, data):
+        # create node
+        new_node = ll_rev_rec_Node(data)
+
+        # connect the node with existing list
+        new_node.next = self.head
+
+        # update the head 
+        self.head = new_node
+
+    # reverse the LL
+    def reverse(self):
+        prev = None
+        curr = self.head
+
+        while curr != None:
+            remaining = curr.next # access to remaining list
+            curr.next = prev # reverse the next ref
+            prev = curr # prepare prev for next iteration
+            curr = remaining # prepare curr for next iteration
+
+        self.head = prev # Update the new head
+
+    def add_one_to_LL(self):
+        # reverse the LL
+        self.reverse()
+        # Add one
+        carry = 1
+        # keep tracking the tailNode, so we dont have to loop again if carry left
+        tailNode = self.head
+        temp = self.head
+        while temp != None:
+            nodesum = temp.data + carry
+            temp.data = nodesum % 10 # update data to ones place value i.e for 10, 0 is ones value
+            nodesum //= 10 # get the ten's place value i.e for 10, 1 is tens value
+            carry = nodesum
+            if temp.next != None:
+                tailNode = tailNode.next
+            temp = temp.next
+
+        # when carry is not 0 and we are left with a value we need to create a node and add it and make it tail
+        if carry != 0:
+            tailNode.next = ll_rev_rec_Node(carry)
+
+        # again reverse the LL
+        self.reverse()
+    
+     # func to display LL
+    def display_ll(self):
+        temp = self.head
+        while temp != None:
+            print(temp.data, end="-->")
+            temp = temp.next
+        print("X")
+
+ll2 = LinkedList_rev_rec()
+
+ll2.insert_at_head(9)
+ll2.insert_at_head(9)
+ll2.insert_at_head(9)
+
+ll2.display_ll()
+
+9-->9-->9-->X
+
+ll2.add_one_to_LL()
+ll2.display_ll()
+
+1-->0-->0-->0-->X
+
+
+
+###Question
+Add one to a number represented as LL
+
+You're given a positive integer represented in the form of a singly linked-list of digits. The length of the 
+number is 'n'.
+
+Add 1 to the number, i.e., increment the given number by one.
+
+The digits are stored such that the most significant digit is at the head of the linked list and the least 
+significant digit is at the tail of the linked list.
+
+Answer:
+
+class Node:
+    def __init__(self, data=0, next=None):
+        self.data = data
+        self.next = next
+
+def reverse(head):
+    prev = None
+    curr = head
+
+    while curr:
+        nxt = curr.next
+        curr.next = prev
+        prev = curr
+        curr = nxt
+
+    return prev   # new head
+
+
+def addOne(head: Node) -> Node:
+    head = reverse(head)
+    carry = 1
+    tail = head
+
+    temp = head
+
+    while temp != None:
+        nodesum = temp.data + carry
+        temp.data = nodesum % 10
+        nodesum //= 10
+        carry = nodesum
+
+        if temp.next != None:
+            tail = tail.next
+
+        temp = temp.next
+    
+    if carry != 0:
+        tail.next = Node(carry)
+    
+    head = reverse(head)
+
+    return head
+
+
+
+
+###Question 
+Given a Linked list with nodes arranged in increasing order, we need to modify the list such that all the duplicates
+are removed.
+
+Note: the LL is arranged in increasing order i.e all the duplicates of the particular type will be together
+
+Answer:
+
+# Insert Node at the Head
+class ll_rev_rec_Node:
+    def __init__(self, value):
+        self.data = value
+        self.next = None
+
+# Create Empty Linked List
+class LinkedList_rev_rec:
+    def __init__(self):
+        self.head = None
+
+    # Create and Insert First Node
+    def insert_at_head(self, data):
+        # create node
+        new_node = ll_rev_rec_Node(data)
+
+        # connect the node with existing list
+        new_node.next = self.head
+
+        # update the head 
+        self.head = new_node
+    
+    # insert at tail
+    def insert_at_tail(self, value):
+        # check if LL in Empty
+        if self.head == None:
+            self.insert_at_head(value)
+            return
+
+        # if LL is not empty
+        temp = self.head
+        while temp.next != None:
+            temp = temp.next
+
+        # when the loop ends temp points towards Tail
+        # Create a New Node
+        new_tail_node = ll_rev_rec_Node(value)
+
+        # add the new node memory Address to th current Tail
+        temp.next = new_tail_node
+
+    def remove_duplicates(self):
+        curr = self.head
+        # loop until we reach tail
+        while curr.next != None:
+            # check the curr node data is equal to the next node data
+            if curr.data == curr.next.data:
+                # break the connect because node data is duplicate and point curr.next to next node
+                curr.next = curr.next.next
+            else:
+                curr = curr.next
+        return self.head
+    
+     # func to display LL
+    def display_ll(self):
+        temp = self.head
+        while temp != None:
+            print(temp.data, end="-->")
+            temp = temp.next
+        print("X")
+
+ll2 = LinkedList_rev_rec()
+
+ll2.insert_at_tail(1)
+ll2.insert_at_tail(1)
+ll2.insert_at_tail(2)
+ll2.insert_at_tail(3)
+ll2.insert_at_tail(3)
+ll2.insert_at_tail(3)
+ll2.insert_at_tail(3)
+ll2.insert_at_tail(4)
+
+ll2.display_ll()
+
+1-->1-->2-->3-->3-->3-->3-->4-->X
+
+ll2.remove_duplicates()
+ll2.display_ll()
+
+1-->2-->3-->4-->X
+
+
+
+###Question
+Eliminate Duplicates
+
+You have been given a singly linked list of integers where the elements are sorted in ascending order. 
+Write a function that removes the consecutive duplicate values such that the given list only contains unique 
+elements and returns the head to the updated list.
+
+Answer:
+class Node :
+    def __init__(self, data) :
+        self.data = data
+        self.next = None
+
+
+
+
+def removeDuplicates(head) :
+    if head is None:
+        return head
+    
+    curr = head
+    while curr.next != None:
+        if curr.data == curr.next.data:
+            curr.next = curr.next.next
+        else:
+            curr = curr.next
+    return head
+
+
+
+
+###Question
+Given a linked list, find and return the length of the given linked list recursively.
+
+Answer:
+# Insert Node at the Head
+class ll_rev_rec_Node:
+    def __init__(self, value):
+        self.data = value
+        self.next = None
+
+# Create Empty Linked List
+class LinkedList_rev_rec:
+    def __init__(self):
+        self.head = None
+
+    # Create and Insert First Node
+    def insert_at_head(self, data):
+        # create node
+        new_node = ll_rev_rec_Node(data)
+
+        # connect the node with existing list
+        new_node.next = self.head
+
+        # update the head 
+        self.head = new_node
+    
+    # insert at tail
+    def insert_at_tail(self, value):
+        # check if LL in Empty
+        if self.head == None:
+            self.insert_at_head(value)
+            return
+
+        # if LL is not empty
+        temp = self.head
+        while temp.next != None:
+            temp = temp.next
+
+        # when the loop ends temp points towards Tail
+        # Create a New Node
+        new_tail_node = ll_rev_rec_Node(value)
+
+        # add the new node memory Address to th current Tail
+        temp.next = new_tail_node
+
+    def recursive_reverse_helper(self, head):
+        # base case 
+        if head == None:
+            return 0
+
+        # assumption and Task
+        return 1 + self.recursive_reverse_helper(head.next)
+        
+
+    def recursion_length(self):
+        # call the helper
+        LL_length = self.recursive_reverse_helper(self.head)
+        print(f"Linked List length, {LL_length}")
+
+     # func to display LL
+    def display_ll(self):
+        temp = self.head
+        while temp != None:
+            print(temp.data, end="-->")
+            temp = temp.next
+        print("X")
+
+ll2 = LinkedList_rev_rec()
+
+ll2.insert_at_tail(10)
+ll2.insert_at_tail(25)
+ll2.insert_at_tail(27)
+ll2.insert_at_tail(38)
+ll2.insert_at_tail(45)
+ll2.insert_at_tail(63)
+
+ll2.display_ll()
+ll2.recursion_length()
+
+10-->25-->27-->38-->45-->63-->63-->X
+Linked List length, 7
+
+
+
+###Question
+For a given a singly linked list of integers and a position 'i', print the node data at the 'i-th' position.
+
+ Note :
+1. Assume that the Indexing for the singly linked list always starts from 0.
+2. If the given position 'i',  is greater than the length of the given singly linked list, then don't print anything.
+
+Answer:
+# Insert Node at the Head
+class ll_rev_rec_Node:
+    def __init__(self, value):
+        self.data = value
+        self.next = None
+
+# Create Empty Linked List
+class LinkedList_rev_rec:
+    def __init__(self):
+        self.head = None
+
+    # Create and Insert First Node
+    def insert_at_head(self, data):
+        # create node
+        new_node = ll_rev_rec_Node(data)
+
+        # connect the node with existing list
+        new_node.next = self.head
+
+        # update the head 
+        self.head = new_node
+    
+    # insert at tail
+    def insert_at_tail(self, value):
+        # check if LL in Empty
+        if self.head == None:
+            self.insert_at_head(value)
+            return
+
+        # if LL is not empty
+        temp = self.head
+        while temp.next != None:
+            temp = temp.next
+
+        # when the loop ends temp points towards Tail
+        # Create a New Node
+        new_tail_node = ll_rev_rec_Node(value)
+
+        # add the new node memory Address to th current Tail
+        temp.next = new_tail_node
+
+    def printIthNode(self, i):
+        curr = self.head
+        j = 0
+        while curr != None and j < i:
+            curr = curr.next
+            j += 1
+    
+        if curr is None:
+            return
+        
+        print(curr.data)
+
+     # func to display LL
+    def display_ll(self):
+        temp = self.head
+        while temp != None:
+            print(temp.data, end="-->")
+            temp = temp.next
+        print("X")
+
+ll2 = LinkedList_rev_rec()
+
+ll2.insert_at_tail(10)
+ll2.insert_at_tail(25)
+ll2.insert_at_tail(27)
+ll2.insert_at_tail(38)
+ll2.insert_at_tail(45)
+ll2.insert_at_tail(63)
+
+ll2.display_ll()
+ll2.printIthNode(4)
+
+10-->25-->27-->38-->45-->63-->X
+45
+
+
+
+###Question
+You have been given a singly linked list of integers. Write a function that returns the index/position of integer 
+data denoted by 'N' (if it exists). Return -1 otherwise.
+
+Note :
+Assume that the Indexing for the singly linked list always starts from 0.
+
+Answer:
+# Insert Node at the Head
+class ll_rev_rec_Node:
+    def __init__(self, value):
+        self.data = value
+        self.next = None
+
+# Create Empty Linked List
+class LinkedList_rev_rec:
+    def __init__(self):
+        self.head = None
+
+    # Create and Insert First Node
+    def insert_at_head(self, data):
+        # create node
+        new_node = ll_rev_rec_Node(data)
+
+        # connect the node with existing list
+        new_node.next = self.head
+
+        # update the head 
+        self.head = new_node
+    
+    # insert at tail
+    def insert_at_tail(self, value):
+        # check if LL in Empty
+        if self.head == None:
+            self.insert_at_head(value)
+            return
+
+        # if LL is not empty
+        temp = self.head
+        while temp.next != None:
+            temp = temp.next
+
+        # when the loop ends temp points towards Tail
+        # Create a New Node
+        new_tail_node = ll_rev_rec_Node(value)
+
+        # add the new node memory Address to th current Tail
+        temp.next = new_tail_node
+
+    def findNode(self, n) :
+        if self.head == None:
+            return -1
+    
+        curr = self.head
+        index = 0
+        while curr != None:
+            if curr.data == n:
+                return index
+            curr = curr.next
+            index += 1
+        return -1
+
+     # func to display LL
+    def display_ll(self):
+        temp = self.head
+        while temp != None:
+            print(temp.data, end="-->")
+            temp = temp.next
+        print("X")
+
+ll2 = LinkedList_rev_rec()
+
+ll2.insert_at_tail(10)
+ll2.insert_at_tail(25)
+ll2.insert_at_tail(27)
+ll2.insert_at_tail(38)
+ll2.insert_at_tail(45)
+ll2.insert_at_tail(63)
+
+ll2.display_ll()
+ll2.findNode(25)
+
+10-->25-->27-->38-->45-->63-->X
+1
+
+
+
+###Question
+You have been given a singly Linked List of 'N' nodes with integer data and an integer 'K'.
+
+Your task is to remove the 'K'th node from the end of the given Linked List and return the head of the modified 
+linked list.
+
+Answer:
+# Insert Node at the Head
+class ll_rev_rec_Node:
+    def __init__(self, value):
+        self.data = value
+        self.next = None
+
+# Create Empty Linked List
+class LinkedList_rev_rec:
+    def __init__(self):
+        self.head = None
+
+    # Create and Insert First Node
+    def insert_at_head(self, data):
+        # create node
+        new_node = ll_rev_rec_Node(data)
+
+        # connect the node with existing list
+        new_node.next = self.head
+
+        # update the head 
+        self.head = new_node
+    
+    # insert at tail
+    def insert_at_tail(self, value):
+        # check if LL in Empty
+        if self.head == None:
+            self.insert_at_head(value)
+            return
+
+        # if LL is not empty
+        temp = self.head
+        while temp.next != None:
+            temp = temp.next
+
+        # when the loop ends temp points towards Tail
+        # Create a New Node
+        new_tail_node = ll_rev_rec_Node(value)
+
+        # add the new node memory Address to th current Tail
+        temp.next = new_tail_node
+
+    def removeKthNode(self, k):
+        if self.head is None:
+            return None
+        if k <= 0:
+            return self.head
+    
+        # Create dummy node to simplify deletion logic
+        dummy = ll_rev_rec_Node(0)
+        dummy.next = self.head
+    
+        slow = dummy
+        fast = dummy
+    
+        # Move fast pointer k steps forward
+        for _ in range(k):
+            if fast.next is None:
+                return self.head  # k is larger than list length ? no deletion
+            fast = fast.next
+    
+        # Move both pointers until fast reaches the last node
+        while fast.next is not None:
+            fast = fast.next
+            slow = slow.next
+    
+        # Now slow.next is the node to delete
+        slow.next = slow.next.next
+
+        # Update the head
+        self.head = dummy.next
+    
+        return self.head
+
+     # func to display LL
+    def display_ll(self):
+        temp = self.head
+        while temp != None:
+            print(temp.data, end="-->")
+            temp = temp.next
+        print("X")
+
+ll2 = LinkedList_rev_rec()
+
+ll2.insert_at_tail(10)
+ll2.insert_at_tail(25)
+ll2.insert_at_tail(27)
+ll2.insert_at_tail(38)
+ll2.insert_at_tail(45)
+ll2.insert_at_tail(63)
+
+ll2.display_ll()
+
+10-->25-->27-->38-->45-->63-->X
+
+ll2.removeKthNode(6).data
+
+25
+
+ll2.display_ll()
+
+25-->27-->38-->45-->63-->X
+
