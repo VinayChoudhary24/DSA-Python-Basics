@@ -1,0 +1,655 @@
+## CYCLE DETEDTION :: In LL when the tail Node "NEXT" Points to a previous Node, it's a cycle.
+
+                                     1. if we visit node Twice then there is a cycle.
+                                     2. we use the Tortoise and Rabbit Approach i.e two pointers. where slow moves
+                                        one node and fast moves two nodes.
+                                     3. when slow and fast pointers meet, we have a cycle.
+
+
+###Question
+You are given a Singly Linked List of integers. Return true if it has a cycle, else return false.
+
+A cycle occurs when a node's next points back to a previous node in the list.
+
+Answer: [Tortoise and Rabbit] [Tortoise and Hare]
+# Insert Node at the Head
+class ll_rev_rec_Node:
+    def __init__(self, value):
+        self.data = value
+        self.next = None
+
+# Create Empty Linked List
+class LinkedList_rev_rec:
+    def __init__(self):
+        self.head = None
+
+# We create are function Outside the Linked List
+def detect_cycle(head):
+    slow = head
+    fast = head
+
+    while slow != None and fast != None and fast.next != None:
+        slow = slow.next
+        fast = fast.next.next
+
+        if slow == fast:
+            return True
+    return False
+
+# Create LL and also it's Nodes without using the other functions like inser_head or insert_tail
+ll = LinkedList_rev_rec()
+first_node = ll_rev_rec_Node(10)
+ll.head = first_node
+cycle_node = ll_rev_rec_Node(20)
+ll.head.next = cycle_node
+ll.head.next.next = ll_rev_rec_Node(30)
+ll.head.next.next.next = ll_rev_rec_Node(40)
+ll.head.next.next.next.next = ll_rev_rec_Node(50)
+ll.head.next.next.next.next.next = cycle_node
+
+# we call out detect function and pass the the ll head
+detect_cycle(ll.head)
+
+True
+
+
+
+## STARTING POINT/NODE OF LOOP IN A LL
+                               1. when we apply two pointers i.e Tortoise and hare algo, when they both meet we 
+                                  detect there is a cycle.
+                               2. to get the starting node from which loop started, we need to check the 
+                                  distance/difference from head and node at which they meet. 
+                               3. The distance from head node to the starting node is always equal to the distance
+                                  at which both SLOW and FAST pointers meet/node to the loop starting point i.e the 
+                                  distance from the node at which they meet to the loop startig node is equal to the 
+                                  distance from head node to the loop starting node.       
+                               4. once they meet we take two more pointers i and j. i from head node and j from the point
+                                  they meet. 
+                               5. we move both i and j one step until they both again meet on the same node and that will
+                                  be the starting node in loop.        
+
+
+###Question
+Find the starting node of Cycle in LL
+
+Answer:
+# Insert Node at the Head
+class ll_rev_rec_Node:
+    def __init__(self, value):
+        self.data = value
+        self.next = None
+
+# Create Empty Linked List
+class LinkedList_rev_rec:
+    def __init__(self):
+        self.head = None
+
+# We create are function Outside the Linked List
+def detect_cycle_starting_node(head):
+    slow = head
+    fast = head
+
+    # we track the node where both pointers meet
+    collision_node = None
+    while slow != None and fast != None and fast.next != None:
+        slow = slow.next
+        fast = fast.next.next
+
+        if slow == fast:
+            # assign collision
+            collision_node = slow
+            break
+
+    # take another two pointers i and j
+    i = head
+    j = collision_node
+
+    # we loop until they both meet
+    while i != j and i != None and j != None:
+        i = i.next
+        j = j.next
+    # return i node
+    return i
+
+# Create LL and also it's Nodes without using the other functions like inser_head or insert_tail
+ll = LinkedList_rev_rec()
+first_node = ll_rev_rec_Node(10)
+ll.head = first_node
+cycle_node = ll_rev_rec_Node(20)
+ll.head.next = cycle_node
+ll.head.next.next = ll_rev_rec_Node(30)
+ll.head.next.next.next = ll_rev_rec_Node(40)
+ll.head.next.next.next.next = ll_rev_rec_Node(50)
+ll.head.next.next.next.next.next = cycle_node
+
+# we call out detect_start function and pass the the ll head
+detect_cycle_starting_node(ll.head).data
+
+20
+
+
+
+## APPEND LAST N TO FIRST:: Very IMP
+                    1. we have a LL and a Integer Value N.
+                    2. we need to Move the Last N nodes to the Start of the LL.
+                    3. we need to find Three Nodes t(N + 1)th node from Last, y(Tail Node), x(n)th Node from Last.
+                    4. After Finding the Three Nodes, we need to follow these steps and update all Three Nodes i.e   
+                                                        t=> the node before N i.e (N + 1)th Node from Last, we need to 
+                                                            break the connection from t to x(t.next = None). so now t 
+                                                            node is the new TAIL Node.
+                                                        y=> the y node NEXT will point to HEAD Node i.e y.next = head
+                                                        x=> this node will be the new HEAD Node i.e head = x
+                    5. In Terms of Two pointers Approach(slow and fast) the above process looks like this::
+                                                 # fast moves N nodes for first time and then one node for rest, this
+                                                   is very important to maintain the gap between slow and fast.
+                                                 # slow moves one node from the starting.
+                                                 # t is slow pointer
+                                                 # y is fast pointer             
+                                                 # x is slow.next
+                                               Now, 
+                                                 new_head = slow.next, #this is x
+                                                 slow.next = None, #we break connection and this is new Tail node
+                                                 fast.next = head, #this is y
+                                                 head = new_head, #we update the head 
+
+
+###Question
+Append Last N to First
+
+You have been given a singly linked list of integers along with an integer 'N'. Write a function to append 
+the last 'N' nodes towards the front of the singly linked list and returns the new head to the list.
+
+Hint:
+Identify how many pointers you require and try traversing them to right places and connect nodes accordingly 
+also don't forget to disconnect what's required else it could create cycles.
+
+Answer:
+# Insert Node at the Head
+class ll_rev_rec_Node:
+    def __init__(self, value):
+        self.data = value
+        self.next = None
+
+# Create Empty Linked List
+class LinkedList_rev_rec:
+    def __init__(self):
+        self.head = None
+
+    # func to display LL
+    def display_ll(self):
+        temp = self.head
+        while temp != None:
+            print(temp.data, end="-->")
+            temp = temp.next
+        print("X")
+
+# We create are function Outside the Linked List
+def move_last_n_to_first(head, n):
+    if head == None or n <= 0:
+        # LL is Empty or dont move anything n is 0
+        return head
+    slow = head
+    fast = head
+
+    # fast moves N nodes for first time and then one node for rest, this
+    # is very important to maintain the gap between slow and fast.
+    for i in range(n):
+        fast = fast.next
+
+    # now move slow and fast one node each
+    while fast.next != None:
+        fast = fast.next
+        slow = slow.next
+
+    # once loop is over fast will be at tail and slow will be at (n + 1)th node
+    new_head = slow.next # store the remaing nodes
+    slow.next = None # we break connection and this is new Tail node
+    fast.next = head
+    head = new_head # we update the head
+    
+    return head
+
+# Create LL and also it's Nodes without using the other functions like inser_head or insert_tail
+ll = LinkedList_rev_rec()
+first_node = ll_rev_rec_Node(9)
+ll.head = first_node
+ll.head.next = ll_rev_rec_Node(20)
+ll.head.next.next = ll_rev_rec_Node(3)
+ll.head.next.next.next = ll_rev_rec_Node(49)
+ll.head.next.next.next.next = ll_rev_rec_Node(5)
+ll.head.next.next.next.next.next = ll_rev_rec_Node(24)
+
+ll.display_ll()
+# we call out detect_start function and pass the the ll head
+ll.head = move_last_n_to_first(ll.head, 3)
+ll.display_ll()                                                             
+
+9-->20-->3-->49-->5-->24-->X
+49-->5-->24-->9-->20-->3-->X
+
+
+
+## MERGE TWO SORTED LL :: MOST IMPORTANT
+                               *****Conditions::
+                                     1. given two LL (Sizes can be same or different)
+                                     2. which are already sorted in Increasing order
+
+                               *****Expected To Do::
+                                     1. Merge both into a Single LL such that the result is also Sorted i.e
+                                        in Increasing order.
+                                     2. this problem is similar to the one we solve earlier i.e merging to sorted
+                                        arrays/list in one.
+
+                               *****Approach 1:: Time and Space Complexity:: O(n + m)
+                                     1. we create a brand new LL.
+                                     2. loop over both sorted LL, compare the nodes and add at Tail accordingly in the 
+                                        new LL. 
+
+                               *****Approach 2:: Takes Advantage of LL(Better Approach)
+                                                 Time Complexity:: O(min(n, m))
+                                                 Space Complexity :: O(1)
+                                     1. we create a DUMMY Node to track, with any random value/data and dummy.next 
+                                        is None.
+                                     2. for i.data is LESS than j.data, i is looping on LL1 and j on LL2:
+                                             if i.data < j.data:
+                                                 dummy.next = i, now dummy points to the first node in LL1
+                                                 i = i.next, now this moves i to the second node in LL1
+                                                 dummy.next.next = None  
+                                                 dummy = dummy.next, this moves dummmy to the first node in LL1
+                                     3. for i.data is MORE than j.data, i is looping on LL1 and j on LL2:
+                                             else:
+                                                 dummy.next = j, now dummy points to the first node in LL2
+                                                 j = j.next, now this moves j to the second node in LL2
+                                                 dummy.next.next = None  
+                                                 dummy = dummy.next, this moves dummy to the first node in LL2
+                                     4. the above step 2 and 3 works when both LL have nodes but the sizes can be 
+                                        different so we check single LL also like we do in merge arrays.
+                                     5. if i != None, Nodes remaining in LL1
+                                           dummy.next = i, now dummy points to the first node in LL1
+                                           i = i.next, now this moves i to the second node in LL1
+                                           dummy.next.next = None  
+                                           dummy = dummy.next, this moves dummmy to the first node in LL1
+                                     7. if j!= None, Nodes remaining in LL2 
+                                           dummy.next = j, now dummy points to the first node in LL2
+                                           j = j.next, now this moves j to the second node in LL2
+                                           dummy.next.next = None  
+                                           dummy = dummy.next, this moves dummy to the first node in LL2
+                  
+
+
+###Question
+Merge Two Sorted LL
+
+You have been given two sorted(in ascending order) singly linked lists of integers.
+
+Write a function to merge them in such a way that the resulting singly linked list is also sorted(in ascending order) 
+and return the new head to the list.
+
+Note :
+Try solving this in O(1) auxiliary space.
+
+No need to print the list, it has already been taken care.
+
+Answer:
+# Insert Node at the Head
+class ll_rev_rec_Node:
+    def __init__(self, value):
+        self.data = value
+        self.next = None
+
+# Create Empty Linked List
+class LinkedList_rev_rec:
+    def __init__(self):
+        self.head = None
+
+    # func to display LL
+    def display_ll(self):
+        temp = self.head
+        while temp != None:
+            print(temp.data, end="-->")
+            temp = temp.next
+        print("X")
+
+# We create are function Outside the Linked List
+def merge_two_sorted_LL(head1, head2):
+    # we create a DUMMY Node to track,
+    # Create a dummy node to simplify edge cases (acts as placeholder)
+    new_head = ll_rev_rec_Node(-1)
+    dummy = new_head # Keep reference to dummy node for traversal
+
+    # Initialize pointers for both input lists
+    i = head1
+    j = head2
+
+    # loop until both LL have Nodes
+    while i != None and j != None:
+        # If first list's node is smaller
+        if i.data < j.data:
+            dummy.next = i # Link dummy to the smaller node (from list 1)
+            i = i.next # Move pointer in first list forward
+        else:
+            # If second list's node is smaller or equal
+            dummy.next = j # Link dummy to the smaller node (from list 2)
+            j = j.next # Move pointer in second list forward
+        dummy.next.next = None # Disconnect the newly added node from its original list
+        dummy = dummy.next # Move dummy pointer forward to continue building merged list
+
+    # if ll1/head1 exhaust:
+    if j != None:
+        dummy.next = j # add the remaing directly
+
+    # if ll2/head2 exhaust:
+    if i != None:
+        dummy.next = i # ad the remaing direclty
+
+    # Get the actual merged list (skip the dummy node)
+    result = new_head.next
+    new_head.next = None # Disconnect dummy node
+    # we return the Node itself here
+    # Return the head of the merged linked list
+    return result
+
+# Create LL and also it's Nodes without using the other functions like inser_head or insert_tail
+ll1 = LinkedList_rev_rec()
+ll2 = LinkedList_rev_rec()
+# LL1
+first_node = ll_rev_rec_Node(1)
+ll1.head = first_node
+ll1.head.next = ll_rev_rec_Node(4)
+ll1.head.next.next = ll_rev_rec_Node(13)
+ll1.head.next.next.next = ll_rev_rec_Node(29)
+ll1.head.next.next.next.next = ll_rev_rec_Node(30)
+
+# LL2
+first_node_ll2 = ll_rev_rec_Node(2)
+ll2.head = first_node_ll2
+ll2.head.next = ll_rev_rec_Node(3)
+ll2.head.next.next = ll_rev_rec_Node(9)
+ll2.head.next.next.next = ll_rev_rec_Node(39)
+
+ll1.display_ll()
+ll2.display_ll()
+# we call out detect_start function and pass the the ll head
+
+# Call merge function with both list heads and get the merged list head
+new_merged_LL = merge_two_sorted_LL(ll1.head, ll2.head)
+
+# we need to loop on the returned head Node and print 
+temp = new_merged_LL
+while temp != None:
+    print(temp.data, end="-->")
+    temp = temp.next
+print("X")
+
+1-->4-->13-->29-->30-->X
+2-->3-->9-->39-->X
+1-->2-->3-->4-->9-->13-->29-->30-->39-->X
+
+
+
+## REVERSE LINKED LIST IN K GROUPS:: MOST IMP:: Time Com:: O(n) and Space Com:: O(n/k)
+                         *****Condition::
+                                  1. given a linked list and a Integer Value k.
+
+                         *****Expected To Do::
+                                  1. Reverse LL but in groups of Size K
+                                  2. We need to reverse each group separately.
+                                  3. if somehow a group size is less than K we do not reverse that particular group.
+
+                         *****Approach::
+                                  1. we use Recursion
+                                  2. we keep temp variable to get the remaining node value i.e (K + 1)th Node.
+                                  3. we keep a count variable to count the number of nodes remaining.
+                                  4. if number of nodes is less than K that means this is the last group and it has less
+                                     nodes than K so we do not reverse it.
+                                  5. we reverse the first group of size k and Assump that recursion will do the rest. 
+                                  6. After recursion call we will get a new_head, which we will point to the previous 
+                                     head node(After Reverse it is Tail Node Now) of first group of size k reversed.  
+
+
+
+###Question
+Reverse List in K Groups
+
+You are given a linked list of 'n' nodes and an integer 'k', where 'k' is less than or equal to 'n'.
+
+Your task is to reverse the order of each group of 'k' consecutive nodes, if 'n' is not divisible by 'k', 
+then the last group of nodes should remain unchanged.
+
+For example, if the linked list is 1->2->3->4->5, and 'k' is 3, we have to reverse the first three elements, 
+and leave the last two elements unchanged. Thus, the final linked list being 3->2->1->4->5.
+
+Implement a function that performs this reversal, and returns the head of the modified linked list.
+
+Answer:
+# Insert Node at the Head
+class ll_rev_rec_Node:
+    def __init__(self, value):
+        self.data = value
+        self.next = None
+
+# Create Empty Linked List
+class LinkedList_rev_rec:
+    def __init__(self):
+        self.head = None
+
+    # func to display LL
+    def display_ll(self):
+        temp = self.head
+        while temp != None:
+            print(temp.data, end="-->")
+            temp = temp.next
+        print("X")
+
+# ===== HELPER FUNCTION: REVERSE FIRST K NODES =====
+# Function to reverse the first k nodes of a linked list (iterative approach)
+def reverse_first_k_nodes(head, k):
+    prev = None # Initialize previous pointer as None
+    curr = head # Start with current pointer at head
+    count = 0 # Counter to track number of nodes reversed
+
+    while count < k and curr != None:
+        remaining = curr.next # Store next node before changing link
+        curr.next = prev # Reverse the link: point current to previous
+        prev = curr # Move prev forward to current node
+        curr = remaining # Move curr forward to next node
+        count += 1 # Increment counter
+    return prev # Return new head of the reversed group (was the kth node)
+
+# ===== MAIN RECURSIVE FUNCTION: REVERSE IN GROUPS OF K =====
+# Recursive function to reverse linked list in groups of size k
+def k_reverse_rec(head, k):
+    # base case 
+    if head == None:
+        return None
+
+    temp = head # Temporary pointer to traverse and count nodes
+    count = 0 # Counter for number of available nodes
+    # ===== STEP 1: Count if we have at least k nodes remaining=====
+    while count < k and temp != None:
+        temp = temp.next  # Move to next node
+        count += 1  # Increment counter
+
+    # If we have fewer than k nodes, don't reverse (last incomplete group)
+    if count < k:
+        return head # Return head as-is for the last group
+
+    # esle we reverse
+    # ===== STEP 2: REVERSE CURRENT GROUP (SELF WORK) =====
+    # we get the group head
+    group_head = reverse_first_k_nodes(head, k) # Self work Done
+    # After reversal:
+    # - group_head points to new head of reversed group (was kth node)
+    # - head now points to first node of group (now tail after reversal)
+    # - temp points to (k+1)th node (start of next group)
+
+    # ===== STEP 3: RECURSIVE CALL FOR REMAINING NODES =====
+    # INDUCTION ASSUMPTION: Assume recursion will correctly reverse remaining groups
+    # Connect tail of current reversed group to head of next reversed group
+    # head.next connects the already reversed group Tail to the Current group head i.e tail.next points Current group head
+    head.next = k_reverse_rec(temp, k)
+    # Explanation:
+    # - 'head' is now the TAIL of current reversed group
+    # - 'temp' points to start of next group
+    # - Recursive call reverses remaining groups and returns their head
+    # - We connect current tail to that head
+
+    # ===== STEP 4: RETURN NEW HEAD =====
+    return group_head # Return head of current reversed group
+    
+
+# Create LL and also it's Nodes without using the other functions like inser_head or insert_tail
+ll1 = LinkedList_rev_rec()
+# LL1
+first_node = ll_rev_rec_Node(1)
+ll1.head = first_node
+ll1.head.next = ll_rev_rec_Node(4)
+ll1.head.next.next = ll_rev_rec_Node(13)
+ll1.head.next.next.next = ll_rev_rec_Node(29)
+ll1.head.next.next.next.next = ll_rev_rec_Node(30)
+ll1.head.next.next.next.next.next = ll_rev_rec_Node(44)
+ll1.head.next.next.next.next.next.next = ll_rev_rec_Node(83)
+ll1.head.next.next.next.next.next.next.next = ll_rev_rec_Node(9)
+
+ll1.display_ll()
+# we call out detect_start function and pass the the ll head
+# Call function to reverse list in groups of 3
+result_head_node = k_reverse_rec(ll1.head, 3)
+# we need to loop on the returned head Node and print 
+temp = result_head_node
+while temp != None:
+    print(temp.data, end="-->")
+    temp = temp.next
+print("X")
+
+1-->4-->13-->29-->30-->44-->83-->9-->X
+13-->4-->1-->44-->30-->29-->83-->9-->X
+
+
+########################################### DOUBLY LINKED LIST #########################################
+########################################################################################################
+
+## In Doubly LL we can Traverse in both directions from Head to Tail and Tail to Head.
+   --In Singly LL we have two properties, data and next. 
+   --In Doubly LL we add one more property, data, next and previous.
+   --The Previous property contains the Memory Address of the previous Node.
+
+## Advantage of Doubly LL
+                       1. at any point of time we can traverse from right to left i.e Tail to Head.
+                       2. we move left to right using node.next and we move right to left using node.previous.
+
+
+
+### Insert node at the head of the doubly Linked List
+
+# creating doubly LL Node
+class doubly_ll_node:
+    def __init__(self, value):
+        self.data = value
+        self. next = None
+        self.previous = None
+
+    
+class doubly_linked_list:
+    def __init__(self):
+        self.head = None
+
+    def insert_at_db_head(self, data):
+        # create node
+        new_doubly_node = doubly_ll_node(data)
+        
+        if self.head == None:
+            self.head = new_doubly_node
+            return
+
+        # assign the current head previous to the new db node
+        self.head.previous = new_doubly_node
+
+        # assign the new db node next to the current head
+        new_doubly_node.next = self.head
+
+        # update the head
+        self.head = new_doubly_node
+
+    # func to display LL
+    def display_ll(self):
+        temp = self.head
+        while temp != None:
+            print(temp.data, end="-->")
+            temp = temp.next
+        print("X")
+
+ll2 = doubly_linked_list()
+
+ll2.insert_at_db_head(8)
+ll2.insert_at_db_head(1)
+ll2.insert_at_db_head(10)
+ll2.insert_at_db_head(7)
+ll2.display_ll()
+
+7-->10-->1-->8-->X
+
+
+
+### Insert node at the tail of the Doubly LL
+
+###Question
+A doubly-linked list is a data structure that consists of sequentially linked nodes, and the nodes have 
+reference to both the previous and the next nodes in the sequence of nodes.
+
+Given a doubly-linked list and a value ‘k’, insert a node having value ‘k’ at the end of the doubly linked list.
+
+Note:
+You need not print anything. You’re given the head of the linked list. Return the head of the modified list.
+
+Answer:
+
+# creating doubly LL Node
+class doubly_ll_node:
+    def __init__(self, value):
+        self.data = value
+        self. next = None
+        self.previous = None
+
+    
+class doubly_linked_list:
+    def __init__(self):
+        self.head = None
+
+    def insert_at_db_tail(self, data):
+        # create node
+        new_doubly_node = doubly_ll_node(data)
+        
+        if self.head == None:
+            self.head = new_doubly_node
+            return
+
+        # loop until tail node
+        temp = self.head
+        while temp.next != None:
+            temp = temp.next
+
+        # now temp is the tail node
+        # assign the tail node next to new node
+        temp.next = new_doubly_node
+
+        # assign the previous of newly node to temp
+        new_doubly_node.previous = temp
+
+    # func to display LL
+    def display_ll(self):
+        temp = self.head
+        while temp != None:
+            print(temp.data, end="-->")
+            temp = temp.next
+        print("X")
+
+ll2 = doubly_linked_list()
+
+ll2.insert_at_db_tail(8)
+ll2.insert_at_db_tail(1)
+ll2.insert_at_db_tail(10)
+ll2.insert_at_db_tail(7)
+ll2.display_ll()
+
+8-->1-->10-->7-->X

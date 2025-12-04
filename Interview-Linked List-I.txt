@@ -6,7 +6,7 @@
 ## Linked List:: are space optimized alternative to arrays. 
                  - the Distributed memory blocks is used in a CHAINED WAY i.e non-continuous way.
                  - Nodes i.e memory blocks are connected to each other in chained way.
-                 - every Node(Memory Block) has it's Unique Mmory Address.
+                 - every Node(Memory Block) has it's Unique Memory Address.
 
  ## USE CASES:: 
                -- Going Back and Forward in Applications. [Music Player, Browser].
@@ -19,7 +19,13 @@
                               2. Adding the node at the Tail of LL is having O(n) time complexity while in array adding
                                  element at the last of array is O(1).
                               3. when adding a node at the Head of the LL is having O(1) Time Complexity while in array
-                                 adding a element at the start is having O(n).                             
+                                 adding a element at the start is having O(n).         
+
+
+## IMP:: Rule of Thumb
+
+*****Loop until temp.next != None: When you need to access or modify the next node*****
+*****Loop until temp != None: When you only need to read/check the current node*****                    
 
 
 
@@ -213,10 +219,7 @@ class LinkedList:
 
         # add the new node memory Address to th current Tail
         temp.next = new_tail_node
-
-        # 
         
-
 ll = LinkedList()
 
 ll.insert_at_tail(55)
@@ -735,7 +738,7 @@ class LinkedList:
         # break the connection from the previous node to tail node i.e second last node
         prev.next = None
 
-    # Insert in the Middle
+    # Delete in the Middle
     def delete_in_between(self, pos):
         # If list is empty
         if self.head is None:
@@ -1141,7 +1144,7 @@ class LinkedList_rev_rec:
         # update the head 
         self.head = new_node
 
-    # Palindrome
+    # Reverse
     def reverse_LL(self):
         # create a new LL
         new_LL = LinkedList_rev_rec()
@@ -2189,9 +2192,13 @@ class LinkedList_rev_rec:
         while fast.next is not None:
             fast = fast.next
             slow = slow.next
-    
+        
         # Now slow.next is the node to delete
-        slow.next = slow.next.next
+        delete_node = slow.next
+        slow.next = delete_node.next
+
+        # Now slow.next is the node to delete
+        # slow.next = slow.next.next
 
         # Update the head
         self.head = dummy.next
@@ -2226,4 +2233,155 @@ ll2.removeKthNode(6).data
 ll2.display_ll()
 
 25-->27-->38-->45-->63-->X
+
+
+
+#################################### IMPORTANT POINTS ###########################################
+1. Traverse Entire Linked List
+
+Use when you only access: curr, not curr.next.
+
+curr = head
+while curr is not None:
+    # process curr
+    curr = curr.next
+
+✔ Goes through all nodes, including the last one.
+
+Example Questions:
+
+Find length
+
+Find sum of nodes
+
+Print list
+
+Search for a value (findNode)
+
+------------------------------------------------------------
+
+2. Stop Before Last Node
+
+Use when your logic requires accessing curr.next safely.
+
+curr = head
+while curr.next is not None:
+    # safe to use curr.next or curr.next.data
+    if curr.data == curr.next.data:
+        curr.next = curr.next.next
+    else:
+        curr = curr.next
+
+✔ Used when:
+
+comparing curr and curr.next
+
+deleting next node
+
+merging sorted lists
+
+detecting/remove duplicates
+
+Example Questions:
+
+Remove duplicates
+
+Check if list is sorted
+
+Merge two lists (compare nodes)
+
+--------------------------------------------------------------------
+
+3. Stop Two Nodes Before End
+
+Use when you need: curr.next.next
+
+curr = head
+while curr.next is not None and curr.next.next is not None:
+    # safe to access curr.next.next
+    curr = curr.next
+
+✔ Used rarely but important.
+
+-------------------------------------------------------------------------
+
+4. Two-Pointer (Slow–Fast)
+
+Used for:
+
+middle element
+
+cycle detection
+
+kth node from end
+
+palindrome check
+
+slow = fast = head
+while fast and fast.next:
+    slow = slow.next
+    fast = fast.next.next
+
+✔ Stops when fast hits end or fast.next is None.
+
+------------------------------------------------------------------------------------
+
+5. K-th Node from End — Two Pointer
+
+Fast moves k steps ahead.
+
+slow = fast = head
+for _ in range(k):
+    fast = fast.next
+
+while fast:
+    slow = slow.next
+    fast = fast.next
+
+Example Questions:
+
+Remove 2nd last node
+
+Find Kth node from end
+
+Delete Nth node from end (LeetCode 19)
+
+--------------------------------------------------------------------------------------
+
+6. Reverse Linked List
+
+Classic pointer flip pattern:
+
+prev = None
+curr = head
+while curr:
+    nxt = curr.next
+    curr.next = prev
+    prev = curr
+    curr = nxt
+return prev
+
+Example Questions:
+
+Reverse list
+
+Reverse first K nodes
+
+Reverse list in K-groups
+------------------------------------------------------------------------------------------
+
+7. Deletion When You Know the Node
+
+Delete a middle node (special case problem):
+
+node.data = node.next.data
+node.next = node.next.next
+
+#################################### IMPORTANT POINTS ########################################### 
+
+
+
+
+
+
 
