@@ -1,96 +1,85 @@
-# DSA Introduction - Python
+# DSA Python Basics
 
-A comprehensive guide to Data Structures and Algorithms fundamentals using Python, covering everything from basic concepts to industry-standard interview questions.
+A comprehensive guide to core Data Structures and Algorithms concepts using Python, covering fundamental algorithms, complexity analysis, and essential data structures with industry-standard interview questions.
 
 ## 📚 Topics Covered
 
-This repository contains detailed explanations, code examples, and interview questions for the following topics:
+This repository contains detailed explanations, implementations, and interview questions for the following topics:
 
-### 1. Python Intro
+### 1. Time and Space Complexity
 
-Introduction to Python programming language, syntax basics, and development environment setup.
+- Big O notation and complexity analysis
+- Time complexity: Best, Average, and Worst cases
+- Space complexity and auxiliary space
+- Analyzing algorithms and comparing solutions
+- Common complexity classes (O(1), O(log n), O(n), O(n log n), O(n²))
 
-### 2. Variables
+### 2. Binary Search
 
-Understanding Python variables, data types, type conversion, and variable naming conventions.
+- Binary search algorithm and its variations
+- Search space reduction technique
+- Applications in sorted arrays
+- Binary search on answers
+- Common binary search patterns and pitfalls
 
-### 3. Operators and Conditionals
+### 3. Sorting
 
-- Arithmetic, comparison, logical, and bitwise operators
-- If-else statements and conditional logic
-- Ternary operators and nested conditions
+- Bubble Sort, Selection Sort, Insertion Sort
+- Merge Sort and Quick Sort
+- Counting Sort, Radix Sort
+- Stability in sorting algorithms
+- When to use which sorting algorithm
+- In-place vs out-of-place sorting
 
-### 4. Loops
+### 4. Recursion
 
-- For loops and while loops
-- Loop control statements (break, continue, pass)
-- Nested loops and loop optimization
+- Understanding recursive thinking
+- Base cases and recursive cases
+- Call stack and stack overflow
+- Recursion vs iteration
+- Common recursive patterns
+- Backtracking fundamentals
 
-### 5. Patterns
+### 5. Object-Oriented Programming (OOPs)
 
-Pattern printing problems using loops - a crucial skill for building logical thinking and understanding nested iterations.
+- Classes and objects
+- Encapsulation, inheritance, and polymorphism
+- Abstraction and data hiding
+- Special methods and operator overloading
+- OOP design principles
+- Applying OOP in DSA problems
 
-### 6. Functions
+### 6. Linked Lists
 
-- Function definition and calling
-- Parameters and return values
-- Scope and lifetime of variables
-- Lambda functions and built-in functions
-
-### 7. Arrays and Lists
-
-- List operations and methods
-- List comprehensions
-- Slicing and indexing
-- Common algorithms on lists
-
-### 8. Strings
-
-- String manipulation and methods
-- String formatting
-- Pattern matching and string algorithms
-- Immutability concepts
-
-### 9. Two Dimensional Lists
-
-- Matrix operations
-- Traversing 2D arrays
-- Common matrix problems
-- Memory representation
-
-### 10. Tuples and Sets
-
-- Tuple immutability and use cases
-- Set operations (union, intersection, difference)
-- When to use tuples vs lists vs sets
-
-### 11. Dictionary
-
-- Key-value pair operations
-- Dictionary methods and comprehensions
-- Hash table concepts
-- Real-world applications
+- Singly linked lists
+- Doubly linked lists
+- Circular linked lists
+- Common operations (insertion, deletion, traversal)
+- Two-pointer technique
+- Floyd's cycle detection
+- Reversing linked lists
 
 ## 🎯 What You'll Find
 
 Each topic includes:
 
-- **Conceptual Explanations**: Clear, concise explanations of core concepts
-- **Code Examples**: Practical Python implementations
-- **Interview Questions**: Industry-standard problems asked in technical interviews
-- **Best Practices**: Tips for writing clean, efficient code
+- **Conceptual Explanations**: Deep dive into core concepts with visual explanations
+- **Code Implementations**: Clean, well-documented Python code
+- **Complexity Analysis**: Time and space complexity for each solution
+- **Interview Questions**: Real problems asked at top tech companies (FAANG+)
+- **Problem-Solving Patterns**: Reusable templates and approaches
 
 ## 🚀 Getting Started
 
 1. Clone this repository:
 
 ```bash
-git clone https://github.com/VinayChoudhary24/DSA-Introduction-Python.git
+git clone https://github.com/VinayChoudhary24/DSA-Python-Basics.git
 ```
 
 2. Navigate to any topic folder to start learning
 
-3. Run the Python files to see examples in action:
+3. Run the Python files to see implementations:
 
 ```bash
 python filename.py
@@ -98,18 +87,39 @@ python filename.py
 
 ## 💡 Prerequisites
 
-- Basic understanding of programming concepts
+- Strong foundation in Python basics (variables, loops, functions, lists)
+- Understanding of basic programming concepts
 - Python 3.x installed on your system
-- A code editor or IDE (Anaconda, VS Code, PyCharm, etc.)
+- Recommended: Complete [DSA-Introduction-Python](https://github.com/VinayChoudhary24/DSA-Introduction-Python.git) first
+
+## 📖 Learning Path
+
+For optimal learning, follow this sequence:
+
+1. **Time and Space Complexity** - Understand how to analyze algorithms
+2. **Recursion** - Master recursive thinking
+3. **Sorting** - Learn fundamental sorting algorithms
+4. **Binary Search** - Understand search space reduction
+5. **OOPs** - Apply object-oriented principles
+6. **Linked Lists** - Implement your first data structure
+
+## 🎓 Interview Preparation
+
+This repository is designed to prepare you for technical interviews at:
+
+- Top tech companies and startups
+- Competitive programming contests
+
+Each topic includes questions ranging from easy to hard difficulty levels.
 
 ## 🤝 Contributing
 
-Contributions are welcome! If you'd like to add more examples, improve explanations, or fix issues:
+Contributions are welcome! If you'd like to add more solutions, improve explanations, or add new problems:
 
 1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
+2. Create your feature branch (`git checkout -b feature/NewFeature`)
+3. Commit your changes (`git commit -m 'Add NewFeature'`)
+4. Push to the branch (`git push origin feature/NewFeature`)
 5. Open a Pull Request
 
 ## 📝 License
@@ -124,4 +134,4 @@ For questions or suggestions, feel free to open an issue or reach out!
 
 ⭐ If you find this repository helpful, please give it a star!
 
-Happy Coding! 🐍
+**Happy Learning!** 🚀🐍
