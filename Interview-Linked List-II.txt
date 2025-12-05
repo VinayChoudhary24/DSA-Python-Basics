@@ -653,3 +653,948 @@ ll2.insert_at_db_tail(7)
 ll2.display_ll()
 
 8-->1-->10-->7-->X
+
+
+
+###Question
+Insert the node in the middle of the Doubly LL
+
+Answer:
+# creating doubly LL Node
+class doubly_ll_node:
+    def __init__(self, value):
+        self.data = value
+        self. next = None
+        self.previous = None
+
+    
+class doubly_linked_list:
+    def __init__(self):
+        self.head = None
+
+    def insert_at_db_middle(self, value, pos):
+        # create node
+        new_doubly_node = doubly_ll_node(value)
+        # Case 1: empty list
+        if self.head == None:
+            self.head = new_doubly_node
+            return
+
+        # Case 2: inserting at head
+        if pos == 0:
+            new_doubly_node.next = self.head
+            self.head.previous = new_doubly_node
+            self.head = new_doubly_node
+            return
+
+        temp = self.head
+        i = 0
+        # get the node previous to the pos node i.e # move to position - 1
+        while temp.next != None and i < pos - 1:
+            temp = temp.next
+            i += 1
+
+        # now temp is at the previous node to pos node
+        remaining = temp.next
+
+        # add the new node to previous node next
+        temp.next = new_doubly_node
+        new_doubly_node.previous = temp
+        new_doubly_node.next = remaining
+
+        if remaining != None:
+            remaining.previous = new_doubly_node
+        
+
+    # func to display LL
+    def display_ll(self):
+        temp = self.head
+        while temp != None:
+            print(temp.data, end="-->")
+            temp = temp.next
+        print("X")
+
+ll2 = doubly_linked_list()
+ll2.insert_at_db_middle(1, 2)
+ll2.insert_at_db_middle(3, 0)
+ll2.insert_at_db_middle(2, 0)
+ll2.insert_at_db_middle(6, 1)
+ll2.insert_at_db_middle(8, 5)
+
+ll2.display_ll()
+
+2-->6-->3-->1-->X
+
+
+
+###Question
+Delete at the head of the Doubly LL
+
+Answer:
+# creating doubly LL Node
+class doubly_ll_node:
+    def __init__(self, value):
+        self.data = value
+        self. next = None
+        self.previous = None
+
+    
+class doubly_linked_list:
+    def __init__(self):
+        self.head = None
+
+    def insert_at_db_tail(self, data):
+        # create node
+        new_doubly_node = doubly_ll_node(data)
+        
+        if self.head == None:
+            self.head = new_doubly_node
+            return
+
+        # loop until tail node
+        temp = self.head
+        while temp.next != None:
+            temp = temp.next
+
+        # now temp is the tail node
+        # assign the tail node next to new node
+        temp.next = new_doubly_node
+
+        # assign the previous of newly node to temp
+        new_doubly_node.previous = temp
+
+    def delete_at_db_head(self):
+        # Case 1 LL is Empty
+        if self.head == None:
+            return
+
+        # Case 2 there is only one node
+        if self.head.next == None:
+            self.head = None
+            return
+
+        # case 3 delete at head
+        new_head = self.head.next
+
+        # break the current head connection
+        # self.head.next = None
+
+        # update the new head
+        self.head = new_head
+        self.head.previous = None
+
+    # func to display LL
+    def display_ll(self):
+        temp = self.head
+        while temp != None:
+            print(temp.data, end="-->")
+            temp = temp.next
+        print("X")
+
+ll2 = doubly_linked_list()
+
+ll2.insert_at_db_tail(8)
+ll2.insert_at_db_tail(1)
+ll2.insert_at_db_tail(10)
+ll2.insert_at_db_tail(7)
+ll2.display_ll()
+
+ll2.delete_at_db_head()
+ll2.display_ll()
+
+8-->1-->10-->7-->X
+1-->10-->7-->X
+
+
+
+###Question
+Delete at the tail of the doubly LL
+
+A doubly-linked list is a data structure that consists of sequentially linked nodes, and the nodes have 
+reference to both the previous and the next nodes in the sequence of nodes.
+
+Given a doubly-linked list, delete the node at the end of the doubly linked list.
+
+Note:
+You need not print anything. You’re given the head of the linked list, just return the head of the modified list.
+
+Answer:
+# creating doubly LL Node
+class doubly_ll_node:
+    def __init__(self, value):
+        self.data = value
+        self. next = None
+        self.previous = None
+
+    
+class doubly_linked_list:
+    def __init__(self):
+        self.head = None
+
+    def insert_at_db_tail(self, data):
+        # create node
+        new_doubly_node = doubly_ll_node(data)
+        
+        if self.head == None:
+            self.head = new_doubly_node
+            return
+
+        # loop until tail node
+        temp = self.head
+        while temp.next != None:
+            temp = temp.next
+
+        # now temp is the tail node
+        # assign the tail node next to new node
+        temp.next = new_doubly_node
+
+        # assign the previous of newly node to temp
+        new_doubly_node.previous = temp
+
+    def delete_at_db_tail(self):
+        # Case 1 LL is Empty
+        if self.head == None:
+            return
+
+        # case 2 there is only one node
+        if self.head.next == None:
+            self.head = None
+            return
+
+        # case 3 delete at tail
+        temp = self.head
+        # get the node before tail node
+        while temp.next.next != None:
+            temp = temp.next
+
+        # now temp is the prev node before tail
+        tail = temp.next
+        tail.previous = None  # break backwardconnection
+    
+        temp.next = None      # remove last node
+        
+
+    # func to display LL
+    def display_ll(self):
+        temp = self.head
+        while temp != None:
+            print(temp.data, end="-->")
+            temp = temp.next
+        print("X")
+
+ll2 = doubly_linked_list()
+
+ll2.insert_at_db_tail(8)
+ll2.insert_at_db_tail(1)
+ll2.insert_at_db_tail(10)
+ll2.insert_at_db_tail(7)
+ll2.display_ll()
+
+ll2.delete_at_db_tail()
+ll2.display_ll()
+
+8-->1-->10-->7-->X
+8-->1-->10-->X
+
+
+
+
+###Question
+Delete at the middle of the doubly LL
+
+Answer:
+# creating doubly LL Node
+class doubly_ll_node:
+    def __init__(self, value):
+        self.data = value
+        self. next = None
+        self.previous = None
+
+    
+class doubly_linked_list:
+    def __init__(self):
+        self.head = None
+
+    def insert_at_db_tail(self, data):
+        # create node
+        new_doubly_node = doubly_ll_node(data)
+        
+        if self.head == None:
+            self.head = new_doubly_node
+            return
+
+        # loop until tail node
+        temp = self.head
+        while temp.next != None:
+            temp = temp.next
+
+        # now temp is the tail node
+        # assign the tail node next to new node
+        temp.next = new_doubly_node
+
+        # assign the previous of newly node to temp
+        new_doubly_node.previous = temp
+
+    def delete_at_db_middle(self, pos):
+        # Case 1 LL is Empty
+        if self.head == None:
+            return
+
+        # case 2 
+        if pos == 0:
+            if self.head.next is None:
+                self.head = None
+                return
+            new_head = self.head.next
+            new_head.previous = None
+            self.head = new_head
+            return
+
+        # case 3 
+        temp = self.head
+        i = 0
+        # loop and get the node before pos 
+        while temp.next != None and i < pos - 1:
+            temp = temp.next
+            i += 1
+
+        # position out of bounds
+        if temp is None or temp.next is None:
+            return
+        
+        # now temp is previous node
+        node_to_delete = temp.next
+
+        # update the remaing node previous i.e skip the
+        remaining = node_to_delete.next
+
+        # If deleting last node
+        if remaining is None:
+            temp.next = None
+            return
+
+        # Deleting a middle node
+        # skip the node to delete and update temp.next
+        temp.next = remaining
+        remaining.previous = temp
+
+        
+    # func to display LL
+    def display_ll(self):
+        temp = self.head
+        while temp != None:
+            print(temp.data, end="-->")
+            temp = temp.next
+        print("X")
+
+ll2 = doubly_linked_list()
+
+ll2.insert_at_db_tail(8)
+ll2.insert_at_db_tail(1)
+ll2.insert_at_db_tail(10)
+ll2.insert_at_db_tail(7)
+ll2.display_ll()
+
+ll2.delete_at_db_middle(0)
+ll2.display_ll()
+
+8-->1-->10-->7-->X
+1-->10-->7-->X
+
+########################################### DOUBLY LINKED LIST #########################################
+########################################################################################################
+
+
+
+
+########################################### CIRCULAR LINKED LIST #######################################
+########################################################################################################
+--In Singly Circular LL, where the Tail.next points to the head.
+
+--In Doubly Circular LL, where the Tail.next points to the head and head.previous points to the tail.
+
+
+
+###Question
+Insert at the head of the Circular Linked List
+
+Answer:
+class Circular_Node:
+    def __init__(self, value):
+        self.data = value
+        self.next = None
+
+class Circular_LL:
+    def __init__(self):
+        self.head = None
+        self.tail = None
+
+    def add_at_circ_head(self, value):
+        new_circ_node = Circular_Node(value)
+        if self.head == None:
+            self.head = new_circ_node
+            self.tail = new_circ_node
+
+        # get the current head
+        new_circ_node.next = self.head
+
+        # update the head
+        self.head = new_circ_node
+
+        # add prev to current head
+        self.tail.next = self.head
+
+    # func to display LL
+    def display_ll(self):
+        temp = self.head
+        while temp != self.tail:
+            print(temp.data, end="-->")
+            temp = temp.next
+        # when the loop ends temp is at tail and we print that
+        print(temp.data, end="--Points-to-head-->>")
+        print(temp.next.data)
+
+cl = Circular_LL()
+cl.add_at_circ_head(1)
+cl.add_at_circ_head(2)
+cl.add_at_circ_head(3)
+
+cl.display_ll()
+
+3-->2-->1--Points-to-head-->>3
+
+
+
+###Question
+You’re given a linked list. The last node might point to null, or it might point to a node in the list, 
+thus forming a cycle.
+
+Find out whether the linked list has a cycle or not, and the length of the cycle if it does.
+
+If there is no cycle, return 0, otherwise return the length of the cycle.
+
+Answer:
+
+# Insert Node at the Head
+class ll_rev_rec_Node:
+    def __init__(self, value):
+        self.data = value
+        self.next = None
+
+# Create Empty Linked List
+class LinkedList_rev_rec:
+    def __init__(self):
+        self.head = None
+
+    # func to display LL
+    def display_ll(self):
+        temp = self.head
+        while temp != None:
+            print(temp.data, end="-->")
+            temp = temp.next
+        print("X")
+
+# We create are function Outside the Linked List
+# Function to detect if a cycle exists and return its length
+def detect_cycle_length(head):
+    if head is None:
+        return 0
+
+    slow = head
+    fast = head
+
+    while slow != None and fast != None and fast.next != None:
+        slow = slow.next # Move slow pointer by 1 step
+        fast = fast.next.next # Move fast pointer by 2 steps
+
+        # If slow and fast pointers meet, a cycle exists
+        if slow == fast:
+            # Find cycle length
+            length = 1 # Initialize cycle length counter
+            temp = slow.next # Start from the next node after meeting point
+
+            # Traverse the cycle until we return to the meeting point
+            while temp != slow:
+                temp = temp.next # Move to next node in cycle
+                length += 1 # Increment cycle length counter
+
+            return length  # Return the calculated cycle length
+
+    # If we exit the loop, no cycle was detected
+    return 0
+
+# Create LL and also it's Nodes without using the other functions like inser_head or insert_tail
+ll = LinkedList_rev_rec()
+first_node = ll_rev_rec_Node(10)
+ll.head = first_node
+cycle_node = ll_rev_rec_Node(20)
+ll.head.next = cycle_node
+ll.head.next.next = ll_rev_rec_Node(30)
+ll.head.next.next.next = ll_rev_rec_Node(40)
+ll.head.next.next.next.next = ll_rev_rec_Node(50)
+ll.head.next.next.next.next.next = cycle_node
+# ll.display_ll()
+# we call out detect function and pass the the ll head
+detect_cycle_length(ll.head)
+
+4
+
+
+
+###Question
+Delete Every N nodes
+
+You have been given a singly linked list of integers along with two integers, 'M,' and 'N.' Traverse the 
+linked list such that you retain the 'M' nodes, then delete the next 'N' nodes. Continue the same until the 
+end of the linked list. Indexing starts from 1.
+
+To put it in other words, in the given linked list, you need to delete N nodes after every M nodes.
+
+Note :
+No need to print the list, it has already been taken care. Only return the new head to the list. You can return 
+null in case where all nodes will be deleted.
+
+Answer:
+
+# Insert Node at the Head
+class ll_rev_rec_Node:
+    def __init__(self, value):
+        self.data = value
+        self.next = None
+
+# Create Empty Linked List
+class LinkedList_rev_rec:
+    def __init__(self):
+        self.head = None
+
+    # func to display LL
+    def display_ll(self):
+        temp = self.head
+        while temp != None:
+            print(temp.data, end="-->")
+            temp = temp.next
+        print("X")
+
+# We create are function Outside the Linked List
+# Function to skip M nodes and delete N nodes alternately
+# Pattern: Keep M nodes -> Delete N nodes -> Keep M nodes -> Delete N nodes...
+def skipMdeleteN(head, M, N) :
+    # Edge case: if list is empty, return None
+    if head is None:
+        return None
+
+    # If M is 0 ? delete entire list
+    # Special case: if M is 0, we should delete the entire list
+    # (skip 0 means delete everything)
+    if M == 0:
+        return None
+
+    temp = head
+
+    # Continue until we've processed the entire list
+    while temp != None:
+        # Step 1: Skip M-1 nodes (we're already at the 1st node, so skip M-1 more)
+        # This loop moves temp to the M-th node that we want to keep
+        for _ in range(1, M):
+            if temp is None: # If we run out of nodes while skipping
+                return head # Return the modified list
+            
+            temp = temp.next # Move to the next node
+
+        # Now temp is positioned at the M-th node (the last node to keep)
+        if temp is None: # If temp is None, we've reached the end
+            return head # Return the modified list
+        
+        # Step 2: Start deleting the next N nodes
+        # del_ptr points to the first node we want to delete
+        del_ptr = temp.next
+        # Loop N times to skip over the nodes we want to delete
+        for _ in range(N):
+            if del_ptr is None: # If we run out of nodes before deleting N nodes
+                break # Exit the deletion loop early
+            
+            del_ptr = del_ptr.next # Move to the next node (skipping/deleting current)
+
+        # Connect the M-th node (temp) to the node after the N deleted nodes (del_ptr)
+        # This effectively removes the N nodes from the linked list
+        temp.next = del_ptr
+
+        # Move temp to the next valid node to continue the pattern
+        # This becomes the start of the next M-node segment to keep
+        temp = del_ptr
+
+    return head # Return the head of the modified list
+
+# Create LL and also it's Nodes without using the other functions like inser_head or insert_tail
+ll = LinkedList_rev_rec()
+first_node = ll_rev_rec_Node(10)
+ll.head = first_node
+ll.head.next = ll_rev_rec_Node(20)
+ll.head.next.next = ll_rev_rec_Node(30)
+ll.head.next.next.next = ll_rev_rec_Node(40)
+ll.head.next.next.next.next = ll_rev_rec_Node(50)
+ll.head.next.next.next.next.next = ll_rev_rec_Node(60)
+ll.head.next.next.next.next.next.next = ll_rev_rec_Node(70)
+ll.head.next.next.next.next.next.next.next = ll_rev_rec_Node(80)
+ll.display_ll()
+# we call out detect function and pass the the ll head
+ll.head = skipMdeleteN(ll.head, 2, 3)
+ll.display_ll()
+
+10-->20-->30-->40-->50-->60-->70-->80-->X
+10-->20-->60-->70-->X
+
+
+
+###Question
+Swap Two Nodes of Linked List
+
+You have been given a singly linked list of integers along with two integers, 'i,' and 'j.' Swap the nodes 
+that are present at the 'i-th' and 'j-th' positions and return the new head to the list.
+
+Note :
+1. Remember, You need to swap the nodes, not only the data.
+2. Indexing starts from 0.
+3. No need to print the list, it has already been taken care.
+
+Answer:
+
+# Insert Node at the Head
+class ll_rev_rec_Node:
+    def __init__(self, value):
+        self.data = value
+        self.next = None
+
+# Create Empty Linked List
+class LinkedList_rev_rec:
+    def __init__(self):
+        self.head = None
+
+    # func to display LL
+    def display_ll(self):
+        temp = self.head
+        while temp != None:
+            print(temp.data, end="-->")
+            temp = temp.next
+        print("X")
+
+# We create are function Outside the Linked List
+# Function to swap two nodes at positions i and j in the linked list
+# This swaps the actual nodes, not just their values
+def swapNodes(head, i, j):
+    # Edge case: If list is empty or swapping same position, return unchanged
+    if head is None or i == j:
+        return head
+
+    # Ensure i < j for simpler handling (swap i and j if needed)
+    # This makes sure we always process the earlier node first
+    if i > j:
+        i, j = j, i
+
+    # Initialize pointers to find nodes at positions i and j
+    prev1 = prev2 = None # Pointers to nodes BEFORE positions i and j
+    curr1 = curr2 = head # Pointers to nodes AT positions i and j
+    pos = 0 # Position counter
+
+    # Step 1: Find the node at index i and its previous node
+    while curr1 is not None and pos < i:
+        prev1 = curr1 # Keep track of the previous node
+        curr1 = curr1.next # Move to the next node
+        pos += 1 # Increment position counter
+
+    # Step 2: Find the node at index j and its previous node
+    pos = 0 # Reset position counter to start from head again
+    while curr2 is not None and pos < j:
+        prev2 = curr2 # Keep track of the previous node
+        curr2 = curr2.next # Move to the next node
+        pos += 1 # Increment position counter
+
+    # Edge case: If either position doesn't exist in the list, return unchanged
+    # This happens if i or j is beyond the list length
+    if curr1 is None or curr2 is None:
+        return head
+
+    # Step 3: Update the previous node's next pointer for node at position i
+    # If curr1 is NOT the head node (has a previous node)
+    if prev1 is not None:
+        prev1.next = curr2 # Point prev1 to curr2 (swapping connection)
+    else:
+        # If curr1 IS the head, curr2 becomes the new head
+        head = curr2   # curr2 becomes new head
+
+    # Step 4: Update the previous node's next pointer for node at position j
+    # If curr2 is NOT the head node (has a previous node)
+    if prev2 is not None:
+        prev2.next = curr1 # Point prev2 to curr1 (swapping connection)
+    else:
+        # If curr2 IS the head, curr1 becomes the new head
+        head = curr1   # curr1 becomes new head
+
+    # Step 5: Swap the next pointers of curr1 and curr2
+    # This completes the node swap by exchanging what each node points to
+    temp = curr1.next # Temporarily store curr1's next pointer
+    curr1.next = curr2.next # curr1 now points to what curr2 was pointing to
+    curr2.next = temp # curr2 now points to what curr1 was pointing to
+
+    return head
+
+
+# Create LL and also it's Nodes without using the other functions like inser_head or insert_tail
+ll = LinkedList_rev_rec()
+first_node = ll_rev_rec_Node(10)
+ll.head = first_node
+ll.head.next = ll_rev_rec_Node(20)
+ll.head.next.next = ll_rev_rec_Node(30)
+ll.head.next.next.next = ll_rev_rec_Node(40)
+ll.head.next.next.next.next = ll_rev_rec_Node(50)
+ll.head.next.next.next.next.next = ll_rev_rec_Node(60)
+ll.head.next.next.next.next.next.next = ll_rev_rec_Node(70)
+ll.head.next.next.next.next.next.next.next = ll_rev_rec_Node(80)
+ll.display_ll()
+# we call out detect function and pass the the ll head
+ll.head = swapNodes(ll.head, 1, 3)
+ll.display_ll()
+
+10-->20-->30-->40-->50-->60-->70-->80-->X
+10-->40-->30-->20-->50-->60-->70-->80-->X
+
+
+
+###Question
+Even After odd LL
+
+For a given singly linked list of integers, arrange the nodes such that all the even number nodes are placed 
+after the all odd number nodes. The relative order of the odd and even terms should remain unchanged.
+
+Note :
+1. No need to print the linked list, it has already been taken care. Only return the new head to the list.
+2. Don't create a new linked list.
+3.  Just change the data, instead rearrange the provided list.
+
+Answer:
+
+# Insert Node at the Head
+class ll_rev_rec_Node:
+    def __init__(self, value):
+        self.data = value
+        self.next = None
+
+# Create Empty Linked List
+class LinkedList_rev_rec:
+    def __init__(self):
+        self.head = None
+
+    # func to display LL
+    def display_ll(self):
+        temp = self.head
+        while temp != None:
+            print(temp.data, end="-->")
+            temp = temp.next
+        print("X")
+
+# We create are function Outside the Linked List
+# Function to rearrange linked list so all odd numbers come before even numbers
+# This maintains the relative order within odd and even groups
+def evenAfterOdd(head):
+    # Edge case: If list is empty, return None
+    if head is None:
+        return None
+
+    # Initialize four pointers to build two separate lists:
+    # - odd_head: points to the first odd number node
+    # - odd_tail: points to the last odd number node (for appending)
+    # - even_head: points to the first even number node
+    # - even_tail: points to the last even number node (for appending)
+    odd_head = odd_tail = None
+    even_head = even_tail = None
+
+    curr = head
+
+    # Traverse through the entire linked list
+    while curr:
+        # Save the next node before we modify curr.next
+        # This is important because we'll detach curr from the original list
+        next_node = curr.next
+
+        # Detach current node from the original list
+        # This isolates the node so we can add it to either odd or even list
+        curr.next = None  
+
+        # Check if current node's data is odd (remainder is not 0 when divided by 2)
+        if curr.data % 2 != 0:
+            # Current node contains an odd number
+
+            # If this is the first odd node we've encountered
+            if odd_head is None:
+                # Set both head and tail to this node (list has only one node)
+                odd_head = odd_tail = curr
+            else:
+                # Append current node to the end of the odd list
+                odd_tail.next = curr # Link the previous tail to current node
+                odd_tail = curr # Update tail to point to current node
+
+        else:
+            # Current node contains an even number
+
+            # If this is the first even node we've encountered
+            if even_head is None:
+                # Set both head and tail to this node (list has only one node)
+                even_head = even_tail = curr
+            else:
+                # Append current node to the end of the even list
+                even_tail.next = curr # Link the previous tail to current node
+                even_tail = curr # Update tail to point to current node
+
+        # Move to the next node in the original list
+        curr = next_node
+
+    # Edge case: If there are no odd nodes in the list
+    # Return the even list as is (all nodes are even)
+    if odd_head is None:
+        return even_head
+
+    # Connect the odd list to the even list
+    # The last node of the odd list should point to the first node of the even list
+    odd_tail.next = even_head
+
+    # Return the head of the odd list (which is now the head of the combined list)
+    return odd_head
+
+
+# Create LL and also it's Nodes without using the other functions like inser_head or insert_tail
+ll = LinkedList_rev_rec()
+first_node = ll_rev_rec_Node(2)
+ll.head = first_node
+ll.head.next = ll_rev_rec_Node(1)
+ll.head.next.next = ll_rev_rec_Node(3)
+ll.head.next.next.next = ll_rev_rec_Node(4)
+ll.head.next.next.next.next = ll_rev_rec_Node(5)
+ll.head.next.next.next.next.next = ll_rev_rec_Node(7)
+ll.head.next.next.next.next.next.next = ll_rev_rec_Node(10)
+ll.head.next.next.next.next.next.next.next = ll_rev_rec_Node(80)
+ll.display_ll()
+# we call out detect function and pass the the ll head
+ll.head = evenAfterOdd(ll.head)
+ll.display_ll()
+
+2-->1-->3-->4-->5-->7-->10-->80-->X
+1-->3-->5-->7-->2-->4-->10-->80-->X
+
+
+
+###Question
+Delete all occurences of a given key in doubly LL
+
+A doubly-linked list is a data structure that consists of sequentially linked nodes, and the nodes have reference 
+to both the previous and the next nodes in the sequence of nodes.
+
+You’re given a doubly-linked list and a key 'k'.
+
+Delete all the nodes having data equal to ‘k’.
+
+Answer:
+
+# creating doubly LL Node
+class doubly_ll_node:
+    def __init__(self, value):
+        self.data = value
+        self. next = None
+        self.previous = None
+
+    
+class doubly_linked_list:
+    def __init__(self):
+        self.head = None
+
+    def insert_at_db_tail(self, data):
+        # create node
+        new_doubly_node = doubly_ll_node(data)
+        
+        if self.head == None:
+            self.head = new_doubly_node
+            return
+
+        # loop until tail node
+        temp = self.head
+        while temp.next != None:
+            temp = temp.next
+
+        # now temp is the tail node
+        # assign the tail node next to new node
+        temp.next = new_doubly_node
+
+        # assign the previous of newly node to temp
+        new_doubly_node.previous = temp
+
+        
+    # func to display LL
+    def display_ll(self):
+        temp = self.head
+        while temp != None:
+            print(temp.data, end="-->")
+            temp = temp.next
+        print("X")
+
+# Function to delete all occurrences of a given value k from the doubly linked list
+def deleteAllOccurrences(head, k):
+    temp = head
+
+    # Traverse through the entire doubly linked list
+    while temp is not None:
+        # Step 1: Save the next node before we potentially delete the current node
+        # This is crucial because if we delete temp, we'll lose access to temp.next
+        next_node = temp.next
+        
+        # Step 2: Check if the current node's data matches k (value to delete)
+        if temp.data == k:
+            
+            # Case 1: Deleting the head node (first node in the list)
+            if temp.previous is None:
+                # Update head to point to the next node
+                head = next_node
+                # If the new head exists (list is not empty after deletion)
+                if next_node:        # ensure not None
+                    # Set the new head's previous pointer to None
+                    # (since it's now the first node)
+                    next_node.previous = None
+
+            # Case 2: Deleting a middle or tail node (not the head)
+            else:
+                # Link the previous node directly to the next node
+                # This bypasses (removes) the current node from the chain
+                temp.previous.next = next_node
+                # If next_node exists (we're not deleting the tail)
+                if next_node:
+                    # Update next_node's previous pointer to skip the current node
+                    next_node.previous = temp.previous
+
+            # Step 3: Break the links of the deleted node (clean up)
+            # This disconnects the node completely from the list
+            temp.previous = None
+            temp.next = None
+
+        # Step 4: Move to the next node in the list (using saved reference)
+        temp = next_node
+
+    # Return the (possibly updated) head of the list
+    return head
+
+ll2 = doubly_linked_list()
+
+ll2.insert_at_db_tail(8)
+ll2.insert_at_db_tail(1)
+ll2.insert_at_db_tail(8)
+ll2.insert_at_db_tail(10)
+ll2.insert_at_db_tail(7)
+ll2.insert_at_db_tail(8)
+ll2.insert_at_db_tail(9)
+ll2.insert_at_db_tail(8)
+ll2.insert_at_db_tail(8)
+
+ll2.display_ll()
+
+ll2.head = deleteAllOccurrences(ll2.head, 8)
+ll2.display_ll()
+
+8-->1-->8-->10-->7-->8-->9-->8-->8-->X
+1-->10-->7-->9-->X
