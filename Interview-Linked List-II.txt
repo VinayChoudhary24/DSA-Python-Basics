@@ -266,14 +266,8 @@ ll.display_ll()
                                         different so we check single LL also like we do in merge arrays.
                                      5. if i != None, Nodes remaining in LL1
                                            dummy.next = i, now dummy points to the first node in LL1
-                                           i = i.next, now this moves i to the second node in LL1
-                                           dummy.next.next = None  
-                                           dummy = dummy.next, this moves dummmy to the first node in LL1
-                                     7. if j!= None, Nodes remaining in LL2 
+                                     6. if j!= None, Nodes remaining in LL2 
                                            dummy.next = j, now dummy points to the first node in LL2
-                                           j = j.next, now this moves j to the second node in LL2
-                                           dummy.next.next = None  
-                                           dummy = dummy.next, this moves dummy to the first node in LL2
                   
 
 
@@ -340,7 +334,7 @@ def merge_two_sorted_LL(head1, head2):
 
     # if ll2/head2 exhaust:
     if i != None:
-        dummy.next = i # ad the remaing direclty
+        dummy.next = i # add the remaing direclty
 
     # Get the actual merged list (skip the dummy node)
     result = new_head.next
